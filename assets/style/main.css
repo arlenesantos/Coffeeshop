@@ -1,0 +1,78 @@
+
+body{
+    font-family: 'Open Sans', sans-serif;
+    
+}
+
+.bg{
+    margin-top: -86px;
+}
+
+.navbar{
+    z-index: 1;
+    background-color: transparent;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    /* rgb(108,117,125) */
+    color: rgb(108,117,125);
+    font-size: 0.9rem;
+    font-weight: 700;    
+    text-transform: uppercase;
+    letter-spacing: 1px;    
+}
+
+a > span:hover{    
+    color: #1e1e1f !important;
+    border-bottom: solid 1px;
+    
+}
+
+.last-nav-item{
+    margin-right: 100px;
+}
+
+.card-img-overlay {
+    display: inline-block;
+    text-align: center;    
+}
+
+.card{
+    border: none;
+    
+}
+
+
+#stores{
+    background-color: #f8f9f9;
+    padding: 20px 0 80px;
+    border-top: 1px solid #e3e3e3;
+}
+
+footer{
+    /*background-color:#3d2c1c ;*/
+    /*color:#d9cdbf;*/
+    background-color:rgb(68, 33, 13);    
+    color:rgb(240, 238, 238);
+    
+}
+
+
+
+
+
+
+
+@media only screen and (min-width: 768px) {
+    #logo{
+        position: absolute;
+        right: 0;
+    }
+  
+}
+
+
+
+
+
+
