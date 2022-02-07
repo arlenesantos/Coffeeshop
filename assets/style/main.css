@@ -42,12 +42,37 @@ a > span:hover{
     
 }
 
+.card-border:hover{
+    outline:5px solid rgb(108,117,125);
+    outline-offset: -5px;
+}
+
+#coffee{
+    border-bottom: 1px solid #e3e3e3;
+
+}
+
 
 #stores{
     background-color: #f8f9f9;
     padding: 20px 0 80px;
-    border-top: 1px solid #e3e3e3;
+    
 }
+
+.stores-link {
+    color:rgb(108,117,125);   
+}
+.stores-link:hover {
+    font-weight: bold;
+    color:rgb(108,117,125);
+}
+
+.tab-content{
+    color:#1e1e1f;
+}
+
+
+
 
 footer{
     /*background-color:#3d2c1c ;*/
