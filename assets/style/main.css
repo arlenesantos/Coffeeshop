@@ -1,20 +1,18 @@
 
-body{
+body {
     font-family: 'Open Sans', sans-serif;
-    
+    position: relative;
+    scroll-behavior: smooth;
 }
 
-.bg{
-    margin-top: -86px;
-}
-
-.navbar{
+/* navbar */
+#nav-home {
     z-index: 1;
     background-color: transparent;
 }
 
-.navbar-light .navbar-nav .nav-link {
-    /* rgb(108,117,125) */
+.menu-link {
+    /* rgb(108,117,125) = secondary color */
     color: rgb(108,117,125);
     font-size: 0.9rem;
     font-weight: 700;    
@@ -22,8 +20,8 @@ body{
     letter-spacing: 1px;    
 }
 
-a > span:hover{    
-    color: #1e1e1f !important;
+.ul-nav:hover{    
+    color: #1e1e1f !important;  
     border-bottom: solid 1px;
     
 }
@@ -32,14 +30,31 @@ a > span:hover{
     margin-right: 100px;
 }
 
+/* header background image */
+.bg-hero{
+    margin-top: -86px;
+}
+
+/* back to top button */
+.arrow-up{
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    z-index: 1;
+}
+
+.arrow-up a{
+    color:rgb(108,117,125);
+}
+
+/* coffee section */
 .card-img-overlay {
     display: inline-block;
     text-align: center;    
 }
 
 .card{
-    border: none;
-    
+    border: none;    
 }
 
 .card-border:hover{
@@ -49,14 +64,12 @@ a > span:hover{
 
 #coffee{
     border-bottom: 1px solid #e3e3e3;
-
 }
 
-
+/* stores and maps section  */
 #stores{
     background-color: #f8f9f9;
-    padding: 20px 0 80px;
-    
+    padding: 20px 0 80px;    
 }
 
 .stores-link {
@@ -71,20 +84,27 @@ a > span:hover{
     color:#1e1e1f;
 }
 
+/* products page */
+
+#products{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
 
 
 
+
+
+/* footer */
 footer{
     /*background-color:#3d2c1c ;*/
     /*color:#d9cdbf;*/
     background-color:rgb(68, 33, 13);    
-    color:rgb(240, 238, 238);
-    
+    color:rgb(240, 238, 238);    
 }
 
 .border-top p{
-    font-size: 0.8rem;
-    
+    font-size: 0.8rem;    
 }
 
 

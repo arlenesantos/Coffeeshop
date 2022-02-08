@@ -30,7 +30,7 @@
 <body>
     <header id="header">
         <!-- nav -->
-        <nav id="nav-home" class="navbar navbar-expand-md navbar-light">
+        <nav class="navbar navbar-expand-md fixed-top">
             <div class="container-fluid">
                 <!-- sign and cart buttons -->
                 <div>
@@ -58,7 +58,7 @@
                             class="d-inline-block align-text-top"></a>
                 </div>
 
-                <!-- toggle button small devices -->
+                <!-- toggle button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -69,13 +69,13 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="nav-item p-3">
-                        <a class="nav-link menu-link" aria-current="page" href="/"><span class="ul-nav">Home</span></a>
+                            <a class="nav-link menu-link" aria-current="page" href="/"><span class="ul-nav">Home</span></a>
                         </li>
                         <li class="nav-item p-3">
-                        <a class="nav-link menu-link" href="/products.html"><span class="ul-nav">Products</span></a>
+                            <a class="nav-link menu-link" href="#"><span class="ul-nav">Products</span></a>
                         </li>
                         <li class="nav-item p-3">
-                        <a class="nav-link menu-link" href="#"><span class="ul-nav">Stores</span></a>
+                            <a class="nav-link menu-link" href="#"><span class="ul-nav">Stores</span></a>
                         </li>
                         <li class="nav-item p-3 last-nav-item">
                             <a class="nav-link menu-link" href="#"><span class="ul-nav">Recipes</span></a>
@@ -85,11 +85,12 @@
             </div>
         </nav>
 
-        <!-- header background image -->
+        <!-- header background image 
         <div class="bg-hero">
             <img src="assets/images/bg.jpg" alt="background coffee image" class="img-fluid d-md-block">
         </div>
-        
+        -->
+
         <!-- back to top button -->
         <div class="arrow-up">
             <a class="btn btn-outline-secondary btn-sm" href="#header">
@@ -102,126 +103,36 @@
     </header>
     <main>
         <!-- coffee products section -->
-        <section id="coffee">
-            <div class="container mt-5 mx-auto">
-                <div class="row row-cols-1 row-cols-md-3 g-0">
-                    <div class="col">
-                        <div class="card h-100 position-relative card-border">
-                            <img src="./assets/images/ground.jpg" class="card-img-top h-100" alt="ground coffee image">
-                            <div class="card-img-overlay p-0">
-                                <a href="#"
-                                    class="btn btn-outline-secondary position-absolute top-0 start-50 translate-middle-x mt-5">Ground
-                                    Coffee</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100 position-relative card-border">
-                            <img src="./assets/images/bean.jpg" class="card-img-top h-100"
-                                alt="whole bean coffee image">
-                            <div class="card-img-overlay p-0">
-                                <a href="#"
-                                    class="btn btn-outline-secondary position-absolute top-0 start-50 translate-middle-x mt-5">Whole
-                                    Bean</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100 position-relative card-border">
-                            <img src="./assets/images/capsules.jpg" class="card-img-top h-100"
-                                alt="coffee capsules image">
-                            <div class="card-img-overlay p-0">
-                                <a href="#"
-                                    class="btn btn-outline-secondary position-absolute top-0 start-50 translate-middle-x mt-5">Capsule</a>
-                            </div>
-                        </div>
-                    </div>
+        <section id="products">
+            <div class="container">
+                <div>
+                    <h1>Ground Coffee</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id fermentum lorem. Praesent et condimentum augue, fringilla pretium turpis. Mauris nec massa eget nisi facilisis tristique. Integer blandit tempus ex quis congue. Suspendisse diam ligula, tincidunt eget ipsum nec, luctus convallis dui. Proin enim nisl, commodo at odio eget, consectetur porttitor leo. Curabitur laoreet libero tristique est pharetra vestibulum. Aliquam aliquet faucibus magna ut lacinia. Nulla a elementum neque.</p>                    
                 </div>
-            </div>
-        </section>
-
-
-        <!-- stores and maps section -->
-        <section id="stores" class=" pt-5">
-            <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <p class="nav-link disabled pb-0"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                            fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
-                            <path
-                                d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z">
-                            </path>
-                        </svg></p>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active stores-link" id="lisbon-tab" data-bs-toggle="tab"
-                        data-bs-target="#lisbon" type="button" role="tab" aria-controls="lisbon"
-                        aria-selected="true">Lisbon</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link stores-link" id="porto-tab" data-bs-toggle="tab" data-bs-target="#porto"
-                        type="button" role="tab" aria-controls="porto" aria-selected="false">Porto</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link stores-link" id="faro-tab" data-bs-toggle="tab" data-bs-target="#faro"
-                        type="button" role="tab" aria-controls="faro" aria-selected="false">Faro</button>
-                </li>
-            </ul>
-            <div class="container p-5 tab-content" id="myTabContent">
-
-                <div class="tab-pane fade show active" id="lisbon" role="tabpanel" aria-labelledby="lisbon-tab">
-                    <div class="row container px-4">
-                        <div class="col-12 col-md-4 text-center text-secondary  pt-4">
-                            <p>Store address</p>
-                            <p>800 123 456 | lisbonstore@email.com</p> <br>
-                            <a href="#" class="btn btn-outline-secondary mb-4">Shop here</a>
+                <div>
+                    <div class="row">
+                        <div class="col">
+                            <img src="" alt="coffee image">
                         </div>
-                        <div class="col-12 col-md-8">
-                            <div class="ratio ratio-16x9">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d83737.61119491608!2d-9.215552328335466!3d38.742653184856344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd19331a61e4f33b%3A0x400ebbde49036d0!2sLisboa!5e0!3m2!1spt-BR!2spt!4v1644249587568!5m2!1spt-BR!2spt"
-                                    width="600" height="450" allowfullscreen loading="lazy"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row tab-pane fade" id="porto" role="tabpanel" aria-labelledby="porto-tab">
-                    <div class="row container p-4">
-                        <div class="row container px-4">
-                            <div class="col-12 col-md-4 text-center text-secondary  pt-4">
-                                <p>Store address</p>
-                                <p>800 123 456 | portostore@email.com</p> <br>
-                                <a href="#" class="btn btn-outline-secondary mb-4">Shop here</a>
-                            </div>
-                            <div class="col-12 col-md-8 ">
-                                <div class="ratio ratio-16x9"><iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80811.12479714767!2d-8.678823509202685!3d41.17464691483776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2465abc4e153c1%3A0xa648d95640b114bc!2sPorto!5e0!3m2!1spt-BR!2spt!4v1644249017813!5m2!1spt-BR!2spt"
-                                        width="600" height="450" allowfullscreen loading="lazy"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row tab-pane fade" id="faro" role="tabpanel" aria-labelledby="faro-tab">
-                    <div class="row container px-4">
-                        <div class="col-12 col-md-4 text-center text-secondary pt-4">
-                            <p>Store address</p>
-                            <p>800 123 456 | farostore@email.com</p> <br>
-                            <a href="#" class="btn btn-outline-secondary mb-4">Shop here</a>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <div class="ratio ratio-16x9">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101940.73243706455!2d-8.009971124782172!3d37.01819571313995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0552e72290faa7%3A0x8d73c2d4494aff5a!2sFaro!5e0!3m2!1spt-BR!2spt!4v1644248137634!5m2!1spt-BR!2spt"
-                                    width="600" height="450" allowfullscreen loading="lazy"></iframe>
-                            </div>
+                        <div class="col">
+                            <ul>
+                                <li>Traditional</li>
+                                <li>$20.49</li>
+                                <li>Store available: lisbon</li>                                
+                            </ul>
+                            <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16"> <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/> <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg> 
+                            </button>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+            
         </section>
+
+
 
 
     </main>
