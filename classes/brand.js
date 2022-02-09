@@ -1,7 +1,7 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
 
-class Category {
+class Brand {
     constructor(id, name) {
         let _id = id;
         let _name = name;
@@ -15,7 +15,7 @@ class Category {
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO categories (id, name) VALUES ($1, $2) RETURNING *;`,
+                    text: `INSERT INTO brands (id, name) VALUES ($1, $2) RETURNING *;`,
                     values: [_id, _name]
                 };
 
@@ -32,7 +32,7 @@ class Category {
         this.update = async () => {
             try {
                 let query = {
-                    text: `UPDATE categories SET name = $2  WHERE id = $1 RETURNING *;`,
+                    text: `UPDATE brands SET name = $2  WHERE id = $1 RETURNING *;`,
                     values: [_id, _name]
                 };
 
@@ -49,7 +49,7 @@ class Category {
         this.delete = async () => {
             try {
                 let query = {
-                    text: `DELETE FROM categories WHERE id = $1 RETURNING *;`,
+                    text: `DELETE FROM brands WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
                 let client = await this._pool.connect();
@@ -65,7 +65,7 @@ class Category {
         this.getProducts = async () => {
             try {
                 let query = {
-                    text: `SELECT id, name, price, category_id, brand_id FROM products WHERE category_id = $1`,
+                    text: `SELECT id, name, price, category_id, brand_id FROM products WHERE brand_id = $1`,
                     values:[_id]
                 };
 
@@ -94,7 +94,7 @@ class Category {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let query = `SELECT id, name FROM categories;`
+            let query = `SELECT id, name FROM brands;`
             let result = await client.query(query);
             client.release();
             return result.rows;
@@ -109,12 +109,12 @@ class Category {
         try {
             let client = await pool.connect();
             let query = {
-                text: `SELECT id, name FROM categories WHERE id = $1;`,
+                text: `SELECT id, name FROM brands WHERE id = $1;`,
                 values: [id]
             };
-            let category = await client.query(query);
+            let brand = await client.query(query);
             client.release();
-            return new Category(category.id, category.name);
+            return new Category(brand.id, brand.name);
 
         } catch (error) {
             throw error;
@@ -138,4 +138,4 @@ class Category {
     }
 }
 
-module.exports = { Category };
+module.exports = { Brand };
