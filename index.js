@@ -1,9 +1,14 @@
+//express
 const express  = require("express");
 const app = express();
 
+//handlebars
 const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
 const { allowInsecurePrototypeAccess } = require("@handlebars/allow-prototype-access");
+
+//classes
+const { Category } = require("./classes/category");
 
 //integrations:
 app.use(express.urlencoded({extended: false}));
@@ -39,9 +44,11 @@ app.get("/", async (req, res) => {
 
 app.get("/products", async (req, res) => {
     try {
-        res.render("products");
+        let category = await Category.all();
+        res.render("products", {category: category});
         
-    } catch (error) {
+    } catch (error) {  
+        console.log("entrou index")      
         res.status(500).send({error: error, code: 500});        
     }
 });
