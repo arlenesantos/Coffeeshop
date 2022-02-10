@@ -174,7 +174,7 @@ class Product {
             };
             let product = await client.query(query);
             client.release();
-            return new Category(product.id, product.name, product.price, product.category_id, product.brand_id);
+            return new Product(product.id, product.name, product.price, product.category_id, product.brand_id);
 
         } catch (error) {
             throw error;
@@ -194,11 +194,11 @@ class Product {
     }    
 
     async getStock(store_id) { 
-        return this.getStock();
+        return this.getStock(store_id);
     }
 
     async getMinStock(store_id) {
-        return this.getMinStock();
+        return this.getMinStock(store_id);
     }
 
     async getStores() {

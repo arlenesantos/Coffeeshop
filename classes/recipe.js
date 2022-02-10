@@ -1,22 +1,33 @@
-//postgresql
 const PoolSingleton = require("../data/pooldb");
 
-class Brand {
-    constructor(id, name) {
+class Recipe {
+    constructor(id, title, content, photo, approved, customer_id) {
         let _id = id;
-        let _name = name;
+        let _title = title;
+        let _content = content;
+        let _photo = photo;
+        let _approved = approved;
+        let _customer_id = customer_id;
+
         let _pool = PoolSingleton.getInstance();
 
         this.getId = () => _id;
-        this.getName = () => _name;
-        
-        this.setName = (new_name) => _name = new_name;
+        this.getTitle = () => _title;
+        this.getContent = () => _content;
+        this.getPhoto = () => _photo;
+        this.getApproved = () => _approved;
+        this.getCustomerId = () => _customer_id;
+
+        this.setTitle = (new_title) => _title = new_title;
+        this.setContent = (new_content) => _content = new_content;
+        this.setPhoto = (new_photo) => _photo = new_photo;
+        this.setApproved = (new_value) => _approved = new_value;
 
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO brands (id, name) VALUES ($1, $2) RETURNING *;`,
-                    values: [_id, _name]
+                    text: `INSERT INTO recipes (id, title, content, photo, approved, customer_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`,
+                    values: [_id, _title, _content, _photo, _approved, _customer_id]
                 };
 
                 let client = await this._pool.connect();
@@ -32,8 +43,8 @@ class Brand {
         this.update = async () => {
             try {
                 let query = {
-                    text: `UPDATE brands SET name = $2  WHERE id = $1 RETURNING *;`,
-                    values: [_id, _name]
+                    text: `UPDATE recipes SET title = $2, content = $3, photo = $4, approved = $5, customer_id = $6  WHERE id = $1 RETURNING *;`,
+                    values: [_id, _title, _content, _photo, _approved, _customer_id]
                 };
 
                 let client = await this._pool.connect();
@@ -49,7 +60,7 @@ class Brand {
         this.delete = async () => {
             try {
                 let query = {
-                    text: `DELETE FROM brands WHERE id = $1 RETURNING *;`,
+                    text: `DELETE FROM recipes WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
                 let client = await this._pool.connect();
@@ -62,29 +73,27 @@ class Brand {
             }
         }
 
-        this.getProducts = async () => {
-            try {
-                let query = {
-                    text: `SELECT id, name, price, category_id, brand_id FROM products WHERE brand_id = $1`,
-                    values:[_id]
-                };
-
-                let client = await this._pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
     }
 
+    //_id, _title, _content, _photo, _approved, _customer_id
     get id() {
         return this.getId();
     }
-    get name() {
-        return this.getName();
+    get title() {
+        return this.getTitle();
     }
+    get content() {
+        return this.getContent();
+    }
+    get photo() {
+        return this.getPhoto();
+    }
+    get approved() {
+        return this.getApproved();
+    }
+    get customerId() {
+        return this.getCustomerId();
+    }    
     get pool() {
         return this.getPool();
     }
@@ -94,7 +103,7 @@ class Brand {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let query = `SELECT id, name FROM brands;`
+            let query = `SELECT id, title, content, photo, approved, customer_id FROM recipes;`
             let result = await client.query(query);
             client.release();
             return result.rows;
@@ -109,12 +118,12 @@ class Brand {
         try {
             let client = await pool.connect();
             let query = {
-                text: `SELECT id, name FROM brands WHERE id = $1;`,
+                text: `SELECT id, title, content, photo, approved, customer_id FROM recipes WHERE id = $1;`,
                 values: [id]
             };
-            let brand = await client.query(query);
+            let recipe = await client.query(query);
             client.release();
-            return new Brand(brand.id, brand.name);
+            return new Recipe(recipe.id, recipe.title, recipe.content, recipe.photo, recipe.approved, recipe.customer_id);
 
         } catch (error) {
             throw error;
@@ -133,9 +142,8 @@ class Brand {
         return this.delete();
     }
 
-    async getProducts() {
-        return this.getProducts();
-    }
+
 }
 
-module.exports = { Brand };
+module.exports = { Recipe };
+
