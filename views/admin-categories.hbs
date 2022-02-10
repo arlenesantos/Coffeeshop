@@ -1,0 +1,83 @@
+<!-- read all categories -->
+<section id="categories">
+    <div class="container"> 
+        
+        <button onclick="toggleForm()" class="btn btn-primary">Create new category</button>       
+
+        <!-- create category - form-->
+        <div id= "form-new-category" class="container mt-3 d-none p-0">            
+            <form action="/admin/categories" method="POST">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" id="new-category" placeholder="Category name" name="name">
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- edit category - form-->
+        <div id= "form-edit-category" class="container mt-3 p-0 d-none">            
+            <form action="/admin/categories">
+                <div class="row">                    
+                    <div class="col">
+                        <input type="hidden" id="category_id" name="id" readonly="readonly">
+                        <input type="text" class="form-control" id="edit-category" placeholder="Category name" name="name">
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-warning text-light">Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- read categories - table-->
+        <div class="mt-5">
+            <h1>Our categories:</h1>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each categories}}
+                    <tr>
+                        <th scope="row">{{this.id}}</th>
+                        <td>{{this.name}}</td>
+                        <td><button class="btn btn-warning text-light" onclick = "toggleEdit('{{this.id}}', '{{this.name}}')"><i class="bi bi-pencil"></i></button></td>                        
+                        <td><i class="bi bi-trash btn btn-danger text-light"></i></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+    const toggleForm = () => {
+        let form = document.getElementById("form-new-category");
+        form.classList.toggle("d-none");
+        form.classList.toggle("d-block");        
+    }
+
+    const toggleEdit = (id, name) => {
+        let form = document.getElementById("form-edit-category");
+        document.getElementById("category_id").value = id;
+        document.getElementById("edit-category").value = name;
+        form.classList.remove("d-none");
+        form.classList.add("d-block");
+    }
+
+</script>

@@ -23,11 +23,8 @@ const Singleton = (() =>{
     return {
         getInstance: () => {
             if(!instance) {
-                instance = createInstance();
-                console.log("pool created");
-            } else{
-                console.log("pool already exists");
-            }
+                instance = createInstance();                
+            } 
             return instance;
         }
     }

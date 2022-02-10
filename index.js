@@ -29,7 +29,7 @@ app.set("view engine", "hbs");
 app.use(express.static(__dirname + "/assets"));
 app.use('/css', express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use('/js', express.static(__dirname + "/node_modules/bootstrap/dist/js"));
-
+app.use('/icons', express.static(__dirname + "/node_modules/bootstrap-icons/font"));
 
 app.listen(3000, () => console.log("server on"));
 
@@ -44,12 +44,38 @@ app.get("/", async (req, res) => {
 
 app.get("/products", async (req, res) => {
     try {
-        let category = await Category.all();
-        res.render("products", {category: category});
+        res.render("products");
         
-    } catch (error) {  
-        console.log("entrou index")      
+    } catch (error) {              
         res.status(500).send({error: error, code: 500});        
     }
+});
+
+
+//private pages
+app.get("/admin/categories", async (req, res) => {
+    try {
+        //check session login
+        let categories = await Category.all();        
+        res.render("admin-categories", {categories: categories});
+
+    } catch (error) {
+        res.status(500).send({error: error, code: 500});
+        
+    } 
+});
+
+app.post("/admin/categories", async (req, res) => {
+    try {
+        //check session login
+        let { name } = req.body;
+        let category = new Category(null, name);
+        category.save();
+        //mensagem de sucesso - flash
+        res.redirect("/admin/categories");   
+    } catch (error) {
+        res.status(500).send({error: error, code: 500});
+        
+    } 
 });
 

@@ -15,14 +15,14 @@ class Category {
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO categories (id, name) VALUES ($1, $2) RETURNING *;`,
-                    values: [_id, _name]
+                    text: `INSERT INTO categories (name) VALUES ($1) RETURNING *;`,
+                    values: [_name]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                
 
             } catch (error) {
                 throw error;
@@ -36,7 +36,7 @@ class Category {
                     values: [_id, _name]
                 };
 
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
@@ -52,7 +52,7 @@ class Category {
                     text: `DELETE FROM categories WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
@@ -97,7 +97,13 @@ class Category {
             let query = `SELECT id, name FROM categories;`
             let result = await client.query(query);
             client.release();
-            return result.rows;
+                        
+            let array = [];
+            result.rows.forEach((c) => {
+                let category = new Category(c.id, c.name);
+                array.push(category);
+            })
+            return array; 
 
         } catch (error) {
             throw error;
