@@ -2,6 +2,9 @@
 const express  = require("express");
 const app = express();
 
+//override method
+const methodOverride = require('method-override');
+
 //handlebars
 const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
@@ -9,10 +12,13 @@ const { allowInsecurePrototypeAccess } = require("@handlebars/allow-prototype-ac
 
 //classes
 const { Category } = require("./classes/category");
+const { type } = require("express/lib/response");
 
 //integrations:
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+
+app.use(methodOverride('_method'));
 
 app.engine(
     "hbs",
@@ -53,6 +59,7 @@ app.get("/products", async (req, res) => {
 
 
 //private pages
+// Category 
 app.get("/admin/categories", async (req, res) => {
     try {
         //check session login
@@ -74,8 +81,38 @@ app.post("/admin/categories", async (req, res) => {
         //mensagem de sucesso - flash
         res.redirect("/admin/categories");   
     } catch (error) {
+        //mensagem de erro
         res.status(500).send({error: error, code: 500});
         
     } 
 });
+
+app.put("/admin/categories", async (req, res) => {
+    try {
+        let { id, name } = req.body;
+        let category = await Category.find(id);        
+        await category.setName(name);
+        await category.update();
+        //mensagem de sucesso
+        res.redirect("/admin/categories");
+        
+    } catch (error) {
+        //mensagem de erro
+        res.status(500).send({error: error, code: 500});        
+    }
+});
+
+app.delete("/admin/categories", async (req, res) => {
+    try {        
+        let { id } = req.body;        
+        let category = await Category.find(id);
+        //mensagem de confirmação
+        await category.delete();
+        res.redirect("/admin/categories");
+        
+    } catch (error) {
+        //mensagem de erro
+        res.status(500).send({error: error, code: 500});        
+    }
+})
 

@@ -9,7 +9,7 @@ class Category {
 
         this.getId = () => _id;
         this.getName = () => _name;
-        
+
         this.setName = (new_name) => _name = new_name;
 
         this.save = async () => {
@@ -22,7 +22,7 @@ class Category {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                
+
 
             } catch (error) {
                 throw error;
@@ -37,9 +37,11 @@ class Category {
                 };
 
                 let client = await _pool.connect();
-                let result = await client.query(query);
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                // return the instance that already exists 
+                return this;
+
 
             } catch (error) {
                 throw error;
@@ -53,9 +55,9 @@ class Category {
                     values: [_id]
                 };
                 let client = await _pool.connect();
-                let result = await client.query(query);
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                return this;
 
             } catch (error) {
                 throw error;
@@ -66,15 +68,15 @@ class Category {
             try {
                 let query = {
                     text: `SELECT id, name, price, category_id, brand_id FROM products WHERE category_id = $1`,
-                    values:[_id]
+                    values: [_id]
                 };
 
                 let client = await this._pool.connect();
                 let result = await client.query(query);
                 return result.rows;
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
     }
@@ -97,13 +99,13 @@ class Category {
             let query = `SELECT id, name FROM categories;`
             let result = await client.query(query);
             client.release();
-                        
+
             let array = [];
             result.rows.forEach((c) => {
                 let category = new Category(c.id, c.name);
                 array.push(category);
             })
-            return array; 
+            return array;
 
         } catch (error) {
             throw error;
@@ -118,7 +120,8 @@ class Category {
                 text: `SELECT id, name FROM categories WHERE id = $1;`,
                 values: [id]
             };
-            let category = await client.query(query);
+            let result = await client.query(query);
+            let category = result.rows[0];
             client.release();
             return new Category(category.id, category.name);
 
