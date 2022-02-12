@@ -18,13 +18,14 @@ class Category {
                     text: `INSERT INTO categories (name) VALUES ($1) RETURNING *;`,
                     values: [_name]
                 };
-
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
 
 
             } catch (error) {
+                console.log("error save: " + error)
+                console.log(error);
                 throw error;
             }
         }
@@ -57,9 +58,8 @@ class Category {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this;
-
-            } catch (error) {
+                
+            } catch (error) {                
                 throw error;
             }
         }
@@ -73,7 +73,7 @@ class Category {
 
                 let client = await this._pool.connect();
                 let result = await client.query(query);
-                return result.rows;
+                return result.rows; // retornar instancia
 
             } catch (error) {
                 throw error;
@@ -96,7 +96,7 @@ class Category {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let query = `SELECT id, name FROM categories;`
+            let query = `SELECT id, name FROM categories ORDER BY id ASC;`
             let result = await client.query(query);
             client.release();
 
@@ -125,7 +125,7 @@ class Category {
             client.release();
             return new Category(category.id, category.name);
 
-        } catch (error) {
+        } catch (error) {                
             throw error;
         }
     }

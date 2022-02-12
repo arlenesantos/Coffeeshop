@@ -1,5 +1,5 @@
 //express
-const express  = require("express");
+const express = require("express");
 const app = express();
 
 //override method
@@ -10,12 +10,30 @@ const exphbs = require("express-handlebars");
 const Handlebars = require("handlebars");
 const { allowInsecurePrototypeAccess } = require("@handlebars/allow-prototype-access");
 
+//session
+var session = require('express-session');
+
+//flash
+//const path = require('path');
+const { flash } = require('express-flash-message');
+
+
+app.use(session({
+    secret: 'key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    }
+}));
+app.use(flash({ sessionKeyName: 'flashMessage' }));
+
 //classes
 const { Category } = require("./classes/category");
 const { type } = require("express/lib/response");
 
 //integrations:
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(methodOverride('_method'));
@@ -25,8 +43,8 @@ app.engine(
     exphbs.engine({
         handlebars: allowInsecurePrototypeAccess(Handlebars),
         defaultLayout: "main",
-        layoutsDir:`${__dirname}/views/main`,
-        extname: "hbs",
+        layoutsDir: `${__dirname}/views/main`,
+        extname: "hbs",        
     })
 );
 app.set("view engine", "hbs");
@@ -42,34 +60,36 @@ app.listen(3000, () => console.log("server on"));
 app.get("/", async (req, res) => {
     try {
         res.render("home", { layout: false });
-        
+
     } catch (error) {
-        res.status(500).send({error: error, code: 500});        
+        res.status(500).send({ error: error, code: 500 });
     }
 });
 
 app.get("/products", async (req, res) => {
     try {
         res.render("products");
-        
-    } catch (error) {              
-        res.status(500).send({error: error, code: 500});        
+
+    } catch (error) {
+        res.status(500).send({ error: error, code: 500 });
     }
 });
 
 
 //private pages
+
 // Category 
 app.get("/admin/categories", async (req, res) => {
     try {
         //check session login
-        let categories = await Category.all();        
-        res.render("admin-categories", {categories: categories});
+        let categories = await Category.all();
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        res.render("admin-categories", { categories: categories, success: successMsg, error: errorMsg });
 
     } catch (error) {
-        res.status(500).send({error: error, code: 500});
-        
-    } 
+        console.log(error);
+    }
 });
 
 app.post("/admin/categories", async (req, res) => {
@@ -77,42 +97,46 @@ app.post("/admin/categories", async (req, res) => {
         //check session login
         let { name } = req.body;
         let category = new Category(null, name);
-        category.save();
-        //mensagem de sucesso - flash
-        res.redirect("/admin/categories");   
+        await category.save();
+        await req.flash('success', 'Category creted successfully!');
+        res.redirect("/admin/categories");
     } catch (error) {
-        //mensagem de erro
-        res.status(500).send({error: error, code: 500});
-        
-    } 
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/categories");
+
+    }
 });
 
 app.put("/admin/categories", async (req, res) => {
     try {
         let { id, name } = req.body;
-        let category = await Category.find(id);        
+        let category = await Category.find(id);
         await category.setName(name);
         await category.update();
-        //mensagem de sucesso
+        await req.flash('success', 'Category updated successfully!');
         res.redirect("/admin/categories");
-        
+
     } catch (error) {
-        //mensagem de erro
-        res.status(500).send({error: error, code: 500});        
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/categories");
     }
 });
 
 app.delete("/admin/categories", async (req, res) => {
-    try {        
-        let { id } = req.body;        
+    try {
+        let { id } = req.body;
         let category = await Category.find(id);
-        //mensagem de confirmação
         await category.delete();
+        await req.flash('success', 'Category deleted successfully!');
         res.redirect("/admin/categories");
-        
+
     } catch (error) {
-        //mensagem de erro
-        res.status(500).send({error: error, code: 500});        
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/categories");
     }
-})
+});
+
 
