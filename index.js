@@ -30,6 +30,7 @@ app.use(flash({ sessionKeyName: 'flashMessage' }));
 
 //classes
 const { Category } = require("./classes/category");
+const { Brand } = require("./classes/brand");
 const { type } = require("express/lib/response");
 
 //integrations:
@@ -92,13 +93,13 @@ app.get("/admin/categories", async (req, res) => {
     }
 });
 
-app.post("/admin/categories", async (req, res) => {
+app.post("/api/admin/categories", async (req, res) => {
     try {
-        //check session login
+        //token
         let { name } = req.body;
         let category = new Category(null, name);
         await category.save();
-        await req.flash('success', 'Category creted successfully!');
+        await req.flash('success', 'Category created successfully!');
         res.redirect("/admin/categories");
     } catch (error) {
         console.log(error);
@@ -108,8 +109,9 @@ app.post("/admin/categories", async (req, res) => {
     }
 });
 
-app.put("/admin/categories", async (req, res) => {
+app.put("/api/admin/categories", async (req, res) => {
     try {
+        //token
         let { id, name } = req.body;
         let category = await Category.find(id);
         await category.setName(name);
@@ -124,8 +126,9 @@ app.put("/admin/categories", async (req, res) => {
     }
 });
 
-app.delete("/admin/categories", async (req, res) => {
+app.delete("/api/admin/categories", async (req, res) => {
     try {
+        //token
         let { id } = req.body;
         let category = await Category.find(id);
         await category.delete();
@@ -137,6 +140,68 @@ app.delete("/admin/categories", async (req, res) => {
         await req.flash('error', 'Something went wrong.');
         res.redirect("/admin/categories");
     }
+});
+
+//Brand
+app.get("/admin/brands", async (req, res) => {
+    try {
+        //check session login
+        let brands = await Brand.all();
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');               
+        res.render("admin-brands", {brands: brands , success: successMsg , error: errorMsg});
+        
+    } catch (error) {
+        console.log(error);               
+    }
+});
+
+app.post("/api/admin/brands", async (req, res) => {
+    try {
+        //check
+        let { name } = req.body;
+        let brand = new Brand(null, name);
+        await brand.save();
+        await req.flash('sucess', 'Brand created successfully!');
+        res.redirect("/admin/brands");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Somenthing went wrong.');
+        res.redirect("/admin/brands");        
+    }
+});
+
+app.put("/api/admin/brands", async (req, res) => {
+    try {
+        let { id, name } = req.body;
+        let brand = await Brand.find(id);
+        await brand.setName(name);
+        await brand.update();
+        await req.flash('success' , 'Brand updated successfully!');
+        res.redirect("/admin/brands");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/brands");        
+    }
+});
+
+app.delete("/api/admin/brands" , async (req, res) => {
+    try {
+        let { id } = req.body;
+        let brand = await Brand.find(id);        
+        await brand.delete();
+        await req.flash('success', 'Brand deleted successfully!');
+        res.redirect("/admin/brands");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/brands");        
+    }
+
 });
 
 

@@ -15,15 +15,14 @@ class Brand {
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO brands (id, name) VALUES ($1, $2) RETURNING *;`,
-                    values: [_id, _name]
+                    text: `INSERT INTO brands (name) VALUES ($1) RETURNING *;`,
+                    values: [_name]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
-
+                
             } catch (error) {
                 throw error;
             }
@@ -36,10 +35,12 @@ class Brand {
                     values: [_id, _name]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                // return the instance that already exists 
+                return this;
+
 
             } catch (error) {
                 throw error;
@@ -52,10 +53,11 @@ class Brand {
                     text: `DELETE FROM brands WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                // return the instance that already exists 
+                return this;
 
             } catch (error) {
                 throw error;
@@ -69,7 +71,7 @@ class Brand {
                     values:[_id]
                 };
 
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
                 
@@ -97,7 +99,13 @@ class Brand {
             let query = `SELECT id, name FROM brands;`
             let result = await client.query(query);
             client.release();
-            return result.rows;
+
+            let array = [];
+            result.rows.forEach((b) => {
+                let brand = new Brand(b.id, b.name);
+                array.push(brand);                
+            });            
+            return array;
 
         } catch (error) {
             throw error;
@@ -112,8 +120,9 @@ class Brand {
                 text: `SELECT id, name FROM brands WHERE id = $1;`,
                 values: [id]
             };
-            let brand = await client.query(query);
-            client.release();
+            let result = await client.query(query);
+            let brand = result.rows[0];
+            client.release();            
             return new Brand(brand.id, brand.name);
 
         } catch (error) {
