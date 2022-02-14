@@ -14,7 +14,7 @@ const { allowInsecurePrototypeAccess } = require("@handlebars/allow-prototype-ac
 var session = require('express-session');
 
 //flash
-//const path = require('path');
+const path = require('path');
 const { flash } = require('express-flash-message');
 
 
@@ -31,7 +31,9 @@ app.use(flash({ sessionKeyName: 'flashMessage' }));
 //classes
 const { Category } = require("./classes/category");
 const { Brand } = require("./classes/brand");
+const { Product } = require("./classes/product");
 const { type } = require("express/lib/response");
+
 
 //integrations:
 app.use(express.urlencoded({ extended: false }));
@@ -204,4 +206,75 @@ app.delete("/api/admin/brands" , async (req, res) => {
 
 });
 
+//Product
+app.get("/admin/products", async (req, res) => {
+    try {
+        let products = await Product.all();
+        let categories = await Category.all();
+        let brands = await Brand.all();        
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        res.render("admin-products", {products: products, categories: categories, brands: brands, success: successMsg, error: errorMsg });        
+        
+    } catch (error) {
+        console.log(error);        
+    }
+
+});
+
+app.post("/api/admin/products", async (req, res) => {
+    try {
+        let { name, price, category_id, brand_id } = req.body;
+        let category = await Category.find(category_id);
+        let brand = await Brand.find(brand_id);
+        let product = new Product(null, name, price, category, brand);              
+        await product.save();
+        await req.flash('success' , 'Product created successfully!');
+        res.redirect("/admin/products");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/products");        
+    }
+
+});
+
+app.put("/api/admin/products", async (req, res) => {
+    try {
+        let { id, name, price, category_id, brand_id } = req.body;
+        let category = await Category.find(category_id);
+        let brand = await Brand.find(brand_id);
+        let product = await Product.find(id);
+        product.setName(name);
+        product.setPrice(price);
+        product.setCategory(category);
+        product.setBrand(brand);
+        await product.update();
+        await req.flash('success', 'Product updated successfully!');
+        res.redirect("/admin/products"); 
+        
+    } catch (error) {
+        console.log(error);
+        req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/products");
+        
+    }
+});
+
+app.delete("/api/admin/products", async(req, res) => {
+    try {
+        let { id } = req.body;        
+        let product = await Product.find(id);
+        await product.delete();
+        await req.flash('success', 'Product deleted successfully!');
+        res.redirect("/admin/products");  
+        
+    } catch (error) {
+        console.log(error);
+        req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/products");        
+    }
+
+});
 

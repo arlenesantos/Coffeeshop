@@ -1,37 +1,40 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
+const { Category } = require("./category");
+const { Brand } = require("./brand");
 
 class Product {
-    constructor(id, name, price, category_id, brand_id) {
+    constructor(id, name, price, category, brand) {
         let _id = id;
         let _name = name;
         let _price = price;
-        let _category_id = category_id;
-        let _brand_id = brand_id;
+        let _category = category;
+        let _brand = brand;
         let _pool = PoolSingleton.getInstance();
 
         this.getId = () => _id;
         this.getName = () => _name;
         this.getPrice = () => _price;
-        this.getCategoryId = () => _category_id;
-        this.getBrandId = () => _brand_id;    
+        this.getCategory = () => _category;
+        this.getBrand = () => _brand;
+        
+        
         
         this.setName = (new_name) => _name = new_name;
         this.setPrice = (new_price) => _price = new_price;
-        this.setCategoryId = (new_categoryId) => _category_id = new_categoryId;
-        this.setBrandId = (new_brandId) => _brand_id = new_brandId;        
+        this.setCategory = (new_category) => _category = new_category;
+        this.setBrand = (new_brand) => _brand = new_brand;        
         
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO products (id, name, price, category_id, brand_id) VALUES ($1, $2, $3, $4, $5) RETURNING *;`,
-                    values: [_id, _name, _price, _category_id, _brand_id]
+                    text: `INSERT INTO products (name, price, category_id, brand_id) VALUES ($1, $2, $3, $4) RETURNING *;`,
+                    values: [_name, _price, _category.id, _brand.id]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
-                client.release();
-                return result.rows[0];
+                let client = await _pool.connect();
+                await client.query(query);
+                client.release();                
 
             } catch (error) {
                 throw error;
@@ -42,13 +45,13 @@ class Product {
             try {
                 let query = {
                     text: `UPDATE products SET name = $2, price = $3, category_id = $4, brand_id = $5  WHERE id = $1 RETURNING *;`,
-                    values: [_id, _name, _price, _category_id, _brand_id]
+                    values: [_id, _name, _price, _category.id, _brand.id]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                return this;
 
             } catch (error) {
                 throw error;
@@ -61,10 +64,10 @@ class Product {
                     text: `DELETE FROM products WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                return this;
 
             } catch (error) {
                 throw error;
@@ -139,11 +142,11 @@ class Product {
     get price() {
         return this.getPrice();
     }
-    get categoryId() {
-        return this.getCategoryId();
+    get category() {
+        return this.getCategory();
     }
-    get brandId() {
-        return this.getBrandId();
+    get brand() {
+        return this.getBrand();
     }
     get pool() {
         return this.getPool();
@@ -154,10 +157,18 @@ class Product {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let query = `SELECT id, name, price, category_id, brand_id FROM products;`
-            let result = await client.query(query);
+            let query = `SELECT id, name, price, category_id, brand_id FROM products ORDER BY id ASC;`
+            let result = await client.query(query);            
             client.release();
-            return result.rows;
+                        
+            let array = [];
+            result.rows.forEach(async (p) => {
+                let category = await Category.find(p.category_id);
+                let brand = await Brand.find(p.brand_id);
+                let product = new Product(p.id, p.name, p.price, category, brand);
+                array.push(product);                                
+            });            
+            return array;
 
         } catch (error) {
             throw error;
@@ -172,9 +183,12 @@ class Product {
                 text: `SELECT id, name, price, category_id, brand_id FROM products WHERE id = $1;`,
                 values: [id]
             };
-            let product = await client.query(query);
+            let result = await client.query(query);
+            let product = result.rows[0];
             client.release();
-            return new Product(product.id, product.name, product.price, product.category_id, product.brand_id);
+            let category = await Category.find(product.category_id);
+            let brand = await Brand.find(product.brand_id);
+            return new Product(product.id, product.name, product.price, category, brand);
 
         } catch (error) {
             throw error;

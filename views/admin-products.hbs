@@ -1,0 +1,149 @@
+<section>
+    <div class="container">
+        <button class="btn btn-primary" onclick="toggleForm()">Create new product</button>
+
+        <!-- create product - form-->
+        <div id="form-new-product" class="container mt-3 d-none p-0">
+            <form action="/api/admin/products" method="POST">
+                <div class="row g-3">
+                    <div class="col-sm">
+                        <input type="hidden" name="id" id="product_id">
+                        <label for="product_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" id="product_name">
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_price" class="form-label">Price</label>
+                        <input type="number" min="0" step="any" class="form-control" name="price" id="product_price">
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_category" class="form-label">Category</label>    
+                        <select class="form-select" id="product_category" name="category_id" >
+                            <option selected>Choose...</option>
+                            {{#each categories}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>                        
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_brand" class="form-label">Brand</label>
+                        <select class="form-select" id="product_brand" name="brand_id">
+                            <option selected>Choose...</option>
+                            {{#each brands}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>                        
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary mt-3">Create</button>
+                </div>
+            </form>  
+            <div>
+                <button class="btn btn-secondary text-light" onclick="toggleForm()">Cancel</button>
+            </div>    
+        
+        </div>
+
+        <!-- edit product - form-->
+        <div id="form-edit-product" class="container mt-3 d-none p-0">
+            <form action="/api/admin/products?_method=PUT" method="POST">
+                <div class="row g-3">
+                    <div class="col-sm">
+                        <input type="hidden" name="id" id="product_edit_id">
+                        <label for="product_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" id="product_edit_name">
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_price" class="form-label">Price</label>
+                        <input type="number" min="0" step="any" class="form-control" name="price" id="product_edit_price">
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_category" class="form-label">Category</label>    
+                        <select class="form-select" id="product_edit_category" name="category_id" >
+                            <option selected>Choose...</option>
+                            {{#each categories}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>                        
+                    </div>
+                    <div class="col-sm">
+                        <label for="product_brand" class="form-label">Brand</label>
+                        <select class="form-select" id="product_edit_brand" name="brand_id">
+                            <option selected>Choose...</option>
+                            {{#each brands}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>                        
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-warning text-light mt-3">Edit</button>
+                </div>
+            </form>  
+            <div>
+                <button class="btn btn-secondary text-light" onclick="toggleForm()">Cancel</button>
+            </div>    
+        
+        </div>
+       
+           
+
+        <div class="mt-5">
+            <table class="table table-responsive">
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <th>{{this.id}}</th>
+                        <td>{{this.name}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.category.name}}</td>
+                        <td>{{this.brand.name}}</td>
+                        <td>
+                            <button class="btn btn-warning text-light" onclick="toggleEdit('{{this.id}}', '{{this.name}}', '{{this.price}}', '{{this.category.id}}', '{{this.brand.id}}')"><i class="bi bi-pencil"></i></button>
+                        </td>
+                        <td>
+                            <form action="/api/admin/products?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete?')">
+                            <input type="hidden" name="id" value="{{this.id}}">
+                            <button class="btn btn-danger text-light"><i class="bi bi-trash"></i></button>
+                            
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}                    
+                </tbody>
+            </table>
+        </div>         
+    </div>
+</section>
+
+<script>
+    const toggleForm = () => {
+        let form = document.getElementById("form-new-product");
+        form.classList.toggle("d-none");
+        form.classList.toggle("d-block");
+    };
+
+    const toggleEdit = (id, name, price, category, brand) => {
+        let form = document.getElementById("form-edit-product");
+        document.getElementById("product_edit_id").value = id;
+        document.getElementById("product_edit_name").value = name;
+        document.getElementById("product_edit_price").value = price;
+        document.getElementById("product_edit_category").value = category;
+        document.getElementById("product_edit_brand").value = brand;
+
+        form.classList.remove("d-none");
+        form.classList.add("d-block");
+    };
+
+
+
+</script>
