@@ -88,7 +88,7 @@ body {
     color:#1e1e1f;
 }
 
-.bi-shop {
+.store-icon{
     font-size: 1.7rem;
 }
 
@@ -137,6 +137,21 @@ footer{
     font-size: 1rem;
 
 }
+
+/* admin */
+.li-div {
+    margin-left: 36px;
+}
+
+#li-user {
+    margin-left: 12px;
+}
+
+.li-div-user {
+    margin-left: 52px;
+}
+
+
 
 
 

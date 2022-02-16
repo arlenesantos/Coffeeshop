@@ -25,238 +25,160 @@
     <title>Coffee Shop</title>
 </head>
 
-<body>
-    <header id="header">
-        <!-- nav -->
-        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-            <div class="container-fluid">
-                <!-- logo -->
-                <div id="logo">
-                    <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
-                </div>
+<body class="row justify-content-between">
+    <header id="header" class="col-2">
+        <nav>
 
-                <!-- toggle button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- menu -->
-                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" aria-current="page" href="/"><span
-                                    class="ul-nav">Dashboard</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/categories"><span class="ul-nav">Categories</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/brands"><span class="ul-nav">Brands</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/products"><span class="ul-nav">Products</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/stores"><span class="ul-nav">Stores</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/customers"><span class="ul-nav">Customers</span></a>
-                        </li>                        
-                        <li class="nav-item p-3 last-nav-item">
-                            <a class="nav-link menu-link" href="/admin/recipes"><span class="ul-nav">Recipes</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- fim nav original -->
-
-        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
-            <div class="container-fluid">
-                <!-- logo -->
-                <div id="logo">
-                    <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
-                </div>
-
-                <!-- toggle button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- menu -->
-                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" aria-current="page" href="/">
-                            <i class="bi bi-bar-chart-fill"><span class="ul-nav">Dashboard</span></i>
-                            </a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/categories"><span class="ul-nav">Categories</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/brands"><span class="ul-nav">Brands</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/products"><span class="ul-nav">Products</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/stores"><span class="ul-nav">Stores</span></a>
-                        </li>
-                        <li class="nav-item p-3">
-                            <a class="nav-link menu-link" href="/admin/customers"><span class="ul-nav">Customers</span></a>
-                        </li>                        
-                        <li class="nav-item p-3 last-nav-item">
-                            <a class="nav-link menu-link" href="/admin/recipes"><span class="ul-nav">Recipes</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <!-- nova nav -->
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
-            </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-
-                
-                <ul class="list-unstyled ps-0">
+            <!-- menu lg -->
+            <div class=" vh-100 d-none d-lg-flex flex-column flex-shrink-0 p-3 bg-light" id="navbarSupportedContent">
+                <span class="text-center"><img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3"></span>
+                <hr>                
+                <ul class="list-unstyled ps-0 mb-auto">
                     <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#home-collapse" aria-expanded="true">
-                            Home
+                        <button class="btn btn-toggle align-items-center rounded collapsed dropdown-toggle text-secondary" data-bs-toggle="collapse"
+                            data-bs-target="#dash-collapse" aria-expanded="false">
+                            <i class="bi bi-bar-chart-fill"> Dashboard</i>
                         </button>
-                        <div class="collapse show" id="home-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="#" class="link-dark rounded">Overview</a></li>
-                                <li><a href="#" class="link-dark rounded">Updates</a></li>
-                                <li><a href="#" class="link-dark rounded">Reports</a></li>
+                        <div class="collapse" id="dash-collapse">
+                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Overview</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Stores</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Sales</a></li>
                             </ul>
                         </div>
                     </li>
                     <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded" data-bs-toggle="collapse"
-                            data-bs-target="#dashboard-collapse" aria-expanded="true">
-                            Dashboard
+                        <button class="btn btn-toggle align-items-center rounded dropdown-toggle text-secondary" data-bs-toggle="collapse"
+                            data-bs-target="#coffee-collapse" aria-expanded="false"><i class="bi bi-cup-fill">
+                                Products</i>
                         </button>
-                        <div class="collapse show" id="dashboard-collapse" style="">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="#" class="link-dark rounded">Overview</a></li>
-                                <li><a href="#" class="link-dark rounded">Weekly</a></li>
-                                <li><a href="#" class="link-dark rounded">Monthly</a></li>
-                                <li><a href="#" class="link-dark rounded">Annually</a></li>
+                        <div class="collapse" id="coffee-collapse">
+                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Categories</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Brands</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Products</a></li>
                             </ul>
                         </div>
                     </li>
                     <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#orders-collapse" aria-expanded="false">
-                            Orders
+                        <button class="btn btn-toggle align-items-center rounded dropdown-toggle text-secondary" data-bs-toggle="collapse"
+                            data-bs-target="#stores-collapse" aria-expanded="false"> <i class="bi bi-shop"> Stores</i>
                         </button>
-                        <div class="collapse" id="orders-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="#" class="link-dark rounded">New</a></li>
-                                <li><a href="#" class="link-dark rounded">Processed</a></li>
-                                <li><a href="#" class="link-dark rounded">Shipped</a></li>
-                                <li><a href="#" class="link-dark rounded">Returned</a></li>
+                        <div class="collapse" id="stores-collapse">
+                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Alpha</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Beta</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Gama</a></li>
                             </ul>
                         </div>
                     </li>
-                    <li class="border-top my-3"></li>
                     <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#account-collapse" aria-expanded="false">
-                            Account
-                        </button>
-                        <div class="collapse" id="account-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="#" class="link-dark rounded">New...</a></li>
-                                <li><a href="#" class="link-dark rounded">Profile</a></li>
-                                <li><a href="#" class="link-dark rounded">Settings</a></li>
-                                <li><a href="#" class="link-dark rounded">Sign out</a></li>
-                            </ul>
-                        </div>
+                        <a href="#" class="nav-link link-secondary">
+                            <i class="bi bi-person-circle"> Customers</i>
+                        </a>
                     </li>
+                    <li class="mb-1">
+                        <a href="#" class="nav-link link-secondary">
+                            <i class="bi bi-journal-richtext"> Recipes</i>
+                        </a>
+                    </li>                               
                 </ul>
+                <hr>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" alt="avatar user" width="32" height="32" class="rounded-circle me-2"> <strong>user name</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">                        
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+                             
+            </div>
 
-
-
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
-                        <svg class="bi me-2" width="16" height="16">
-                            <use xlink:href="#home"></use>
-                        </svg>
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-bar-chart-fill"> Dashboard</i>
-                    </a>
-                </li>
-                <i class="bi bi-bar-chart-fill"></i>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <svg class="bi me-2" width="16" height="16">
-                            <use xlink:href="#table"></use>
-                        </svg>
-                        Orders
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <svg class="bi me-2" width="16" height="16">
-                            <use xlink:href="#grid"></use>
-                        </svg>
-                        Products
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <svg class="bi me-2" width="16" height="16">
-                            <use xlink:href="#people-circle"></use>
-                        </svg>
-                        Customers
-                    </a>
-                </li>
-            </ul>
-            <hr>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>mdo</strong>
+            <!-- menu  -->
+            <div class="d-flex d-lg-none flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
+                <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                    data-bs-placement="right" data-bs-original-title="Icon-only">
+                    <svg class="bi" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                    <span class="visually-hidden">Icon-only</span>
                 </a>
-                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
+                <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                            data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Home">
+                                <use xlink:href="#home"></use>
+                            </svg>
+                        </a>
                     </li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-original-title="Dashboard">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Dashboard">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-original-title="Orders">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Orders">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-original-title="Products">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Products">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="" data-bs-toggle="tooltip"
+                            data-bs-placement="right" data-bs-original-title="Customers">
+                            <svg class="bi" width="24" height="24" role="img" aria-label="Customers">
+                                <use xlink:href="#people-circle"></use>
+                            </svg>
+                        </a>
+                    </li>
                 </ul>
+                <div class="dropdown border-top">
+                    <a href="#"
+                        class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
+                        id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <!-- fim nova nav -->
 
 
+        </nav>
     </header>
-    <main id="content-main">
 
+    <main id="content-main" class=" container col-10">
         <div>
             {{#each success}}
-            <div class="container">                
-                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}                 
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="container">
+                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
             {{/each}}
@@ -264,9 +186,9 @@
 
         <div>
             {{#each error}}
-            <div class="container">                
-                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}                 
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
             {{/each}}
@@ -275,8 +197,6 @@
         {{{ body }}}
 
     </main>
-
-
 
 
 </body>
