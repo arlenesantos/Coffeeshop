@@ -32,7 +32,10 @@ app.use(flash({ sessionKeyName: 'flashMessage' }));
 const { Category } = require("./classes/category");
 const { Brand } = require("./classes/brand");
 const { Product } = require("./classes/product");
+const { Store } = require("./classes/store");
 const { type } = require("express/lib/response");
+const { add } = require("nodemon/lib/rules");
+
 
 
 //integrations:
@@ -277,4 +280,71 @@ app.delete("/api/admin/products", async(req, res) => {
     }
 
 });
+
+//Stores
+app.get("/admin/stores", async (req, res) => {
+    try {
+        let stores = await Store.all();
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        res.render("admin-stores", {stores: stores, success: successMsg, error: errorMsg});
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/stores");        
+    }
+});
+
+app.post("/api/admin/stores", async (req, res) => {
+    try {
+        let { name, address, city, state, zip_code, phone, email } = req.body;
+        let store = new Store( null, name, address, city, state, zip_code, phone, email);
+        await store.save();
+        await req.flash('success', 'Store created successfully!');
+        res.redirect("/admin/stores");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/stores");        
+    }
+});
+
+app.put("/api/admin/stores", async (req, res) => {
+    try {
+        let { id, name, address, city, state, zip_code, phone, email } = req.body;
+        let store = await Store.find(id);        
+        store.setName(name);
+        store.setAddress(address);
+        store.setCity(city);
+        store.setState(state);
+        store.setZipCode(zip_code);
+        store.setPhone(phone);
+        store.setEmail(email);        
+        await store.update();
+        await req.flash('success', 'Store updated successfully!');
+        res.redirect("/admin/stores");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/stores");         
+    }
+});
+
+app.delete("/api/admin/stores", async(req, res) => {
+    try {
+        let { id } = req.body;
+        let store = await Store.find(id);
+        await store.delete();
+        await req.flash('success', 'Store deleted successfully!');
+        res.redirect("/admin/stores");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/stores");        
+    }
+})
 

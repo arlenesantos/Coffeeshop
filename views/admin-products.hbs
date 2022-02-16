@@ -81,7 +81,7 @@
                 </div>
             </form>  
             <div>
-                <button class="btn btn-secondary text-light" onclick="toggleForm()">Cancel</button>
+                <button class="btn btn-secondary text-light" onclick="toggleCancel()">Cancel</button>
             </div>    
         
         </div>
@@ -180,6 +180,11 @@
 
         form.classList.remove("d-none");
         form.classList.add("d-block");
+    };
+
+    const toggleCancel = () => {
+        let edit = document.getElementById("form-edit-product");
+        edit.classList.add("d-none");
     };
 
 
