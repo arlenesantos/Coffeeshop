@@ -33,6 +33,7 @@ const { Category } = require("./classes/category");
 const { Brand } = require("./classes/brand");
 const { Product } = require("./classes/product");
 const { Store } = require("./classes/store");
+const { Customer } = require("./classes/customer");
 const { type } = require("express/lib/response");
 const { add } = require("nodemon/lib/rules");
 
@@ -346,5 +347,73 @@ app.delete("/api/admin/stores", async(req, res) => {
         await req.flash('error', 'Something went wrong');
         res.redirect("/admin/stores");        
     }
-})
+});
+
+//Customer
+app.get("/admin/customers", async (req, res) => {
+    try {
+        let customers = await Customer.all();
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        res.render("admin-customers", {customers: customers, success: successMsg, error: errorMsg});
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/customers");        
+    }
+});
+
+app.post("/api/admin/customers", async (req, res) => {
+    try {
+        let { name, address, city, state, zip_code, phone, email, password } = req.body;
+        let customer = new Customer( null, name, address, city, state, zip_code, phone, email, password);        
+        await customer.save();
+        await req.flash('success', 'Customer registered successfully!');
+        res.redirect("/admin/customers");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/customers");        
+    }
+});
+
+app.put("/api/admin/customers", async (req, res) => {
+    try {
+        let { id, name, address, city, state, zip_code, phone, email, password } = req.body;
+        let customer = await Customer.find(id);        
+        customer.setName(name);
+        customer.setAddress(address);
+        customer.setCity(city);
+        customer.setState(state);
+        customer.setZipCode(zip_code);
+        customer.setPhone(phone);
+        customer.setEmail(email);        
+        customer.setPassword(password);        
+        await customer.update();
+        await req.flash('success', 'Customer updated successfully!');
+        res.redirect("/admin/customers");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/customers");         
+    }
+});
+
+app.delete("/api/admin/customers", async(req, res) => {
+    try {
+        let { id } = req.body;
+        let customer = await Customer.find(id);
+        await customer.delete();
+        await req.flash('success', 'Customer deleted successfully!');
+        res.redirect("/admin/customers");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/customers");        
+    }
+});
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap v5.1 and Bootstrap Icons  v1.8.1 -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css">
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style/main.css">
+
+    <title>Coffee Shop</title>
+</head>
+
+<body>
+    <header id="header">
+        <!-- nav -->
+        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+            <div class="container-fluid">
+                <!-- logo -->
+                <div id="logo">
+                    <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
+                </div>
+
+                <!-- toggle button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- menu -->
+                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" aria-current="page" href="/"><span
+                                    class="ul-nav">Dashboard</span></a>
+                        </li>
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" href="/admin/categories"><span class="ul-nav">Categories</span></a>
+                        </li>
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" href="/admin/brands"><span class="ul-nav">Brands</span></a>
+                        </li>
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" href="/admin/products"><span class="ul-nav">Products</span></a>
+                        </li>
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" href="/admin/stores"><span class="ul-nav">Stores</span></a>
+                        </li>
+                        <li class="nav-item p-3">
+                            <a class="nav-link menu-link" href="/admin/customers"><span class="ul-nav">Customers</span></a>
+                        </li>                        
+                        <li class="nav-item p-3 last-nav-item">
+                            <a class="nav-link menu-link" href="/admin/recipes"><span class="ul-nav">Recipes</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- fim nav original -->       
+
+    </header>
+    <main id="content-main">
+
+        <div>
+            {{#each success}}
+            <div class="container">                
+                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}                 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div>
+            {{#each error}}
+            <div class="container">                
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}                 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        {{{ body }}}
+
+    </main>
+
+
+
+
+</body>
+
+</html>

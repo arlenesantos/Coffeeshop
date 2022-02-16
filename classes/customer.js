@@ -37,14 +37,13 @@ class Customer {
         this.save = async () => {
             try {
                 let query = {
-                    text: `INSERT INTO customers (id, name, address, city, state, zip_code, phone, email, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;`,
-                    values: [_id, _name, _address, _city, _state, _zip_code, _phone, _email, _password]
+                    text: `INSERT INTO customers (name, address, city, state, zip_code, phone, email, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
+                    values: [_name, _address, _city, _state, _zip_code, _phone, _email, _password]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
-                client.release();
-                return result.rows[0];
+                let client = await _pool.connect();
+                await client.query(query);
+                client.release();                
 
             } catch (error) {
                 throw error;
@@ -58,10 +57,10 @@ class Customer {
                     values: [_id, _name, _address, _city, _state, _zip_code, _phone, _email, _password]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                return this;
 
             } catch (error) {
                 throw error;
@@ -74,23 +73,23 @@ class Customer {
                     text: `DELETE FROM customers WHERE id = $1 RETURNING *;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                await client.query(query);
                 client.release();
-                return result.rows[0];
+                return this;               
 
             } catch (error) {
                 throw error;
             }
         }
 
-        this.getCart = () => {
+        this.getCart = async () => {
             try {
                 let query = {
                     text: `SELECT id, date, store_id, checkout FROM purchases WHERE customer_id = $1 AND checkout = false;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0]; //obj
@@ -100,14 +99,14 @@ class Customer {
             }
         }
 
-        this.getPurchases = () => {
+        this.getPurchases = async () => {
             try {
                 let query = {
                     text: `SELECT id, date, store_id, checkout FROM purchases
                     WHERE customer_id = $1;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
@@ -117,14 +116,14 @@ class Customer {
             }
         }
 
-        this.getRecipes = () => {
+        this.getRecipes = async () => {
             try {
                 let query = {
                     text: `SELECT id, title, content, photo, approved FROM recipes
                     WHERE customer_id = $1;`,
                     values: [_id]
                 };
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
@@ -151,7 +150,7 @@ class Customer {
     get state() {
         return this.getState();
     }
-    get zipCode() {
+    get zip_code() {
         return this.getZipCode();
     }
     get phone() {
@@ -175,7 +174,14 @@ class Customer {
             let query = `SELECT id, name, address, city, state, zip_code, phone, email, password FROM customers;`
             let result = await client.query(query);
             client.release();
-            return result.rows;
+
+            let array = [];
+            result.rows.forEach( (c) => {
+                let customer = new Customer(c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.email, c.password);
+                array.push(customer);
+                
+            });
+            return array;
 
         } catch (error) {
             throw error;
@@ -190,8 +196,9 @@ class Customer {
                 text: `SELECT id, name, address, city, state, zip_code, phone, email, password FROM customers WHERE id = $1;`,
                 values: [id]
             };
-            let customer = await client.query(query);
+            let result = await client.query(query);
             client.release();
+            let customer = result.rows[0];
             return new Customer(customer.id, customer.name, customer.address, customer.city, customer.state, customer.zip_code, customer.phone, customer.email, customer.password);
 
         } catch (error) {

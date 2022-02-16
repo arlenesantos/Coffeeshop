@@ -56,9 +56,7 @@ class Store {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();
-                console.log("oi");
-                
+                client.release();  
                 return this;
 
             } catch (error) {
@@ -234,16 +232,13 @@ class Store {
             let query = `SELECT id, name, address, city, state, zip_code, phone, email FROM stores;`
             let result = await client.query(query);
             client.release();
-
-            return result.rows;
-
-            /*
-            array = [];
+            
+            let array = [];
             result.rows.forEach( async (s) => {
                 let store = await new Store(s.id, s.name, s.address, s.city, s.state, s.zip_code, s.phone, s.email);
                 array.push(store);                
             });
-            return array;*/
+            return array;
 
         } catch (error) {
             throw error;
