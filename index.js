@@ -34,8 +34,8 @@ const { Brand } = require("./classes/brand");
 const { Product } = require("./classes/product");
 const { Store } = require("./classes/store");
 const { Customer } = require("./classes/customer");
-const { type } = require("express/lib/response");
-const { add } = require("nodemon/lib/rules");
+const { Recipe } = require("./classes/recipe");
+
 
 
 
@@ -414,6 +414,74 @@ app.delete("/api/admin/customers", async(req, res) => {
         console.log(error);
         await req.flash('error', 'Something went wrong');
         res.redirect("/admin/customers");        
+    }
+});
+
+//Recipe
+app.get("/admin/recipes", async (req, res) => {
+    try {        
+        let recipes = await Recipe.all();        
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        res.render("admin-recipes", {recipes: recipes, success: successMsg, error: errorMsg});
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/recipes");        
+    }
+});
+
+app.post("/api/admin/recipes", async (req, res) => {
+    try {
+        let { title, content, photo, customer_id } = req.body;
+        console.log(title, content, photo, customer_id);
+        let customer = await Customer.find(customer_id);
+        let recipe = new Recipe( null, title, content, photo, false, customer);        
+        await recipe.save();
+        await req.flash('success', 'Recipe registered successfully!');
+        res.redirect("/admin/recipes");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/recipes");        
+    }
+});
+
+app.put("/api/admin/recipes", async (req, res) => {
+    try {
+        let { id, title, content, photo, approved, customer_id } = req.body;
+        let customer = await Customer.find(customer_id);
+        let recipe = await Recipe.find(id);        
+        recipe.setTitle(title);
+        recipe.setContent(content);
+        recipe.setPhoto(photo);
+        recipe.setApproved(approved);
+        recipe.setCustomer(customer);          
+        await recipe.update();
+        await req.flash('success', 'Recipe updated successfully!');
+        res.redirect("/admin/recipes");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/recipes");         
+    }
+});
+
+app.delete("/api/admin/recipes", async(req, res) => {
+    try {
+        let { id } = req.body;
+        let recipe = await Recipe.find(id);
+        await recipe.delete();
+        await req.flash('success', 'Recipe deleted successfully!');
+        res.redirect("/admin/recipes");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/recipes");        
     }
 });
 
