@@ -2,7 +2,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
     position: relative;
-    scroll-behavior: smooth;
+    scroll-behavior: smooth;  
 }
 
 /* navbar */
@@ -125,10 +125,6 @@ footer{
     font-size: 1.5rem;
 }
 
-/* admin layout page */
-#content-main{
-    margin-top: 120px;
-}
 
 /* private pages */
 
@@ -149,6 +145,12 @@ footer{
 
 .li-div-user {
     margin-left: 52px;
+}
+
+
+
+.nav-item a i {
+    font-size: 1.2rem;
 }
 
 
