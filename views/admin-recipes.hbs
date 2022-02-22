@@ -7,7 +7,7 @@
         <!-- create recipe - form-->
         <div id="form-new-recipe" class="container mt-3 d-none p-0">
             <div class="col-10 mx-auto">
-                <form action="/api/admin/recipes" method="POST">
+                <form action="/api/admin/recipes" method="POST" enctype="multipart/form-data">
                     <div class="row mb-3">
                         <div class="mb-3">
                             <label for="title" class="form-label">Recipe title</label>
@@ -15,11 +15,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Recipe</label>
-                            <textarea id="editor" class="form-control" name="content" required></textarea>
+                            <textarea id="editor" class="form-control" name="content"></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
-                            <input type="file" class="form-control mt-2" placeholder="Upload image" name="photo">
+                            <input type="file" class="form-control mt-2" placeholder="Upload image" name="photo" id="photo">
                         </div>
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer name</label>
@@ -50,8 +50,8 @@
                             <input type="text" class="form-control" id="edit-title" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="content" class="form-label">Recipe</label>
-                            <textarea class="form-control" name="content" id="edit-content" required></textarea>
+                            <label for="content" class="form-label">Recipe</label>                            
+                            <textarea id="edit-editor" class=" form-control" name="content" id="edit-content" required></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
@@ -78,10 +78,11 @@
         <!-- read recipes - table and delete button/form -->
         <div class="mt-5">
             <h1>Recipes:</h1>
-            <table class="table table-responsive">
+            <table class="table table-responsive" id="table-recipes">
                 <thead>
                     <tr>
                         <th>Title</th>                        
+                        <th>Photo</th>                        
                         <th>View</th>
                         <th>Approved</th>
                         <th>Edit</th>
@@ -92,6 +93,9 @@
                     {{#each recipes}}
                     <tr>                        
                         <th>{{this.title}}</th>
+                        <td> 
+                            <img src="/images/recipes/{{this.id}}.jpeg" alt="recipe image" width="80px" height="60px">
+                        </td>
                         <td>
                             <a href="/recipes?id={{this.id}}" target="_blank" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
                         </td>
@@ -166,14 +170,17 @@
         color.classList.toggle("btn-success");
     };
 
+
+    
     ClassicEditor
-    .create( document.querySelector( '#editor' ) )
-    .then( editor => {
-        console.log( editor );
-    })
-    .catch( error => {
-        console.error( error );
-    });
+    .create(document.querySelector('#editor'))
+    .then(editor => console.log(editor))
+    .catch(error => console.error(error));
+
+    ClassicEditor
+    .create(document.querySelector('#edit-editor'))
+    .then(editor => console.log(editor))
+    .catch(error => console.error(error));
 
 
 

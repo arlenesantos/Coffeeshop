@@ -1,3 +1,6 @@
+//file system
+const fs = require("fs");
+
 //express
 const express = require("express");
 const app = express();
@@ -17,16 +20,9 @@ var session = require('express-session');
 const path = require('path');
 const { flash } = require('express-flash-message');
 
+//express-fileupload
+const expressFileUpload = require("express-fileupload");
 
-app.use(session({
-    secret: 'key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-    }
-}));
-app.use(flash({ sessionKeyName: 'flashMessage' }));
 
 //classes
 const { Category } = require("./classes/category");
@@ -35,8 +31,6 @@ const { Product } = require("./classes/product");
 const { Store } = require("./classes/store");
 const { Customer } = require("./classes/customer");
 const { Recipe } = require("./classes/recipe");
-
-
 
 
 //integrations:
@@ -55,6 +49,25 @@ app.engine(
     })
 );
 app.set("view engine", "hbs");
+
+app.use(session({
+    secret: 'key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    }
+}));
+app.use(flash({ sessionKeyName: 'flashMessage' }));
+
+//express-fileupload
+app.use(
+    expressFileUpload({
+        limits: { fileSize: 5000000 },
+        abortOnLimit: true,
+        responseOnLimit: "The weight of the file you are trying to upload exceeds the allowed limit",
+    })
+);
 
 //public directories
 app.use(express.static(__dirname + "/assets"));
@@ -214,9 +227,9 @@ app.delete("/api/admin/brands" , async (req, res) => {
 //Product
 app.get("/admin/products", async (req, res) => {
     try {
-        let products = await Product.all();
-        let categories = await Category.all();
-        let brands = await Brand.all();        
+        let products = await Product.all();        
+        let categories = await Category.all();        
+        let brands = await Brand.all(); 
         let successMsg = await req.consumeFlash('success');
         let errorMsg = await req.consumeFlash('error');
         res.render("admin-products", {products: products, categories: categories, brands: brands, success: successMsg, error: errorMsg });        
@@ -420,26 +433,14 @@ app.delete("/api/admin/customers", async(req, res) => {
 
 //Recipe
 //recipe page:
-app.get("/recipes", async (req, res) => {    
-    try {
-        if(req.url.includes('/recipes?id')){
-            //let { id } = req.body;
-            let recipe = await Recipe.find(1);
-            res.render("recipes", { layout: false, recipe: recipe });
-        
-        }        
-
-    } catch (error) {
-        res.status(500).send({ error: error, code: 500 });
-    }
-});
-
-
 app.get("/admin/recipes", async (req, res) => {
     try {        
-        let recipes = await Recipe.all();        
+        let recipes = await Recipe.all();             
         let successMsg = await req.consumeFlash('success');
         let errorMsg = await req.consumeFlash('error');
+        //let user = await getSessionUser();
+        //enviar dados {user: user}
+
         res.render("admin-recipes", {recipes: recipes, success: successMsg, error: errorMsg});
         
     } catch (error) {
@@ -451,11 +452,23 @@ app.get("/admin/recipes", async (req, res) => {
 
 app.post("/api/admin/recipes", async (req, res) => {
     try {
-        let { title, content, photo, customer_id } = req.body;
-        console.log(title, content, photo, customer_id);
+        let { title, content, customer_id } = req.body;
         let customer = await Customer.find(customer_id);
-        let recipe = new Recipe( null, title, content, photo, false, customer);        
+        let recipe = new Recipe( null, title, content, false, customer);
         await recipe.save();
+        
+        if (req.files === null) {
+            fs.copyFile(`${__dirname}/assets/images/recipe-std.jpg`, `${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => console.log(error));
+                       
+        } else {
+            let { photo } = req.files;
+            photo.mv(`${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => {
+                if (error) {
+                    console.log(error);
+                    return error
+                }
+            });
+        };                
         await req.flash('success', 'Recipe registered successfully!');
         res.redirect("/admin/recipes");
         
@@ -472,8 +485,7 @@ app.put("/api/admin/recipes", async (req, res) => {
         let customer = await Customer.find(customer_id);
         let recipe = await Recipe.find(id);        
         recipe.setTitle(title);
-        recipe.setContent(content);
-        recipe.setPhoto(photo);
+        recipe.setContent(content);        
         recipe.setApproved(approved);
         recipe.setCustomer(customer);          
         await recipe.update();

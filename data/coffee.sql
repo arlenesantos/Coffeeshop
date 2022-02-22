@@ -277,6 +277,7 @@ CREATE TABLE customers (
 );
 
 INSERT INTO customers (name, address, city, state, zip_code, phone, email, password) VALUES 
+('admin', '', '', '', '', '', '', ''),
 ('Jane Doe', 'The address here', 'City', 'State', '1100-110', '001-912345678', 'janedoe@email.com', 'jane123'),
 ('John Doe', 'The address here', 'City', 'State', '1200-210', '002-912345678', 'johndoe@email.com', 'john123');
 
@@ -292,9 +293,9 @@ CREATE TABLE purchases (
 );
 
 INSERT INTO purchases (customer_id, store_id, checkout) VALUES
-(1, 1, true),
-(1, 2, false),
-(2, 1, true);
+(2, 1, true),
+(2, 2, false),
+(3, 1, true);
 
 --purchase-detail
 CREATE TABLE purchaseDetail (      
@@ -315,15 +316,14 @@ INSERT INTO purchaseDetail (product_id, purchase_id, quantity) VALUES
 CREATE TABLE recipes (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,    
-    content TEXT NOT NULL,
-    photo TEXT,
+    content TEXT NOT NULL,    
     customer_id INT NOT NULL,
     approved BOOLEAN,    
     FOREIGN KEY (customer_id) REFERENCES customers(id)   
 );
 
-INSERT INTO recipes (title, content, photo, customer_id, approved) VALUES
-('Coffee cake', 'test', 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/coffee-cake-4d37cac.jpg', 1, true);
+INSERT INTO recipes (title, content, customer_id, approved) VALUES
+('Coffee cake', 'test', 1, false);
 
 
 

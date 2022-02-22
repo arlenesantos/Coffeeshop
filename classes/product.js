@@ -158,17 +158,22 @@ class Product {
         try {
             let client = await pool.connect();
             let query = `SELECT id, name, price, category_id, brand_id FROM products ORDER BY id ASC;`
-            let result = await client.query(query);            
+            let result = await client.query(query);                        
             client.release();
-                        
+
+            let categories = await Category.all();
+            let brands = await Brand.all();
+                         
             let array = [];
-            result.rows.forEach(async (p) => {
-                let category = await Category.find(p.category_id);
-                let brand = await Brand.find(p.brand_id);
+            result.rows.forEach((p) => {
+                let category = categories.find((c) => c.id == p.category_id);
+                let brand = brands.find((b) => b.id == p.brand_id); 
                 let product = new Product(p.id, p.name, p.price, category, brand);
-                array.push(product);                                
-            });            
-            return array;
+                array.push(product); 
+                                               
+            });         
+                      
+           return array;
 
         } catch (error) {
             throw error;
