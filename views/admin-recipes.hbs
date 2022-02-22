@@ -15,7 +15,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Recipe</label>
-                            <textarea id="editor" class="form-control" name="content"></textarea>
+                            <textarea id="editor" class=" 
+                            form-control" name="content"></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
@@ -51,7 +52,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Recipe</label>                            
-                            <textarea id="edit-editor" class=" form-control" name="content" id="edit-content" required></textarea>
+                            <textarea id="edit-editor" class="form-control" name="content" id="edit-content" required></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
@@ -173,12 +174,7 @@
 
     
     ClassicEditor
-    .create(document.querySelector('#editor'))
-    .then(editor => console.log(editor))
-    .catch(error => console.error(error));
-
-    ClassicEditor
-    .create(document.querySelector('#edit-editor'))
+    .create(document.querySelector('editor'))
     .then(editor => console.log(editor))
     .catch(error => console.error(error));
 
