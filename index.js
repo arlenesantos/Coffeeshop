@@ -56,11 +56,12 @@ app.engine(
 );
 app.set("view engine", "hbs");
 
-//public directory
+//public directories
 app.use(express.static(__dirname + "/assets"));
 app.use('/css', express.static(__dirname + "/node_modules/bootstrap/dist/css"));
 app.use('/js', express.static(__dirname + "/node_modules/bootstrap/dist/js"));
 app.use('/icons', express.static(__dirname + "/node_modules/bootstrap-icons/font"));
+app.use('/ckeditor', express.static(__dirname + "/node_modules/@ckeditor/ckeditor5-build-classic/build"));
 
 app.listen(3000, () => console.log("server on"));
 
@@ -418,6 +419,22 @@ app.delete("/api/admin/customers", async(req, res) => {
 });
 
 //Recipe
+//recipe page:
+app.get("/recipes", async (req, res) => {    
+    try {
+        if(req.url.includes('/recipes?id')){
+            //let { id } = req.body;
+            let recipe = await Recipe.find(1);
+            res.render("recipes", { layout: false, recipe: recipe });
+        
+        }        
+
+    } catch (error) {
+        res.status(500).send({ error: error, code: 500 });
+    }
+});
+
+
 app.get("/admin/recipes", async (req, res) => {
     try {        
         let recipes = await Recipe.all();        

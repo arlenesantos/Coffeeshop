@@ -11,22 +11,22 @@
                     <div class="row mb-3">
                         <div class="mb-3">
                             <label for="title" class="form-label">Recipe title</label>
-                            <input type="text" class="form-control" id="new-title" name="title" required>
+                            <input type="text" class="form-control" name="title" required>
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Recipe</label>
-                            <textarea class="form-control" name="content" id="new-content" required></textarea>
+                            <textarea id="editor" class="form-control" name="content" required></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
-                            <input type="file" class="form-control mt-2" id="new-file" placeholder="Upload image" name="photo">
+                            <input type="file" class="form-control mt-2" placeholder="Upload image" name="photo">
                         </div>
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer name</label>
-                            <input type="text" class="form-control" id="new-customer-id" name="customer_id" required>
+                            <input type="text" class="form-control" name="customer_id" required>
                         </div>
                         <div clas"mb-3">
-                            <input type="hidden" id="approved" value="false">
+                            <input type="hidden" name="approved" value="false">
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Register</button>
@@ -93,7 +93,7 @@
                     <tr>                        
                         <th>{{this.title}}</th>
                         <td>
-                            <a href="/recipes?id={{this.id}}" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
+                            <a href="/recipes?id={{this.id}}" target="_blank" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
                         </td>
                         <td>
                             <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off" onclick="changeApproved()">
@@ -135,7 +135,7 @@
         let form = document.getElementById("form-new-recipe");
         form.classList.toggle("d-none");
         form.classList.toggle("d-block");
-    }
+    };
 
     const toggleEdit = (id, title, content, file, approved, customer_id ) => {
         let form = document.getElementById("form-edit-recipe");
@@ -149,12 +149,12 @@
 
         form.classList.remove("d-none");
         form.classList.add("d-block");
-    }
+    };
 
     const toggleCancel = () => {
         let edit = document.getElementById("form-edit-recipe");
         edit.classList.add("d-none");
-    }
+    };
 
     const changeApproved = () => {
         let icon = document.getElementById("approved-icon");
@@ -164,6 +164,18 @@
         let color = document.getElementById("approved-color");
         color.classList.toggle("btn-secondary");
         color.classList.toggle("btn-success");
-    }
+    };
+
+    ClassicEditor
+    .create( document.querySelector( '#editor' ) )
+    .then( editor => {
+        console.log( editor );
+    })
+    .catch( error => {
+        console.error( error );
+    });
+
+
+
 
 </script>
