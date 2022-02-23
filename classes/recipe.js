@@ -43,8 +43,8 @@ class Recipe {
         this.update = async () => {
             try {
                 let query = {
-                    text: `UPDATE recipes SET title = $2, content = $3, photo = $4, approved = $5, customer_id = $6  WHERE id = $1 RETURNING *;`,
-                    values: [_id, _title, _content, _photo, _approved, _customer.id]
+                    text: `UPDATE recipes SET title = $2, content = $3, approved = $4, customer_id = $5  WHERE id = $1 RETURNING *;`,
+                    values: [_id, _title, _content, _approved, _customer.id]
                 };
 
                 let client = await _pool.connect();

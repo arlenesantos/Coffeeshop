@@ -43,28 +43,21 @@
         <!-- edit recipe - form -->
         <div id="form-edit-recipe" class="container mt-3 p-0 d-none">
             <div class="col-10 mx-auto">
-                <form action="/api/admin/recipes?_method=PUT" method="POST">
+                <form action="/api/admin/recipes?_method=PUT" method="POST" enctype="multipart/form-data">
                     <div class="row mb-3">
                         <div class="mb-3">
                             <input type="hidden" id="edit-id" name="id">
                             <label for="title" class="form-label">Recipe title</label>
-                            <input type="text" class="form-control" id="edit-title" name="title" required>
+                            <input type="text" class="form-control" id="edit-title" name="title">
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Recipe</label>                            
-                            <textarea id="edit-editor" class="form-control" name="content" id="edit-content" required></textarea>
+                            <textarea id="edit-editor" class="form-control" name="content" id="edit-content"></textarea>
                         </div>
                         <div class="mb-3">
                             <br>
                             <input type="file" class="form-control mt-2" id="edit-file" placeholder="Upload image" name="photo">
-                        </div>
-                        <div class="mb-3">
-                            <label for="customer_id" class="form-label">Customer name</label>
-                            <input type="text" class="form-control" id="edit-customer-id" name="customer_id" required>
-                        </div>
-                        <div clas"mb-3">
-                            <input type="hidden" id="edit-approved" value="false">
-                        </div>
+                        </div> 
                         <div class="col-12">
                             <button type="submit" class="btn btn-warning">Edit</button>
                         </div>
@@ -94,8 +87,8 @@
                     {{#each recipes}}
                     <tr>                        
                         <th>{{this.title}}</th>
-                        <td> 
-                            <img src="/images/recipes/{{this.id}}.jpeg" alt="recipe image" width="80px" height="60px">
+                        <td>                             
+                            <img src="/images/recipes/{{this.id}}.jpeg" alt="recipe image" class="img-thumbnail" width="120px">  
                         </td>
                         <td>
                             <a href="/recipes?id={{this.id}}" target="_blank" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
@@ -107,7 +100,7 @@
                             </label>                        
                         </td>                                              
                         <td><button class="btn btn-warning text-light"
-                                onclick="toggleEdit('{{this.id}}', '{{this.title}}', '{{this.content}}', '{{this.file}}', '{{this.approved}}', '{{this.customer_id}}')"><i class="bi bi-pencil"></i></button>
+                                onclick="toggleEdit('{{this.id}}', '{{this.title}}', '{{this.content}}')"><i class="bi bi-pencil"></i></button>
                         </td>
                         <td>
                             <form action="/api/admin/recipes?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete?');">
@@ -135,6 +128,21 @@
 </section>
 
 <script>
+    
+    let editor;
+
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => console.log(editor))
+        .catch(error => console.error(error));
+
+    ClassicEditor
+        .create(document.querySelector('#edit-editor'))
+        .then(editEditor => editor = editEditor )
+        .catch(error => console.error('error'));
+
+    
+   
 
     const toggleForm = () => {
         let form = document.getElementById("form-new-recipe");
@@ -142,18 +150,15 @@
         form.classList.toggle("d-block");
     };
 
-    const toggleEdit = (id, title, content, file, approved, customer_id ) => {
+    const toggleEdit = (id, title, content) => {
         let form = document.getElementById("form-edit-recipe");
-        document.getElementById("edit-id").value = id;
-        document.getElementById("edit-title").value = title;
-        document.getElementById("edit-content").value = content;
-        document.getElementById("edit-file").value = file;
-        document.getElementById("edit-approved").value = approved; 
-        document.getElementById("edit-customer-id").value = customer_id;
-             
-
         form.classList.remove("d-none");
         form.classList.add("d-block");
+
+
+        document.getElementById("edit-id").value = id;
+        document.getElementById("edit-title").value = title;
+        editor.setData(content);        
     };
 
     const toggleCancel = () => {
@@ -170,15 +175,6 @@
         color.classList.toggle("btn-secondary");
         color.classList.toggle("btn-success");
     };
-
-
-    
-    ClassicEditor
-    .create(document.querySelector('editor'))
-    .then(editor => console.log(editor))
-    .catch(error => console.error(error));
-
-
 
 
 </script>

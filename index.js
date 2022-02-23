@@ -481,14 +481,25 @@ app.post("/api/admin/recipes", async (req, res) => {
 
 app.put("/api/admin/recipes", async (req, res) => {
     try {
-        let { id, title, content, photo, approved, customer_id } = req.body;
-        let customer = await Customer.find(customer_id);
+        let { id, title, content } = req.body;
         let recipe = await Recipe.find(id);        
         recipe.setTitle(title);
-        recipe.setContent(content);        
-        recipe.setApproved(approved);
-        recipe.setCustomer(customer);          
+        recipe.setContent(content); 
         await recipe.update();
+
+        if (req.files === null) {
+            console.log("No changes to photos");          
+                       
+        } else {
+            let { photo }  = req.files;
+            photo.mv(`${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => {
+                if (error) {
+                    console.log(error);
+                    return error
+                }
+            });
+        };    
+
         await req.flash('success', 'Recipe updated successfully!');
         res.redirect("/admin/recipes");
         
