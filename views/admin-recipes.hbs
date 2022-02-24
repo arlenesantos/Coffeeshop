@@ -10,6 +10,7 @@
                 <form action="/api/admin/recipes" method="POST" enctype="multipart/form-data">
                     <div class="row mb-3">
                         <div class="mb-3">
+                            <input type="hidden" id="id" name="id">
                             <label for="title" class="form-label">Recipe title</label>
                             <input type="text" class="form-control" name="title" required>
                         </div>
@@ -26,8 +27,8 @@
                             <label for="customer_id" class="form-label">Customer name</label>
                             <input type="text" class="form-control" name="customer_id" required>
                         </div>
-                        <div clas"mb-3">
-                            <input type="hidden" name="approved" value="false">
+                        <div class="mb-3">
+                            <input id ="approved" type="hidden" name="approved" value="false">
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Register</button>
@@ -94,11 +95,19 @@
                             <a href="/recipes?id={{this.id}}" target="_blank" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
                         </td>
                         <td>
-                            <input type="checkbox" class="btn-check" id="btn-check" autocomplete="off" onclick="changeApproved()">
-                            <label id = "approved-color" class="btn btn-secondary" for="btn-check">
-                                <i id="approved-icon" class="text-light bi bi-emoji-neutral"></i>
-                            </label>                        
-                        </td>                                              
+                            <form action="/api/admin/recipes/approve?_method=PUT" method="POST">
+                                <input type="hidden" name="id" value="{{this.id}}">
+                                <input type="hidden" name="approved"  {{#if this.approved}} value = "false" {{else}} 
+                                value = "true" {{/if}}>                                
+                                <button type="submit" id="approved-color" class="btn {{#if this.approved}} btn-success{{else}} btn-secondary {{/if}}" for="btn-check">
+                                    {{#if this.approved}} 
+                                    <i class="text-light bi bi-emoji-smile"></i>
+                                    {{else}}
+                                    <i class="text-light bi bi-emoji-neutral"></i>
+                                    {{/if}}
+                                </button>
+                            </form>
+                        </td>                                           
                         <td><button class="btn btn-warning text-light"
                                 onclick="toggleEdit('{{this.id}}', '{{this.title}}', '{{this.content}}')"><i class="bi bi-pencil"></i></button>
                         </td>
@@ -140,8 +149,7 @@
         .create(document.querySelector('#edit-editor'))
         .then(editEditor => editor = editEditor )
         .catch(error => console.error('error'));
-
-    
+  
    
 
     const toggleForm = () => {
@@ -166,15 +174,6 @@
         edit.classList.add("d-none");
     };
 
-    const changeApproved = () => {
-        let icon = document.getElementById("approved-icon");
-        icon.classList.toggle("bi-emoji-neutral");
-        icon.classList.toggle("bi-emoji-smile");
-
-        let color = document.getElementById("approved-color");
-        color.classList.toggle("btn-secondary");
-        color.classList.toggle("btn-success");
-    };
-
+    
 
 </script>

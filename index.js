@@ -510,6 +510,24 @@ app.put("/api/admin/recipes", async (req, res) => {
     }
 });
 
+app.put("/api/admin/recipes/approve", async (req, res) => {
+    try {
+        let { id, approved } = req.body;
+        let recipe = await Recipe.find(id);
+        recipe.setApproved(approved);
+        await recipe.update();
+        await req.flash('success', 'Recipe updated successfully!');
+        res.redirect("/admin/recipes");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/recipes");         
+    }
+});
+
+
+
 app.delete("/api/admin/recipes", async(req, res) => {
     try {
         let { id } = req.body;
