@@ -277,7 +277,7 @@ CREATE TABLE customers (
 );
 
 INSERT INTO customers (name, address, city, state, zip_code, phone, email, password) VALUES 
-('admin', '', '', '', '', '', '', ''),
+('Coffee Shop', '', '', '', '', '', '', ''),
 ('Jane Doe', 'The address here', 'City', 'State', '1100-110', '001-912345678', 'janedoe@email.com', 'jane123'),
 ('John Doe', 'The address here', 'City', 'State', '1200-210', '002-912345678', 'johndoe@email.com', 'john123');
 

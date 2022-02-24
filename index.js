@@ -432,7 +432,6 @@ app.delete("/api/admin/customers", async(req, res) => {
 });
 
 //Recipe
-//recipe page:
 app.get("/admin/recipes", async (req, res) => {
     try {        
         let recipes = await Recipe.all();             
@@ -440,7 +439,6 @@ app.get("/admin/recipes", async (req, res) => {
         let errorMsg = await req.consumeFlash('error');
         //let user = await getSessionUser();
         //enviar dados {user: user}
-
         res.render("admin-recipes", {recipes: recipes, success: successMsg, error: errorMsg});
         
     } catch (error) {
@@ -510,6 +508,38 @@ app.put("/api/admin/recipes", async (req, res) => {
     }
 });
 
+app.delete("/api/admin/recipes", async(req, res) => {
+    try {
+        let { id } = req.body;
+        let recipe = await Recipe.find(id);
+        await recipe.delete();
+        await req.flash('success', 'Recipe deleted successfully!');
+        res.redirect("/admin/recipes");
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/admin/recipes");        
+    }
+});
+
+app.get("/admin/recipes/review", async (req, res) => {
+    try {    
+        let { id } = req.query;            
+        let recipe = await Recipe.find(id);                  
+        let successMsg = await req.consumeFlash('success');
+        let errorMsg = await req.consumeFlash('error');
+        //let user = await getSessionUser();
+        //enviar dados {user: user}
+        res.render("recipes-review", {recipe: recipe, success: successMsg, error: errorMsg});
+        
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong.');
+        res.redirect("/admin/recipes");        
+    }
+});
+
 app.put("/api/admin/recipes/approve", async (req, res) => {
     try {
         let { id, approved } = req.body;
@@ -527,19 +557,4 @@ app.put("/api/admin/recipes/approve", async (req, res) => {
 });
 
 
-
-app.delete("/api/admin/recipes", async(req, res) => {
-    try {
-        let { id } = req.body;
-        let recipe = await Recipe.find(id);
-        await recipe.delete();
-        await req.flash('success', 'Recipe deleted successfully!');
-        res.redirect("/admin/recipes");
-        
-    } catch (error) {
-        console.log(error);
-        await req.flash('error', 'Something went wrong');
-        res.redirect("/admin/recipes");        
-    }
-});
 

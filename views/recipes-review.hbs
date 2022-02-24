@@ -1,0 +1,84 @@
+<section>
+
+    <div class="container">
+        <!-- card recipe -->
+        <div class="card mb-3 w-75 mx-auto">
+            <img src="/images/recipes/{{recipe.id}}.jpeg" class="card-img-top img-fluid w-75 mx-auto"
+                alt="recipe image">
+            <div class="card-body">
+                <h1 class="card-title text-center">{{recipe.title}}</h1>
+                <div class="card-text">{{{recipe.content}}}</div>
+                <p class="card-text mb-2 text-muted">Author: {{recipe.customer.name}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <!-- button trigger modal edit recipe -->
+            <div class="col-auto">
+                <button class="btn btn-warning text-light" data-bs-toggle="modal" data-bs-target="#editModal">Edit
+                    recipe</button>
+            </div>
+            <!-- form approved recipe -->
+            <div class="col-auto">
+                <form action="/api/admin/recipes/approve?_method=PUT" method="POST">
+                    <input type="hidden" name="id" value="{{recipe.id}}">
+                    <input type="hidden" name="approved" {{#if recipe.approved}} value="false" {{else}} value="true"
+                        {{/if}}>
+                    <button type="submit" class="btn  {{#if recipe.approved}} btn-danger {{else}}  btn-primary {{/if}}"> {{#if
+                        recipe.approved}} Revoke approval {{else}} Approve recipe {{/if}} </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- modal edit recipe -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Edit recipe</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/admin/recipes?_method=PUT" method="POST" enctype="multipart/form-data">
+                            <div class="row mb-3">
+                                {{#if recipe}}
+                                <div class="mb-3">
+                                    <input type="hidden" name="id" value="{{recipe.id}}">
+                                    <label for="title" class="form-label">Recipe title</label>
+                                    <input type="text" class="form-control" name="title" value="{{recipe.title}}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="content" class="form-label">Recipe</label>
+                                    <textarea id="editor" class="form-control"
+                                        name="content">{{recipe.content}}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="file" class="form-control mt-2" id="edit-file"
+                                        placeholder="Upload image" name="photo">
+                                    <br>
+                                </div>
+                                <div class="col-12 modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                                {{/if}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<script>    
+   
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => console.log(editor))
+        .catch(error => console.error(error)); 
+    
+</script>
