@@ -171,7 +171,7 @@ class Customer {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let query = `SELECT id, name, address, city, state, zip_code, phone, email, password FROM customers;`
+            let query = `SELECT id, name, address, city, state, zip_code, phone, email, password FROM customers ORDER BY id ASC;`
             let result = await client.query(query);
             client.release();
 

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap v5.1 and Bootstrap Icons  v1.8.1 -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css">
+    <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style/main.css">
+
+    <!-- CKEditor 5 -->
+    <script src="/ckeditor/ckeditor.js"></script>
+
+    <title>Coffee Shop</title>
+</head>
+
+<body class="row justify-content-between">
+    <header id="header" class="col-2">
+        <nav>
+
+            <!-- menu lg -->
+            <div class=" vh-100 d-none d-lg-flex flex-column flex-shrink-0 p-3 bg-light" id="navbarSupportedContent">
+                <span class="text-center">
+                    <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
+                </span>
+                <hr>
+                <ul class="list-unstyled ps-0 mb-auto">
+                    <li class="mb-1">
+                        <button
+                            class="btn btn-toggle align-items-center rounded collapsed dropdown-toggle text-secondary"
+                            data-bs-toggle="collapse" data-bs-target="#dash-collapse" aria-expanded="false">
+                            <i class="bi bi-bar-chart-fill"> Dashboard</i>
+                        </button>
+                        <div class="collapse" id="dash-collapse">
+                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Overview</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Stores</a></li>
+                                <li><a href="#" class="link-dark rounded text-decoration-none">Sales</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-1">
+                        <button class="btn btn-toggle align-items-center rounded dropdown-toggle text-secondary"
+                            data-bs-toggle="collapse" data-bs-target="#coffee-collapse" aria-expanded="false"><i
+                                class="bi bi-cup-fill">
+                                Products</i>
+                        </button>
+                        <div class="collapse" id="coffee-collapse">
+                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li><a href="/admin/categories" class="link-dark rounded text-decoration-none">Categories</a></li>
+                                <li><a href="/admin/brands" class="link-dark rounded text-decoration-none">Brands</a></li>
+                                <li><a href="/admin/products" class="link-dark rounded text-decoration-none">Products</a></li>
+                            </ul>
+                        </div>
+                    </li>                    
+                    <li class="mb-1">
+                        <a href="/admin/stores" class="nav-link link-secondary">
+                            <i class="bi bi-shop"> Stores</i>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/admin/customers" class="nav-link link-secondary">
+                            <i class="bi bi-person-circle"> Customers</i>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a href="/admin/recipes" class="nav-link link-secondary">
+                            <i class="bi bi-journal-richtext"> Recipes</i>
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                        id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                            alt="avatar user" width="32" height="32" class="rounded-circle me-2"> <strong>user
+                            name</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- menu sm  -->
+            <div class=" vh-100 d-flex d-lg-none flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
+                <a href="/" target= "blank" class="d-block p-3 link-dark text-decoration-none">   
+                    <img src="/images/logo-icon.png" alt="logo">                    
+                </a>               
+                <ul class="nav flex-column mb-auto text-center">                    
+                    <li class="nav-item">
+                        <a href="/admin/dashboard" class="nav-link active py-3 border-bottom" aria-current="page" 
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Dashboard"><i class="bi bi-bar-chart-fill text-secondary" aria-label="Dashboard"></i>                            
+                        </a>                        
+                    </li>    
+                    <li class="nav-item"> 
+                        <a href="/admin/products" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Products"><i
+                                class="bi bi-cup-fill text-secondary" aria-label="Products"></i>                            
+                        </a>
+                    </li>
+                    <li class="nav-item"> 
+                        <a href="/admin/stores" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Stores"><i
+                                class="bi bi-shop text-secondary" aria-label="Stores"></i>                            
+                        </a>
+                    </li>
+                    <li class="nav-item"> 
+                        <a href="/admin/customers" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Customers"><i class="bi bi-person-circle text-secondary" aria-label="Customers"></i>                            
+                        </a>
+                    </li>
+                    <li class="nav-item"> 
+                        <a href="/admin/recipes" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Recipes"><i class="bi bi-journal-richtext text-secondary" aria-label="Recipes"></i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="dropdown border-top">
+                    <a href="#"
+                        class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
+                        id="dropdownUserSmall" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                            alt="avatar user" width="24" height="24" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUserSmall">                        
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container col-10 py-5">
+        <div>
+            {{#each success}}
+            <div class="container">
+                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div>
+            {{#each error}}
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        {{{ body }}}
+
+    </main>
+
+
+</body>
+
+</html>
+
+<script>
+    //initialize all tooltips on a page:
+    /* global bootstrap: false */
+    (function () {
+        'use strict'
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })();
+
+    
+
+</script>
