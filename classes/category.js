@@ -71,9 +71,10 @@ class Category {
                     values: [_id]
                 };
 
-                let client = await this._pool.connect();
-                let result = await client.query(query);
+                let client = await _pool.connect();
+                let result = await client.query(query);                
                 return result.rows; // retornar instancia
+                
 
             } catch (error) {
                 throw error;

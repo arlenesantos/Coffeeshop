@@ -80,21 +80,41 @@ app.listen(3000, () => console.log("server on"));
 
 app.get("/", async (req, res) => {
     try {
-        res.render("home");
+        let categories = await Category.all();
+        res.render("index", {layout: "home", categories: categories} );
 
     } catch (error) {
+        console.log(error);
         res.status(500).send({ error: error, code: 500 });
     }
 });
-
+/*
 app.get("/products", async (req, res) => {
     try {
-        res.render("products");
+        let categories = await Category.all();
+        let products = await Product.all();
+        res.render("products", {categories: categories, products: products});
 
     } catch (error) {
         res.status(500).send({ error: error, code: 500 });
     }
+});*/
+
+app.get("/products/category", async (req, res) => {
+    try {
+        let { id } = req.query; 
+        let stores = await Store.all();       
+        let categories = await Category.all();
+        let category =  await Category.find(id);        
+        let products = await category.getProducts();
+        res.render("products", {stores: stores, categories: categories, category: category, products: products});
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error, code: 500 });
+    }
 });
+
 
 
 //private pages

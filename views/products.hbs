@@ -1,39 +1,127 @@
 <!-- coffee categories section -->
 <section id="categories">
-    <div class="container">
-        <div>
-            <h1>Ground Coffee</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id fermentum lorem. Praesent et condimentum
-                augue, fringilla pretium turpis. Mauris nec massa eget nisi facilisis tristique. Integer blandit tempus
-                ex quis congue. Suspendisse diam ligula, tincidunt eget ipsum nec, luctus convallis dui. Proin enim
-                nisl, commodo at odio eget, consectetur porttitor leo. Curabitur laoreet libero tristique est pharetra
-                vestibulum. Aliquam aliquet faucibus magna ut lacinia. Nulla a elementum neque.</p>
+    <!-- categories menu -->
+    <div class="border-top border-bottom p-3">
+        <ul class="nav justify-content-center">
+            {{#each categories}}
+            <li class="nav-item">
+                <a class="nav-link text-secondary" href="/products/category?id={{this.id}}">{{this.name}}</a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <!-- filter by store -->
+    <div class="p-3 col-6">
+        <select class="form-select" aria-label="Default select example">
+            <option selected> Filter by store</option>
+            {{#each stores}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <!-- products by category -->
+    <div class="row mx-1 py-3">
+        <div class="d-none d-md-block col-3">
+            <img src="/images/product-{{category.id}}.jpg" class="img-fluid rounded sticky-top"
+                alt="coffee image">
         </div>
-        <div>
-            <div class="row">
-                <div class="col">
-                    <img src="" alt="coffee image">
-                </div>
-                <div class="col">
-                    <ul>
-                        <li>Traditional</li>
-                        <li>$20.49</li>
-                        <li>Store available: lisbon</li>
-                    </ul>
-                    <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-cart-plus" viewBox="0 0 16 16">
-                            <path
-                                d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z" />
-                            <path
-                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                        </svg>
-                    </button>
+        <div class="col-9 mx-auto">
+            <div class="py-5">
+                <h2 class="pb-2 border-bottom">{{#if category}}{{category.name}}{{/if}}</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2 py-5">
+                    {{#each products}}
+                    <div class="col">
+                        <div class="card h-100 pt-3 shadow-sm bg-body rounded">
+                            <div class="row g-0">
+                                <div class="col-md-6">
+                                    <img src="/images/product.jpg" class="img-fluid" alt="product image">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        <p class="card-title fw-bold">{{this.name}}</p>
+                                        <p class="card-title">Product brand</p>
+                                        <p class="card-text">{{this.price}}</p>
+                                        <a href="#" class="btn btn-outline-secondary mb-4 mx-auto"
+                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                                            aria-controls="offcanvasCart">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
                 </div>
             </div>
         </div>
-
     </div>
 
-   
+    <!-- offcanvas cart -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Your cart</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-6">
+                            <img src="/images/product.jpg" class="img-fluid" alt="product image">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <p class="card-title fw-bold">Product name</p>
+                                <p class="card-title">Product brand</p>
+                                <p class="card-text">Product price</p>
+                                <a href="#">-</a><span>itens</span><a href="#">+</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <a href="/cart" class="btn rounded-pill btn-danger" type="button">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 
+        <div>
+            <form action="/products/category?id">
+                <div class="col-sm">
+                    <label for="store" class="form-label">Category</label>
+                    <select class="form-select" id="store" name="store">
+                        <option selected>Choose...</option>
+                        {{#each stores}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </form>
+        </div>
+         -->
+
+
+
+
+
+
+
 </section>

@@ -57,7 +57,7 @@ body {
     text-align: center;    
 }
 
-.card{
+.card-category, .card-product{
     border: none;    
 }
 
@@ -71,7 +71,7 @@ body {
 }
 
 /* stores and maps section  */
-#stores{
+#stores {
     background-color: #f8f9f9;
     padding: 20px 0 80px;    
 }
@@ -98,10 +98,11 @@ body {
 
 /* products page */
 
-#categories{
-    margin-top: 100px;
+#categories{    
     margin-bottom: 100px;
 }
+
+
 
 
 
@@ -152,14 +153,6 @@ footer{
 .nav-item a i {
     font-size: 1.2rem;
 }
-
-
-
-
-
-
-
-
 
 
 @media only screen and (min-width: 768px) {
