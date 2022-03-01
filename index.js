@@ -45,7 +45,19 @@ app.engine(
         handlebars: allowInsecurePrototypeAccess(Handlebars),
         defaultLayout: "main",
         layoutsDir: `${__dirname}/views/main`,
-        extname: "hbs",        
+        extname: "hbs",
+        helpers:{
+            eachRow: function (data, numColumns, options) {                      
+                let result ="";
+                for(var i = 0; i < data.length; i += numColumns){                    
+                    result += options.fn({
+                        columns: data.slice(i , i + numColumns),
+                        first: i == 0 ? true : false,
+                    });             
+                }
+                return result
+            }                                
+        },               
     })
 );
 app.set("view engine", "hbs");
@@ -88,17 +100,6 @@ app.get("/", async (req, res) => {
         res.status(500).send({ error: error, code: 500 });
     }
 });
-/*
-app.get("/products", async (req, res) => {
-    try {
-        let categories = await Category.all();
-        let products = await Product.all();
-        res.render("products", {categories: categories, products: products});
-
-    } catch (error) {
-        res.status(500).send({ error: error, code: 500 });
-    }
-});*/
 
 app.get("/products/category", async (req, res) => {
     try {
@@ -117,11 +118,10 @@ app.get("/products/category", async (req, res) => {
 
 app.get("/products/product", async (req, res) => {
     try {
-        let { id } = req.query; 
-        let stores = await Store.all();       
-        let categories = await Category.all();
-        let product = await Product.find(id);        
-        res.render("product", {stores: stores, categories: categories, product: product});
+        let { id } = req.query;             
+        let product = await Product.find(id);
+        let similarProducts = await product.category.getProducts();              
+        res.render("product", { product: product, similarProducts: similarProducts });
 
     } catch (error) {
         console.log(error);

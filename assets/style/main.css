@@ -106,6 +106,18 @@ body {
     outline: 2px solid white;
 }
 
+.btn-prev {
+    justify-content: start !important;
+}
+
+.btn-next {
+    justify-content: end !important;
+}
+
+.carousel-inner {
+    margin-left: 40px;
+}
+
 
 
 

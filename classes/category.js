@@ -1,5 +1,7 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
+//const { Brand } = require("./brand");
+//const { Product } = require("./product");
 
 class Category {
     constructor(id, name) {
@@ -72,8 +74,24 @@ class Category {
                 };
 
                 let client = await _pool.connect();
-                let result = await client.query(query);                
-                return result.rows; // retornar instancia
+                let result = await client.query(query);
+                let products = result.rows;  
+
+                /*
+
+                let brands = await Brand.all();
+
+                let array = [];
+                products.forEach((p) => {
+                    let brand = brands.find((b) => b.id == p.brand_id);                    
+                    let product = new Product(p.id, p.name, p.price, this, brand);
+                    array.push(product);
+                })
+
+                return array; */
+
+                return products;
+
                 
 
             } catch (error) {
