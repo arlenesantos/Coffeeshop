@@ -107,7 +107,21 @@ app.get("/products/category", async (req, res) => {
         let categories = await Category.all();
         let category =  await Category.find(id);        
         let products = await category.getProducts();
-        res.render("products", {stores: stores, categories: categories, category: category, products: products});
+        res.render("categories", {stores: stores, categories: categories, category: category, products: products});
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error, code: 500 });
+    }
+});
+
+app.get("/products/product", async (req, res) => {
+    try {
+        let { id } = req.query; 
+        let stores = await Store.all();       
+        let categories = await Category.all();
+        let product = await Product.find(id);        
+        res.render("product", {stores: stores, categories: categories, product: product});
 
     } catch (error) {
         console.log(error);
