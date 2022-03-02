@@ -56,7 +56,7 @@ app.engine(
                     });             
                 }
                 return result
-            }                                
+            },  
         },               
     })
 );
@@ -120,8 +120,9 @@ app.get("/products/product", async (req, res) => {
     try {
         let { id } = req.query;             
         let product = await Product.find(id);
-        let similarProducts = await product.category.getProducts();              
-        res.render("product", { product: product, similarProducts: similarProducts });
+        let similarProducts = await product.category.getProducts();       
+        let productStock = await product.checkStock();        
+        res.render("product", { product: product, similarProducts: similarProducts, productStock: productStock });
 
     } catch (error) {
         console.log(error);

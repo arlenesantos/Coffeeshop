@@ -74,6 +74,42 @@ class Product {
             }
         }
 
+        this.checkStock = async () => {
+            try {
+                let query = {
+                    text: `SELECT products.id, stores.name, stocks.stock, stocks.min_stock
+                    FROM products
+                    LEFT JOIN stocks ON products.id = stocks.product_id 
+                    LEFT JOIN stores ON stocks.store_id = stores.id              
+                    WHERE products.id = $1`,
+                    values:[_id]
+                };               
+
+                let client = await _pool.connect();
+                let result = await client.query(query);
+                let stock = result.rows;
+                
+                stock.forEach((p) => {                    
+                    if (p.stock == 0){
+                        p.stockIsZero = true;
+                        p.stockIsMin = false;
+                    } else if (p.stock <= p.min_stock){
+                        p.stockIsMin = true;
+                        p.stockIsZero = false;
+                    } else {
+                        p.stockIsZero = false;
+                        p.stockIsMin = false;                        
+                    }                    
+                    
+                })
+                return stock;
+                
+            } catch (error) {
+                throw error;                
+            }
+
+        }
+
         this.getStock = async (store_id) => {
             try {
                 let query = {
@@ -84,7 +120,7 @@ class Product {
                     values:[store_id, _id]
                 };
 
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
                 
@@ -103,7 +139,7 @@ class Product {
                     values:[store_id, _id]
                 };
 
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
                 
@@ -123,7 +159,7 @@ class Product {
                     values:[_id]
                 };
                    
-                let client = await this._pool.connect();
+                let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
                 
@@ -210,7 +246,11 @@ class Product {
 
     async delete() {
         return this.delete();
-    }    
+    }  
+    
+    async checkStock() { 
+        return this.checkStock();
+    }
 
     async getStock(store_id) { 
         return this.getStock(store_id);
