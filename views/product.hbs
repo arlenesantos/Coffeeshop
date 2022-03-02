@@ -44,9 +44,9 @@
 
 <!-- carousel -->
 <section class="container py-5">
-    <h1 class="h3 mb-3 text-center">Similar Products</h1>
-    <div id="carouselControls" class="carousel carousel-dark slide " data-bs-ride="carousel">
-        <div class="carousel-inner">
+    <h1 class="h3 mb-5 text-center">Similar Products</h1>
+    <div id="carouselControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-inner carousel-inner-lg">
             {{#eachRow similarProducts 4 }}
             {{#if first}} <div class="carousel-item active"> {{else}}
                 <div class="carousel-item"> {{/if}}
@@ -55,15 +55,17 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="card" style="width: 16rem;">
-                                    <a href="/products/product?id={{this.id}}"
+                                    <div class="text-center mt-2">
+                                        <a href="/products/product?id={{this.id}}"
                                         class="text-decoration-none link-secondary">
-                                        <img src="/images/product.jpg" class="card-img-top" alt="coffee image"></a>
+                                        <img src="/images/product.jpg" class="card-img-top w-50" alt="coffee image"></a>                                        
+                                    </div>                                    
                                     <div class="card-body">
-                                        <h5 class="card-title">{{this.name}}</h5>
-                                        <p class="card-text">Product brand</p>
-                                        <p class="card-text">{{this.price}}</p>
-                                        <a href="#" class="d-grid btn btn-outline-secondary mb-4 mx-auto"> <i
-                                                class="bi bi-cart-plus" style="font-size: 1.5em"></i>
+                                        <h1 class="h6 card-title fw-bold">{{this.name}}</h1>
+                                        <p class="card-text fs-6">Product brand</p>
+                                        <p class="card-text fs-6">{{this.price}}</p>
+                                        <a href="#" class="d-grid btn btn-outline-secondary mb-1 mx-auto"> 
+                                            <i class="bi bi-cart-plus" style="font-size: 1.2em"></i>
                                         </a>
                                     </div>
                                 </div>
