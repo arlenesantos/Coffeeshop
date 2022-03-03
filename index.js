@@ -121,7 +121,7 @@ app.get("/products/product", async (req, res) => {
         let { id } = req.query;             
         let product = await Product.find(id);
         let similarProducts = await product.category.getProducts();       
-        let productStock = await product.checkStock();        
+        let productStock = await product.checkStock(); 
         res.render("product", { product: product, similarProducts: similarProducts, productStock: productStock });
 
     } catch (error) {

@@ -87,9 +87,23 @@ class Product {
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-                let stock = result.rows;
                 
-                stock.forEach((p) => {                    
+                return result.rows.map((p) => (
+                    {
+                         id: p.id,
+                         name: p.name,
+                         stock: p.stock,
+                         min_stock: p.min_stock,
+                         stockIsZero: p.stock == 0,
+                         stockIsMin: p.stock <= p.min_stock,
+                     }
+                 ))
+
+
+                
+                /* alternative code:
+
+                result.rows.forEach((p) => {                    
                     if (p.stock == 0){
                         p.stockIsZero = true;
                         p.stockIsMin = false;
@@ -103,7 +117,8 @@ class Product {
                     
                 })
                 return stock;
-                
+                */
+
             } catch (error) {
                 throw error;                
             }
@@ -166,6 +181,59 @@ class Product {
             } catch (error) {
                 throw error;                
             }
+        }
+
+        this.checkAvailability = async () => {
+            try {
+                let query = {
+                    text: `SELECT products.id, stores.name, stocks.stock, stocks.min_stock
+                    FROM products
+                    LEFT JOIN stocks ON products.id = stocks.product_id 
+                    LEFT JOIN stores ON stocks.store_id = stores.id              
+                    WHERE products.id = $1`,
+                    values:[_id]
+                };               
+
+                let client = await _pool.connect();
+                let result = await client.query(query);
+                let stocks = result.rows;
+                
+
+                return stocks.map((p) => (
+                    {
+                         id: p.id,
+                         name: p.name,
+                         stock: p.stock,
+                         min_stock: p.min_stock,
+                         stockIsZero: p.stock == 0,
+                         stockIsMin: p.stock <= p.min_stock,
+                     }
+                 ))
+
+                
+                
+                /*
+                stock.forEach((p) => {                    
+                    if (p.stock == 0){
+                        p.stockIsZero = true;
+                        p.stockIsMin = false;
+                    } else if (p.stock <= p.min_stock){
+                        p.stockIsMin = true;
+                        p.stockIsZero = false;
+                    } else {
+                        p.stockIsZero = false;
+                        p.stockIsMin = false;                        
+                    }                    
+                    
+                })
+                return stock;*/
+
+
+                
+            } catch (error) {
+                throw error;                
+            }
+
         }
     }
 
