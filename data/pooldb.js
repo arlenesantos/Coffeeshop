@@ -9,7 +9,7 @@ const config = {
     max: 20,
     min: 5,
     idleTimeoutMillis: 15000,
-    connectionTimeoutMillis:2000
+    connectionTimeoutMillis:10000 //2000
 };
 
 const Singleton = (() =>{

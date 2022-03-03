@@ -106,17 +106,15 @@ body {
     outline: 2px solid white;
 }
 
-.btn-prev {
-    justify-content: start !important;
+.row > * {
+    padding-right: calc(var(--bs-gutter-x) * .1);
+    padding-left: calc(var(--bs-gutter-x) * .1);
 }
 
-.btn-next {
-    justify-content: end !important;
+.carousel-control-next, .carousel-control-prev {
+    width: 5% !important;
 }
 
-.carousel-inner-lg {
-    margin-left: 40px;
-}
 
 
 

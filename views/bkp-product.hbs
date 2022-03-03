@@ -1,0 +1,91 @@
+<section class="bg-light py-5">
+    <!-- products by category -->
+    <div class="container row py-5 mx-auto border-product">
+        <div class="col-12 col-md-3 mx-auto mb-3 ">
+            <!-- img src="/images/product-{{product.id}}.jpg" -->
+            <img src="/images/product.jpg" class="img-fluid rounded" alt="coffee image">
+        </div>
+        <div class="col-12 col-md-4 mx-auto">
+            <h2 class="pb-2 border-bottom">{{product.name}}</h2>
+            <p>{{product.brand.name}}</p>
+            <p>{{product.price}}</p>
+
+            <!-- stock available -->
+            <div class="dropdown mb-5">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownStock"
+                    data-bs-toggle="dropdown" aria-expanded="false"> Check stock
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownStock">                    
+                    {{#each productStock}}
+                    <li class="dropdown-item text-muted"> {{this.name}} Store: {{#if this.stockIsZero}}
+                         <i class="bi bi-bag-x-fill text-danger"> Back soon</i> 
+                        {{else if this.stockIsMin}}  
+                         <i class="bi-bag-dash-fill text-warning"> Hurry up!</i> 
+                        {{else}}
+                        <i class="bi-bag-check-fill text-success"> Luck day!</i> 
+                        {{/if }}
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    {{/each}} 
+                </ul>
+            </div>
+
+            <!-- cart button -->
+            <div class="d-grid">
+                <a href="/cart" class="btn rounded-pill btn-danger" type="button">
+                    <i class="bi bi-cart-plus fs-4"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<!-- carousel -->
+<section class="container py-5">
+    <h1 class="h3 mb-5 text-center">Similar Products</h1>
+    <div id="carouselControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-inner carousel-inner-lg">
+            {{#eachRow similarProducts 4 }}
+            {{#if first}} <div class="carousel-item active"> {{else}}
+                <div class="carousel-item"> {{/if}}
+                    <div class="row row-cols-md-4">
+                        {{#each columns}}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card" style="width: 16rem;">
+                                    <div class="text-center mt-2">
+                                        <a href="/products/product?id={{this.id}}"
+                                        class="text-decoration-none link-secondary">
+                                        <img src="/images/product.jpg" class="card-img-top w-50" alt="coffee image"></a>                                        
+                                    </div>                                    
+                                    <div class="card-body">
+                                        <h1 class="h6 card-title fw-bold">{{this.name}}</h1>
+                                        <p class="card-text fs-6">Product brand</p>
+                                        <p class="card-text fs-6">{{this.price}}</p>
+                                        <a href="#" class="d-grid btn btn-outline-secondary mb-1 mx-auto"> 
+                                            <i class="bi bi-cart-plus" style="font-size: 1.2em"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{/eachRow}}
+            </div>
+
+            <button class="carousel-control-prev btn-prev" type="button" data-bs-target="#carouselControls"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next btn-next" type="button" data-bs-target="#carouselControls"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+</section>
