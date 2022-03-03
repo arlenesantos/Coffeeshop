@@ -115,6 +115,19 @@ body {
     width: 5% !important;
 }
 
+/* recipes public page */
+.border-recipe{
+    border-bottom: 5px solid white;    
+}
+
+.recipes-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+
+
 
 
 

@@ -1,16 +1,52 @@
 <section>
-    <h1>Recipes</h1>
-    {{#if recipe}}
-
-    <div>
-        {{recipe.image}}
+<div class="container-fluid mb-5 w-50 d-none d-md-block">    
+    <div class=" row">
+        <div class="col-md-6">
+            <img src="/images/bg-recipes-1.jpg" alt="coffee image" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <div class="row-col-md-3 border-recipe">
+                <img src="/images/bg-recipes-2.jpg" alt="coffee image" class="img-fluid">
+            </div>
+            <div class="row-col-md-3">
+                <img src="/images/bg-recipes-3.jpg" alt="coffee image" class="img-fluid">
+            </div>
+        </div>
     </div>
+</div>
 
-    <h1>{{recipe.title}}</h1>
-    <p>{{recipe.customer_id}}</p>
-    <div>
-        <div>{{recipe.content}}</div>
-    </div>
+<!-- grid card -->
+<div class="container mb-5">
+    <div class=" row">
+        <div class="col-md-9">
+            <!-- grid card -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {{#each recipes}}
+                <div class="col">
+                    <div class="card shadow p-3 mb-5 bg-body rounded">
+                        <img src="/images/recipes/{{this.id}}.jpeg" class="card-img-top" alt="coffee image">
+                        <div class="card-body">
+                            <h5 class="card-title recipes-title">{{this.title}}</h5>
+                            <p class="card-text text-muted fs-6"> 
+                                <img src="/images/chef.png" alt="chef hat icon"  width="30px" height="30px"> {{this.customer.name}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}                
+            </div> 
+        </div>
+        <div class="col-md-2 offset-md-1">
+            <div class="row-col-md-3 border-recipe">
+                <img src="/images/bg-recipes-2.jpg" alt="coffee image" class="img-fluid">
+            </div>
+            <div class="row-col-md-3">
+                <img src="/images/bg-recipes-3.jpg" alt="coffee image" class="img-fluid">
+            </div>
+        </div>
+</div>
 
-    {{/if}}
+   
+
+
 </section>

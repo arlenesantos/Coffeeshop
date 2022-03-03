@@ -130,6 +130,19 @@ app.get("/products/product", async (req, res) => {
     }
 });
 
+app.get("/recipes", async (req, res) => {
+    try {
+        let recipes = await Recipe.all();
+                       
+        
+        res.render("recipes", { recipes: recipes });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error, code: 500 });
+    }
+});
+
 
 
 //private pages
