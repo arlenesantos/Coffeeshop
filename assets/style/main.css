@@ -106,25 +106,32 @@ body {
     outline: 2px solid white;
 }
 
-.row > * {
-    padding-right: calc(var(--bs-gutter-x) * .1);
-    padding-left: calc(var(--bs-gutter-x) * .1);
-}
-
 .carousel-control-next, .carousel-control-prev {
     width: 5% !important;
 }
 
 /* recipes public page */
 .border-recipe{
-    border-bottom: 5px solid white;    
+    outline: 2px solid white;
+    outline-offset: -2px;   
 }
 
 .recipes-title {
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 2px;
+    
 }
+
+.recipes-title a {
+    color: rgb(68, 33, 13);
+}
+
+.border-form {
+    outline: 2px solid white;
+    outline-offset: -20px;
+}
+
 
 
 

@@ -1,0 +1,30 @@
+<section>
+    {{#if recipe.id}}
+    <div class="container py-5">
+        <div class="row row-cols-1 row-cols-lg-2 mb-3 mx-auto">
+            <div class="col text-center d-flex align-items-center px-4 py-3">
+                <img src="/images/recipes/{{recipe.id}}.jpeg" class="img-fluid img-thumbnail" alt="recipe image">
+            </div>
+
+            <div class="col">
+                <h1 class="text-center pb-3">{{recipe.title}}</h1>
+                <div>{{{recipe.content}}}</div>
+                <p class="text-muted pt-2">Author: {{recipe.customer.name}}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link link-secondary" href="/recipes">All recipes</a></li>
+            <li class="page-item"><a class="page-link link-secondary" href="/recipes/recipe?id={{dec recipe.id}}">Previous</a></li>
+            <li class="page-item"><a class="page-link link-secondary" href="/recipes/recipe?id={{inc recipe.id}}">Next</a></li>
+        </ul>
+    </nav>
+    {{else}}
+    <p class="py-5">Sorry, recipe not found. <a href="/recipes" class="text-decoration-none text-secondary">Back to all recipes.</a></p> 
+    {{/if}}
+
+    
+</section>

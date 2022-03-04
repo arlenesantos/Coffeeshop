@@ -1,52 +1,75 @@
 <section>
-<div class="container-fluid mb-5 w-50 d-none d-md-block">    
-    <div class=" row">
-        <div class="col-md-6">
-            <img src="/images/bg-recipes-1.jpg" alt="coffee image" class="img-fluid">
-        </div>
-        <div class="col-md-6">
-            <div class="row-col-md-3 border-recipe">
-                <img src="/images/bg-recipes-2.jpg" alt="coffee image" class="img-fluid">
+    <!-- hero -->
+    <div class="container-fluid mb-5 w-50 d-none d-md-block">
+        <div class=" row ">
+            <div class="col-md-6 p-0 border-recipe">
+                <img src="/images/bg-recipes-1.jpg" alt="coffee image" class="img-fluid">
             </div>
-            <div class="row-col-md-3">
-                <img src="/images/bg-recipes-3.jpg" alt="coffee image" class="img-fluid">
+            <div class="col-md-6 p-0">
+                <div class="row-col-md-3 border-recipe">
+                    <img src="/images/bg-recipes-2.jpg" alt="coffee image" class="img-fluid">
+                </div>
+                <div class="row-col-md-3 border-recipe">
+                    <img src="/images/bg-recipes-3.jpg" alt="coffee image" class="img-fluid">
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- grid card -->
-<div class="container mb-5">
-    <div class=" row">
-        <div class="col-md-9">
-            <!-- grid card -->
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                {{#each recipes}}
-                <div class="col">
-                    <div class="card shadow p-3 mb-5 bg-body rounded">
-                        <img src="/images/recipes/{{this.id}}.jpeg" class="card-img-top" alt="coffee image">
-                        <div class="card-body">
-                            <h5 class="card-title recipes-title">{{this.title}}</h5>
-                            <p class="card-text text-muted fs-6"> 
-                                <img src="/images/chef.png" alt="chef hat icon"  width="30px" height="30px"> {{this.customer.name}}
-                            </p>
+
+    <div class="container py-5">
+        <div class=" row">
+            <!-- grid card recipes -->
+            <div class="col-md-7 col-lg-8">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-2 mb-5">
+                    {{#each approvedRecipes}}
+                    <div class="col">
+                        <div class="col-9 col-sm-12 mx-auto">
+                            <div class="card h-100 shadow p-3 mb-5 bg-body rounded">
+                                <a href="/recipes/recipe?id={{this.id}}" class="text-decoration-none">
+                                    <img src="/images/recipes/{{this.id}}.jpeg" class="card-img-top" alt="coffee image">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title recipes-title"> <a href="/recipes/recipe?id={{this.id}}"
+                                            class="text-decoration-none">{{this.title}}</a></h5>
+                                    <p class="card-text text-muted fs-6">
+                                        <img src="/images/chef.png" alt="chef hat icon" width="30px" height="30px">
+                                        {{this.customer.name}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <!-- form to send recipe -->
+            <div class="col-md-5  col-lg-4">
+                <div class="card text-dark bg-light border-form">
+                    <div class="d-block d-md-none">
+                        <img src="/images/recipe-form1.jpg" class="card-img-top" alt="coffee image">
+                    </div>
+                    <div class="d-none d-md-block">
+                        <img src="/images/recipe-form2.jpg" class="card-img-top" alt="coffee image">
+                    </div>
+
+
+
+                    <div class="p-5 card-body">
+                        <p class="h5 card-text fw-bold text-center">Would you like to spread your alchemy?</p>
+                        <p class="card-text text-center"> We'd love to share your favorite coffee recipes!</p>
+                        <div class="text-center">
+                            <a href="/recipes/form" class="btn btn-secondary">Share recipe</a>
                         </div>
                     </div>
                 </div>
-                {{/each}}                
-            </div> 
-        </div>
-        <div class="col-md-2 offset-md-1">
-            <div class="row-col-md-3 border-recipe">
-                <img src="/images/bg-recipes-2.jpg" alt="coffee image" class="img-fluid">
-            </div>
-            <div class="row-col-md-3">
-                <img src="/images/bg-recipes-3.jpg" alt="coffee image" class="img-fluid">
             </div>
         </div>
-</div>
 
-   
+
+
+
 
 
 </section>

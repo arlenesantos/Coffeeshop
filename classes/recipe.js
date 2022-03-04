@@ -132,7 +132,7 @@ class Recipe {
             let result = await client.query(query);            
             client.release();
 
-            let recipe = result.rows[0];
+            let recipe = result.rows[0];            
             let customer = await Customer.find(recipe.customer_id);
             return new Recipe(recipe.id, recipe.title, recipe.content, recipe.approved, customer);
 

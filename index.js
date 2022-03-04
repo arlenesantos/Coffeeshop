@@ -57,6 +57,12 @@ app.engine(
                 }
                 return result
             },
+            inc: (value) => {
+                return parseInt(value) + 1;
+            },
+            dec: (value) => {
+                return parseInt(value) - 1;
+            },
         },               
     })
 );
@@ -133,9 +139,39 @@ app.get("/products/product", async (req, res) => {
 app.get("/recipes", async (req, res) => {
     try {
         let recipes = await Recipe.all();
-                       
+        let approvedRecipes = recipes.filter((r) => r.approved);        
+        res.render("recipes", { approvedRecipes: approvedRecipes });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error, code: 500 });
+    }
+});
+
+app.get("/recipes/recipe", async (req, res) => {
+    try {
+        let { id, customer_id} = req.query;
+        if (id) {
+            let recipe = await Recipe.find(id);        
+            res.render("recipe", { recipe: recipe });
+        } 
+        //corrigir:
+        if (customer_id == undefined) {
+            res.render("recipe");
+        }   
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error, code: 500 });
+    }
+});
+
+app.get("/recipes/form", async (req, res) => {
+    try {
         
-        res.render("recipes", { recipes: recipes });
+        res.render("recipe-form");
+        
+          
 
     } catch (error) {
         console.log(error);
