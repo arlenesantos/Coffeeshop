@@ -1,0 +1,32 @@
+<section class="container my-5">
+    <form action="/recipes/send" method="POST" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <input type="hidden" name="id">
+            <input type="hidden" name="customer_id" value="{{customer.id}}">
+            <label for="title" class="form-label">Recipe title</label>
+            <input type="text" class="form-control" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Recipe</label>
+            <textarea id="editor" class="form-control" name="content" required></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="file" class="form-control mt-2" id="edit-file" placeholder="Upload image" name="photo">
+            <br>
+        </div>
+        <div class="col-12 mb-3">
+            <button type="submit" class="btn btn-primary">Send recipe</button>
+        </div>
+
+    </form>
+</section>
+
+<script>
+
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => console.log(editor))
+        .catch(error => console.error(error));
+
+</script>

@@ -61,12 +61,15 @@
                         </button>
                         <div class="collapse" id="coffee-collapse">
                             <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="/admin/categories" class="link-dark rounded text-decoration-none">Categories</a></li>
-                                <li><a href="/admin/brands" class="link-dark rounded text-decoration-none">Brands</a></li>
-                                <li><a href="/admin/products" class="link-dark rounded text-decoration-none">Products</a></li>
+                                <li><a href="/admin/categories"
+                                        class="link-dark rounded text-decoration-none">Categories</a></li>
+                                <li><a href="/admin/brands" class="link-dark rounded text-decoration-none">Brands</a>
+                                </li>
+                                <li><a href="/admin/products"
+                                        class="link-dark rounded text-decoration-none">Products</a></li>
                             </ul>
                         </div>
-                    </li>                    
+                    </li>
                     <li class="mb-1">
                         <a href="/admin/stores" class="nav-link link-secondary">
                             <i class="bi bi-shop"> Stores</i>
@@ -88,8 +91,8 @@
                     <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                         id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                            alt="avatar user" width="32" height="32" class="rounded-circle me-2"> <strong>user
-                            name</strong>
+                            alt="avatar user" width="32" height="32" class="rounded-circle me-2"> {{#if admin}}
+                        <strong>{{admin.name}}</strong> {{/if}}
                     </a>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -97,42 +100,47 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
 
             <!-- menu sm  -->
             <div class=" vh-100 d-flex d-lg-none flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
-                <a href="/" target= "blank" class="d-block p-3 link-dark text-decoration-none">   
-                    <img src="/images/logo-icon.png" alt="logo">                    
-                </a>               
-                <ul class="nav flex-column mb-auto text-center">                    
+                <a href="/" target="blank" class="d-block p-3 link-dark text-decoration-none">
+                    <img src="/images/logo-icon.png" alt="logo">
+                </a>
+                <ul class="nav flex-column mb-auto text-center">
                     <li class="nav-item">
-                        <a href="/admin/dashboard" class="nav-link active py-3 border-bottom" aria-current="page" 
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Dashboard"><i class="bi bi-bar-chart-fill text-secondary" aria-label="Dashboard"></i>                            
-                        </a>                        
-                    </li>    
-                    <li class="nav-item"> 
-                        <a href="/admin/products" class="nav-link active py-3 border-bottom" aria-current="page" title=""
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Products"><i
-                                class="bi bi-cup-fill text-secondary" aria-label="Products"></i>                            
+                        <a href="/admin/dashboard" class="nav-link active py-3 border-bottom" aria-current="page"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Dashboard"><i
+                                class="bi bi-bar-chart-fill text-secondary" aria-label="Dashboard"></i>
                         </a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
+                        <a href="/admin/products" class="nav-link active py-3 border-bottom" aria-current="page"
+                            title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            data-bs-original-title="Products"><i class="bi bi-cup-fill text-secondary"
+                                aria-label="Products"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="/admin/stores" class="nav-link active py-3 border-bottom" aria-current="page" title=""
                             data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Stores"><i
-                                class="bi bi-shop text-secondary" aria-label="Stores"></i>                            
+                                class="bi bi-shop text-secondary" aria-label="Stores"></i>
                         </a>
                     </li>
-                    <li class="nav-item"> 
-                        <a href="/admin/customers" class="nav-link active py-3 border-bottom" aria-current="page" title=""
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Customers"><i class="bi bi-person-circle text-secondary" aria-label="Customers"></i>                            
+                    <li class="nav-item">
+                        <a href="/admin/customers" class="nav-link active py-3 border-bottom" aria-current="page"
+                            title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                            data-bs-original-title="Customers"><i class="bi bi-person-circle text-secondary"
+                                aria-label="Customers"></i>
                         </a>
                     </li>
-                    <li class="nav-item"> 
+                    <li class="nav-item">
                         <a href="/admin/recipes" class="nav-link active py-3 border-bottom" aria-current="page" title=""
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Recipes"><i class="bi bi-journal-richtext text-secondary" aria-label="Recipes"></i>
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Recipes"><i
+                                class="bi bi-journal-richtext text-secondary" aria-label="Recipes"></i>
                         </a>
                     </li>
                 </ul>
@@ -143,13 +151,13 @@
                         <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
                             alt="avatar user" width="24" height="24" class="rounded-circle">
                     </a>
-                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUserSmall">                        
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUserSmall">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -197,6 +205,6 @@
         })
     })();
 
-    
+
 
 </script>

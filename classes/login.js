@@ -1,17 +1,19 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
 
+const { Customer } = require("./customer");
+
 class Login {
     constructor(name, email, password) {
         let _name = name;
         let _email = email;
-        let _password = password;        
+        let _password = password;
 
         this.getName = () => _name;
         this.getEmail = () => _email;
         this.getPassword = () => _password;
 
-              
+
     }
 
     get name() {
@@ -23,37 +25,50 @@ class Login {
     get password() {
         return this.getPassword();
     }
-   
 
-    static async check(email, password, isAdmin = false) {
+
+    static async isAdmin(email, password) {
         let pool = PoolSingleton.getInstance();
         try {
             let client = await pool.connect();
-            let statement = "";
-
-            if(isAdmin){
-                statement = `SELECT email FROM admin WHERE email = $1 AND password = $2;`
-
-            } else{
-                statement = `SELECT email FROM customers WHERE email = $1 AND password = $2;`
-
+            let query = {
+                text: `SELECT name, email FROM admin WHERE email = $1 AND password = $2;`,
+                values: [email, password]
             }
 
-            let query = {
-                text: statement,
-                values: [email, password]
-            }            
-            
             let result = await client.query(query);
             client.release();
-            return result.rows.length > 0 ? true : false;
+            console.log(result.rows[0])
+            return result.rows[0];
 
         } catch (error) {
-            throw error;
+            return false;
         }
     }
 
-    
+    static async isCustomer(email, password) {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let client = await pool.connect();
+            let query = {
+                text: `SELECT id FROM customers WHERE email = $1 AND password = $2;`,
+                values: [email, password]
+            }
+
+            let result = await client.query(query);
+            client.release();
+
+            let customer = await Customer.find(result.rows[0].id);
+
+            return new Customer(customer.id, customer.name, customer.address, customer.city, customer.state, customer.zip_code, customer.phone, customer.email, customer.password)
+
+
+        } catch (error) {
+            return false;
+        }
+    }
+
+
 }
 
 module.exports = { Login };

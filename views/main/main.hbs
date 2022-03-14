@@ -21,6 +21,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/style/main.css">
 
+    <!-- CKEditor 5 -->
+    <script src="/ckeditor/ckeditor.js"></script>
+
     <title>Coffee Shop</title>
 </head>
 
@@ -66,7 +69,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>       
+        </nav>
 
         <!-- back to top button -->
         <div class="arrow-up">
@@ -76,7 +79,37 @@
     </header>
     <main>
 
-        {{{body}}}       
+        <div>
+            {{#each success}}
+            <div class="container">
+                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div>
+            {{#each error}}
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div>
+            {{#each password}}
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        {{{body}}}
 
 
     </main>
