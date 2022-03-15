@@ -32,6 +32,7 @@ const { Store } = require("./classes/store");
 const { Customer } = require("./classes/customer");
 const { Recipe } = require("./classes/recipe");
 const { Login } = require("./classes/login");
+const { url } = require("inspector");
 
 
 //integrations:
@@ -151,15 +152,12 @@ app.get("/recipes", async (req, res) => {
 
 app.get("/recipes/recipe", async (req, res) => {
     try {
-        let { id, customer_id } = req.query;
-        if (id) {
-            let recipe = await Recipe.find(id);
-            res.render("recipe", { recipe: recipe });
-        }
-        //corrigir:
-        if (customer_id == undefined) {
-            res.render("recipe");
-        }
+        let { id } = req.query;
+        let recipe = await Recipe.find(id);
+        console.log(recipe)
+        res.render("recipe", { recipe: recipe });
+
+
 
     } catch (error) {
         console.log(error);
@@ -167,57 +165,18 @@ app.get("/recipes/recipe", async (req, res) => {
     }
 });
 
-app.get("/recipes/send", async (req, res) => {
-    try {
-        res.render("recipe-form");
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).send({ error: error, code: 500 });
-    }
-});
-
-app.post("/recipes/send", async (req, res) => {
-    try {
-        if (req.session.logged_in) {
-            let { title, content, customer_id } = req.body;
-            let customer = await Customer.find(customer_id);
-            let recipe = new Recipe(null, title, content, false, customer);
-            await recipe.save();
-
-            if (req.files === null) {
-                fs.copyFile(`${__dirname}/assets/images/recipe-std.jpg`, `${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => console.log(error));
-
-            } else {
-                let { photo } = req.files;
-                photo.mv(`${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => {
-                    if (error) {
-                        console.log(error);
-                        return error
-                    }
-                });
-            };
-            await req.flash('success', 'Recipe registered successfully!');
-            res.redirect("/recipes");
-        } else {
-            res.redirect("/login");
-        }
-
-
-    } catch (error) {
-        console.log(error);
-        await req.flash('error', 'Something went wrong');
-        res.redirect("/recipes");
-    }
-
-});
 
 //login:
 app.get("/login", async (req, res) => {
     try {
-        let passwordMsg = await req.consumeFlash('password');
-        let errorMsg = await req.consumeFlash('error');
-        res.render("login", { password: passwordMsg, error: errorMsg });
+        if (req.session.logged_in && req.session.customer) {
+            res.redirect("/customer");
+
+        } else {
+            let passwordMsg = await req.consumeFlash('password');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("login", { password: passwordMsg, error: errorMsg });
+        }
 
     } catch (error) {
         console.log(error);
@@ -249,16 +208,18 @@ app.post("/login", async (req, res) => {
                 res.redirect("/login");
             }
         } else if (register) {
-            console.log(register)
             let { firstName, lastName, address, city, state, zip_code, phone, email, password, confirmPassword } = req.body;
-
             let name = `${firstName} ${lastName}`;
-            console.log(name)
 
             if (password === confirmPassword) {
                 let customer = new Customer(null, name, address, city, state, zip_code, phone, email, password);
                 await customer.save();
+
+                req.session.logged_in = true;
+                req.session.customer = customer;
+                req.session.save();
                 res.redirect("/customer");
+
             } else {
                 await req.flash('password', 'Password does not match. Try again.');
                 res.redirect("/login");
@@ -293,12 +254,15 @@ app.get("/logout", async (req, res) => {
 
 //private pages
 
-// customer personal area 
+
+
+// customer personal area
 app.get("/customer", async (req, res) => {
     try {
-        if (req.session.logged_in) {
-            console.log("entrou em customer")
-            res.render("customer")
+        if (req.session.logged_in && req.session.customer) {
+            let id = req.session.customer.id;
+            let successMsg = await req.consumeFlash('success');
+            res.render("customer", { id: id, success: successMsg });
         }
 
         //check session login
@@ -313,6 +277,65 @@ app.get("/customer", async (req, res) => {
     }
 });
 
+app.get("/customer/recipe", async (req, res) => {
+    try {
+        if (req.session.logged_in) {
+            let id = req.session.customer.id;
+            let recipeMsg = await req.consumeFlash('content');
+            res.render("recipe-form", { id: id, content: recipeMsg });
+        } else {
+            res.redirect("/login");
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.post("/customer/recipe", async (req, res) => {
+    try {
+
+        if (req.session.logged_in) {
+            let { customer_id, title, content } = req.body;
+
+            if (content === null || content === "") {
+                await req.flash('content', 'It was not possible to save your recipe. Please fill the recipe content.');
+                res.redirect("/customer/recipe");
+            } else {
+                let customer = await Customer.find(customer_id);
+                let recipe = new Recipe(null, title, content, false, customer);
+                await recipe.save();
+
+                if (req.files === null) {
+                    fs.copyFile(`${__dirname}/assets/images/recipe-std.jpg`, `${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => console.log(error));
+
+                } else {
+                    let { photo } = req.files;
+                    photo.mv(`${__dirname}/assets/images/recipes/${recipe.id}.jpeg`, (error) => {
+                        if (error) {
+                            console.log(error);
+                            return error
+                        }
+                    });
+                }
+                await req.flash('success', 'Recipe send successfully!');
+                res.redirect("/customer");
+            }
+
+        } else {
+            res.redirect("/login");
+        }
+
+    } catch (error) {
+        console.log(error);
+        await req.flash('error', 'Something went wrong');
+        res.redirect("/recipes");
+    }
+
+});
+
+
+//ADMIN:
 
 // Category 
 app.get("/admin/categories", async (req, res) => {

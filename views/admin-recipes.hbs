@@ -1,4 +1,3 @@
-
 <section id="recipes">
     <div class="container">
 
@@ -11,6 +10,7 @@
                     <div class="row mb-3">
                         <div class="mb-3">
                             <input type="hidden" id="id" name="id">
+                            <input type="hidden" name="customer_id" value="1">
                             <label for="title" class="form-label">Recipe title</label>
                             <input type="text" class="form-control" name="title" required>
                         </div>
@@ -20,14 +20,11 @@
                         </div>
                         <div class="mb-3">
                             <br>
-                            <input type="file" class="form-control mt-2" placeholder="Upload image" name="photo" id="photo">
+                            <input type="file" class="form-control mt-2" placeholder="Upload image" name="photo"
+                                id="photo">
                         </div>
                         <div class="mb-3">
-                            <label for="customer_id" class="form-label">Customer name</label>
-                            <input type="text" class="form-control" name="customer_id" required>
-                        </div>
-                        <div class="mb-3">
-                            <input id ="approved" type="hidden" name="approved" value="false">
+                            <input id="approved" type="hidden" name="approved" value="false">
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Register</button>
@@ -39,7 +36,7 @@
                 <button class="btn btn-secondary text-light" onclick="toggleForm()">Cancel</button>
             </div>
         </div>
-      
+
 
         <!-- read recipes - table and delete button/form -->
         <div class="mt-5">
@@ -47,9 +44,9 @@
             <table class="table table-responsive" id="table-recipes">
                 <thead>
                     <tr>
-                        <th>ID</th>                        
-                        <th>Title</th>                        
-                        <th>Photo</th>                        
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Photo</th>
                         <th>Review/Edit</th>
                         <th>Approved</th>
                         <th>Delete</th>
@@ -57,29 +54,35 @@
                 </thead>
                 <tbody>
                     {{#each recipes}}
-                    <tr>                        
+                    <tr>
                         <th>{{this.id}}</th>
                         <th>{{this.title}}</th>
-                        <td>                             
-                            <img src="/images/recipes/{{this.id}}.jpeg" alt="recipe image" class="img-thumbnail" width="120px">  
+                        <td>
+                            <img src="/images/recipes/{{this.id}}.jpeg" alt="recipe image" class="img-thumbnail"
+                                width="120px">
                         </td>
                         <td>
-                            <a href="/admin/recipes/review?id={{this.id}}" class="btn btn-primary text-light"><i class="bi bi-eye"></i></a>                        
+                            <a href="/admin/recipes/review?id={{this.id}}" class="btn btn-primary text-light"><i
+                                    class="bi bi-eye"></i></a>
                         </td>
-                        <td>                        
-                            <span class="btn {{#if this.approved}} btn-success {{else}} btn-secondary {{/if}} disabled" style="opacity: 1.0"> {{#if this.approved}} <i class="text-light bi bi-emoji-smile"></i> {{else}} <i class="text-light bi bi-emoji-neutral"></i> {{/if}}
-                            </span>                        
-                        </td>                        
                         <td>
-                            <form action="/api/admin/recipes?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete?');">
+                            <span class="btn {{#if this.approved}} btn-success {{else}} btn-secondary {{/if}} disabled"
+                                style="opacity: 1.0"> {{#if this.approved}} <i class="text-light bi bi-emoji-smile"></i>
+                                {{else}} <i class="text-light bi bi-emoji-neutral"></i> {{/if}}
+                            </span>
+                        </td>
+                        <td>
+                            <form action="/api/admin/recipes?_method=DELETE" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete?');">
                                 <input type="hidden" name="id" value="{{this.id}}">
-                                <button id="delete" type="submit" class="btn btn-danger text-light"><i class="bi bi-trash"></i></button>                                
+                                <button id="delete" type="submit" class="btn btn-danger text-light"><i
+                                        class="bi bi-trash"></i></button>
                             </form>
-                        </td>  
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
-            </table>            
+            </table>
         </div>
 
     </div>
@@ -87,17 +90,17 @@
 </section>
 
 <script>
-    
+
     ClassicEditor
         .create(document.querySelector('#editor'))
         .then(editor => console.log(editor))
-        .catch(error => console.error(error));   
+        .catch(error => console.error(error));
 
     const toggleForm = () => {
         let form = document.getElementById("form-new-recipe");
         form.classList.toggle("d-none");
         form.classList.toggle("d-block");
     };
-    
+
 
 </script>

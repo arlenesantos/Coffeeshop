@@ -18,22 +18,22 @@ class Customer {
         this.getName = () => _name;
         this.getAddress = () => _address;
         this.getCity = () => _city;
-        this.getState = () => _state;    
-        this.getZipCode = () => _zip_code;    
-        this.getPhone = () => _phone;    
-        this.getEmail = () => _email; 
-        this.getPassword = () => _password; 
-        
+        this.getState = () => _state;
+        this.getZipCode = () => _zip_code;
+        this.getPhone = () => _phone;
+        this.getEmail = () => _email;
+        this.getPassword = () => _password;
+
         this.setName = (new_name) => _name = new_name;
         this.setAddress = (new_address) => _address = new_address;
         this.setCity = (new_city) => _city = new_city;
-        this.setState = (new_state) => _state = new_state;    
-        this.setZipCode = (new_zip_code) => _zip_code = new_zip_code;    
-        this.setPhone = (new_phone) => _phone = new_phone;    
-        this.setEmail = (new_email) => _email = new_email; 
-        this.setPassword = (new_password) => _password = new_password; 
-             
-        
+        this.setState = (new_state) => _state = new_state;
+        this.setZipCode = (new_zip_code) => _zip_code = new_zip_code;
+        this.setPhone = (new_phone) => _phone = new_phone;
+        this.setEmail = (new_email) => _email = new_email;
+        this.setPassword = (new_password) => _password = new_password;
+
+
         this.save = async () => {
             try {
                 let query = {
@@ -43,7 +43,7 @@ class Customer {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();                
+                client.release();
 
             } catch (error) {
                 throw error;
@@ -76,7 +76,7 @@ class Customer {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this;               
+                return this;
 
             } catch (error) {
                 throw error;
@@ -93,9 +93,9 @@ class Customer {
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0]; //obj
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
 
@@ -110,9 +110,9 @@ class Customer {
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
 
@@ -127,14 +127,14 @@ class Customer {
                 let result = await client.query(query);
                 client.release();
                 return result.rows[0];
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
-        }       
+        }
     }
 
-    
+
     get id() {
         return this.getId();
     }
@@ -176,10 +176,10 @@ class Customer {
             client.release();
 
             let array = [];
-            result.rows.forEach( (c) => {
+            result.rows.forEach((c) => {
                 let customer = new Customer(c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.email, c.password);
                 array.push(customer);
-                
+
             });
             return array;
 
@@ -216,7 +216,7 @@ class Customer {
 
     async delete() {
         return this.delete();
-    }  
+    }
 
     async getCart() {
         return this.getCart();
@@ -229,7 +229,7 @@ class Customer {
     async getRecipes() {
         return this.getRecipes();
     }
-    
+
 }
 
 module.exports = { Customer };

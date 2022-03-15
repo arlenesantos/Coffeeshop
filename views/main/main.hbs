@@ -109,6 +109,16 @@
             {{/each}}
         </div>
 
+        <div>
+            {{#each content}}
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
         {{{body}}}
 
 

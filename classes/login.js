@@ -38,7 +38,6 @@ class Login {
 
             let result = await client.query(query);
             client.release();
-            console.log(result.rows[0])
             return result.rows[0];
 
         } catch (error) {
@@ -57,10 +56,18 @@ class Login {
 
             let result = await client.query(query);
             client.release();
+            return result.rows[0];
 
-            let customer = await Customer.find(result.rows[0].id);
+            /*
+            console.log(result.rows[0])
+            let id = result.rows[0].id;
 
-            return new Customer(customer.id, customer.name, customer.address, customer.city, customer.state, customer.zip_code, customer.phone, customer.email, customer.password)
+            let customer = await Customer.find(id);
+            console.log(`clogin: ${JSON.stringify(customer)}`)
+
+            return customer;
+
+            */
 
 
         } catch (error) {

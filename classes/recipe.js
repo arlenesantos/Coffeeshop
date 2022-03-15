@@ -6,17 +6,17 @@ class Recipe {
     constructor(id, title, content, approved, customer) {
         let _id = id;
         let _title = title;
-        let _content = content;       
+        let _content = content;
         let _approved = approved;
         let _customer = customer;
-        
+
         let _pool = PoolSingleton.getInstance();
 
         this.getId = () => _id;
         this.getTitle = () => _title;
-        this.getContent = () => _content;     
+        this.getContent = () => _content;
         this.getApproved = () => _approved;
-        this.getCustomer = () => _customer;        
+        this.getCustomer = () => _customer;
 
         this.setTitle = (new_title) => _title = new_title;
         this.setContent = (new_content) => _content = new_content;
@@ -31,9 +31,9 @@ class Recipe {
                 };
 
                 let client = await _pool.connect();
-                let result = await client.query(query);               
-                _id = result.rows[0].id;               
-                client.release();                
+                let result = await client.query(query);
+                _id = result.rows[0].id;
+                client.release();
 
             } catch (error) {
                 throw error;
@@ -49,7 +49,7 @@ class Recipe {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();  
+                client.release();
                 return this;
 
             } catch (error) {
@@ -75,7 +75,7 @@ class Recipe {
 
     }
 
-    
+
     get id() {
         return this.getId();
     }
@@ -84,13 +84,13 @@ class Recipe {
     }
     get content() {
         return this.getContent();
-    }    
+    }
     get approved() {
         return this.getApproved();
     }
     get customer() {
         return this.getCustomer();
-    }      
+    }
     get pool() {
         return this.getPool();
     }
@@ -101,19 +101,19 @@ class Recipe {
         try {
             let client = await pool.connect();
             let query = `SELECT id, title, content, approved, customer_id FROM recipes;`
-            let result = await client.query(query);   
+            let result = await client.query(query);
             client.release();
 
             let recipes = result.rows;
-            let customers = await Customer.all();  
+            let customers = await Customer.all();
 
-            let array = [];            
+            let array = [];
             recipes.forEach((r) => {
-                let customer = customers.find((c) => c.id == r.customer_id);              
-                let recipe = new Recipe(r.id, r.title, r.content, r.approved, customer);                              
+                let customer = customers.find((c) => c.id == r.customer_id);
+                let recipe = new Recipe(r.id, r.title, r.content, r.approved, customer);
                 array.push(recipe);
-                                
-            });                        
+
+            });
             return array;
 
         } catch (error) {
@@ -129,15 +129,16 @@ class Recipe {
                 text: `SELECT id, title, content, approved, customer_id FROM recipes WHERE id = $1;`,
                 values: [id]
             };
-            let result = await client.query(query);            
+            let result = await client.query(query);
             client.release();
 
-            let recipe = result.rows[0];            
+            let recipe = result.rows[0];
             let customer = await Customer.find(recipe.customer_id);
             return new Recipe(recipe.id, recipe.title, recipe.content, recipe.approved, customer);
 
         } catch (error) {
-            throw error;
+            console.log(error);
+            return false;
         }
     }
 
