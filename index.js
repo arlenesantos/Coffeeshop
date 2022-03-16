@@ -429,7 +429,7 @@ app.get("/admin/brands", async (req, res) => {
             let successMsg = await req.consumeFlash('success');
             let warningMsg = await req.consumeFlash('warning');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-brands", { layout: "admin", brands: brands, success: successMsg, warning: warningMsg, error: errorMsg });
+            res.render("admin-brands", { layout: "admin", brands: brands, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -509,7 +509,7 @@ app.get("/admin/products", async (req, res) => {
             let successMsg = await req.consumeFlash('success');
             let warningMsg = await req.consumeFlash('warning');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-products", { layout: "admin", products: products, categories: categories, brands: brands, success: successMsg, warning: warningMsg, error: errorMsg });
+            res.render("admin-products", { layout: "admin", products: products, categories: categories, brands: brands, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -593,7 +593,7 @@ app.get("/admin/stores", async (req, res) => {
             let stores = await Store.all();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-stores", { layout: "admin", stores: stores, success: successMsg, error: errorMsg });
+            res.render("admin-stores", { layout: "admin", stores: stores, success: successMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -677,7 +677,7 @@ app.get("/admin/customers", async (req, res) => {
             let customers = await Customer.all();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-customers", { layout: "admin", customers: customers, success: successMsg, error: errorMsg });
+            res.render("admin-customers", { layout: "admin", customers: customers, success: successMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -762,7 +762,7 @@ app.get("/admin/recipes", async (req, res) => {
             let recipes = await Recipe.all();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-recipes", { layout: "admin", recipes: recipes, success: successMsg, error: errorMsg });
+            res.render("admin-recipes", { layout: "admin", recipes: recipes, success: successMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -868,7 +868,7 @@ app.get("/admin/recipes/review", async (req, res) => {
             let recipe = await Recipe.find(id);
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("recipes-review", { layout: "admin", recipe: recipe, success: successMsg, error: errorMsg });
+            res.render("recipes-review", { layout: "admin", recipe: recipe, success: successMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);

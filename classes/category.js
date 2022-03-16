@@ -60,8 +60,8 @@ class Category {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                
-            } catch (error) {                
+
+            } catch (error) {
                 throw error;
             }
         }
@@ -75,7 +75,7 @@ class Category {
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-                let products = result.rows;  
+                let products = result.rows;
 
                 /*
 
@@ -92,7 +92,7 @@ class Category {
 
                 return products;
 
-                
+
 
             } catch (error) {
                 throw error;
@@ -144,7 +144,7 @@ class Category {
             client.release();
             return new Category(category.id, category.name);
 
-        } catch (error) {                
+        } catch (error) {
             throw error;
         }
     }
