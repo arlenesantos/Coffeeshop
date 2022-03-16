@@ -79,6 +79,7 @@
     </header>
     <main>
 
+        <!-- flash messages -->
         <div>
             {{#each success}}
             <div class="container">
@@ -87,37 +88,25 @@
                 </div>
             </div>
             {{/each}}
-        </div>
 
-        <div>
+            {{#each warning}}
+            <div class="container">
+                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {{/each}}
+
             {{#each error}}
             <div class="container">
-                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                <div class="alert alert-danger d-flex align-items-center alert-dismissible " role="alert">{{this}}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
             {{/each}}
+
         </div>
 
-        <div>
-            {{#each password}}
-            <div class="container">
-                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-
-        <div>
-            {{#each content}}
-            <div class="container">
-                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-            {{/each}}
-        </div>
 
         {{{body}}}
 
