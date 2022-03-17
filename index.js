@@ -32,6 +32,7 @@ const { Store } = require("./classes/store");
 const { Customer } = require("./classes/customer");
 const { Recipe } = require("./classes/recipe");
 const { Login } = require("./classes/login");
+const { Cart } = require("./classes/cart");
 
 
 
@@ -220,11 +221,7 @@ app.post("/login", async (req, res) => {
             if (password === confirmPassword) {
                 let customer = new Customer(null, name, address, city, state, zip_code, phone, email, password);
                 await customer.save();
-
-                req.session.logged_in = true;
-                req.session.customer = customer;
-                req.session.save();
-                res.redirect("/customer");
+                res.redirect("/login");
 
             } else {
                 await req.flash('warning', 'Password does not match. Try again.');
@@ -896,10 +893,11 @@ app.put("/api/admin/recipes/approve", async (req, res) => {
 app.get("/cart", async (req, res) => {
     if (req.session.logged_in && req.session.customer) {
         try {
-
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            let products = await cart.getProducts();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("cart", { success: successMsg, error: errorMsg, customer: req.session.customer });
+            res.render("cart", { success: successMsg, error: errorMsg, customer: req.session.customer, products: products });
 
         } catch (error) {
             console.log(error);

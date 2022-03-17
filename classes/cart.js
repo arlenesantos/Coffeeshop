@@ -1,6 +1,9 @@
 //postgresql
 const { Pool } = require("pg/lib");
 const PoolSingleton = require("../data/pooldb");
+const { Product } = require("./product");
+//const { Category } = require("./category");
+//const { Brand } = require("./brand");
 
 class Cart {
     constructor(id, customer) {
@@ -10,6 +13,50 @@ class Cart {
 
         this.getId = () => _id;
         this.getCustomer = () => _customer;
+
+        this.getProducts = async () => {
+            try {
+                let query = {
+                    text: `SELECT product_id FROM purchaseDetail
+                    WHERE purchase_id = $1`,
+                    values: [_id]
+                }
+                let client = await _pool.connect();
+                let result = await client.query(query);
+
+                let array = [];
+
+                for (let p of result.rows) {
+                    let product = await Product.find(p.product_id);
+                    array.push(product);
+                }
+                return array;
+
+
+
+
+                /*
+                let categories = await Category.all();
+                let brands = await Brand.all();
+
+                let array = [];
+                result.rows.forEach((p) => {
+                    let category = categories.find((c) => c.id == p.category_id);
+                    let brand = brands.find((b) => b.id == p.brand_id);
+                    let product = new Product(p.id, p.name, p.price, category, brand);
+                    array.push(product);
+
+                });
+
+                return array;
+                */
+
+
+            } catch (error) {
+                throw error;
+
+            }
+        }
     }
 
     get id() {
@@ -48,6 +95,10 @@ class Cart {
         } catch (error) {
             throw error;
         }
+    }
+
+    async getProducts() {
+        return this.getProducts();
     }
 }
 

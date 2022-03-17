@@ -42,8 +42,10 @@ class Customer {
                 };
 
                 let client = await _pool.connect();
-                await client.query(query);
+                let result = await client.query(query);
                 client.release();
+                _id = result.rows[0].id;
+
 
             } catch (error) {
                 throw error;

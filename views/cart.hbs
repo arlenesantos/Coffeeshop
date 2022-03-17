@@ -1,3 +1,81 @@
 <section class="container">
+    <!-- cart menu -->
+    <div class="p-3">
+        <ul class="nav justify-content-center">
+            <li class="nav-item menu-cart">
+                <a class="nav-link text-secondary" href="/cart">Shopping cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-secondary" href="/cart/shipping">Shipping details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-secondary" href="/cart/payment">Payment options</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <!-- cart products -->
+        <div class="col-md-7 col-lg-8 mb-5">
+            <h1 class="h3 border-bottom pb-2 mb-5 ">Shopping cart</h1>
+
+            <div>
+                {{#each products}}
+                <div class="card mb-4" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <a href="/products/product?id={{this.id}}" class="text-decoration-none link-secondary">
+                                <img src="/images/product.jpg" class="img-fluid" alt="product image"></a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}"
+                                        class="text-decoration-none link-dark"> {{this.name}}</a></p>
+                                <p class="card-title"> Product brand</p>
+                                <p class="card-text">{{this.price}}</p>
+                                <i class="bi bi-cart-dash btn btn-secondary px-3 fs-5"></i>
+                                <span class="px-3 fw-bold">1</span>
+                                <i class="bi bi-cart-plus btn btn-secondary px-3 fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+
+
+
+
+
+            <div>
+                <a href="/cart/shipping" class="btn btn-outline-secondary">Next</a>
+                <a href="/" class="btn btn-outline-warning">Cancel</a>
+            </div>
+
+        </div>
+
+        <!-- cart summary -->
+        <div class="col-md-5 col-lg-4" style="border: 2px solid red">
+            <h1 class="h3 border-bottom pb-2 mb-5">Summary</h1>
+            <div class="row-col">
+                <span class="text-uppercase text-start ">Subtotal</span><span class="text-end"> valor
+                </span>
+            </div>
+            <div class="row-col">
+                <span class="text-uppercase">Shipping</span>
+                <span class="text-uppercase"> Free
+                </span>
+            </div>
+            <div class="row-col">
+                <span class="text-uppercase">Taxes</span><span class="text-uppercase"> $13 </span>
+            </div>
+            <div class="row-col">
+                <span class="text-uppercase">Total</span><span> soma </span>
+            </div>
+
+
+
+        </div>
+    </div>
 
 </section>
