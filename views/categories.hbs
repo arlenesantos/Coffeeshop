@@ -14,36 +14,45 @@
     <!-- products by category -->
     <div class="row mx-1 py-3">
         <div class="col-3 d-none d-md-block ">
-            <img src="/images/product-{{category.id}}.jpg" class="img-fluid rounded sticky-top"
-                alt="coffee image">
+            <img src="/images/product-{{category.id}}.jpg" class="img-fluid rounded sticky-top" alt="coffee image">
         </div>
         <div class="col-9 mx-auto">
             <div class="py-5">
                 <h2 class="pb-2 border-bottom">{{#if category}}{{category.name}}{{/if}}</h2>
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2 py-5">
                     {{#each products}}
-                    <div class="col">                        
-                            <div class="card h-100 pt-3 shadow-sm bg-body rounded">
-                                <div class="row g-0">
-                                    <div class="col-md-6">
-                                        <a href="/products/product?id={{this.id}}" class="text-decoration-none link-secondary">
+                    <div class="col">
+                        <div class="card h-100 pt-3 shadow-sm bg-body rounded">
+                            <div class="row g-0">
+                                <div class="col-md-6">
+                                    <a href="/products/product?id={{this.id}}"
+                                        class="text-decoration-none link-secondary">
                                         <img src="/images/product.jpg" class="img-fluid" alt="product image"></a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}" class="text-decoration-none link-dark"> {{this.name}} </a></p>
-                                            <p class="card-title"> Product brand</p>
-                                            <p class="card-text">{{this.price}}</p>
-                                            <a href="#" class="btn btn-outline-secondary mb-4 mx-auto"
-                                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                                                aria-controls="offcanvasCart">
-                                                <i class="bi bi-cart-plus"></i>
-                                            </a>
-                                        </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}"
+                                                class="text-decoration-none link-dark"> {{this.name}} </a></p>
+                                        <p class="card-title"> Product brand</p>
+                                        <p class="card-text">{{this.price}}</p>
+                                        <form action="/cart" method="POST">
+                                            <input type="hidden" name="product_id" value="{{this.id}}">
+                                            <button type="submit" class="btn btn-outline-secondary mb-4 mx-auto"><i
+                                                    class="bi bi-cart-plus"></i></button>
+                                        </form>
+
+                                        <!-- offcanvas cart 
+                                        <a href="#" class="btn btn-outline-secondary mb-4 mx-auto"
+                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                                            aria-controls="offcanvasCart">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </a>
+                                        -->
                                     </div>
                                 </div>
                             </div>
-                        
+                        </div>
+
                     </div>
                     {{/each}}
                 </div>
@@ -51,7 +60,7 @@
         </div>
     </div>
 
-    <!-- offcanvas cart -->
+    <!-- offcanvas cart 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Your cart</h5>
@@ -71,7 +80,6 @@
                                 <p class="card-text">Product price</p>
                                 <a href="#">-</a><span>itens</span><a href="#">+</a>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -80,40 +88,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- 
-        <div>
-            <form action="/products/category?id">
-                <div class="col-sm">
-                    <label for="store" class="form-label">Category</label>
-                    <select class="form-select" id="store" name="store">
-                        <option selected>Choose...</option>
-                        {{#each stores}}
-                        <option value="{{this.id}}">{{this.name}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-            </form>
-        </div>
-         -->
-
-
-
-
-
-
+    </div>-->
 
 </section>

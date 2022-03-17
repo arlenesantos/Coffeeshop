@@ -98,15 +98,7 @@ app.use('/ckeditor', express.static(__dirname + "/node_modules/@ckeditor/ckedito
 
 app.listen(3000, () => console.log("server on"));
 
-app.get("/error", async (req, res) => {
-    try {
-        let errorMsg = await req.consumeFlash('error');
-        res.render("error", { error: errorMsg });
-
-    } catch (error) {
-        console.log(error);
-    }
-});
+//PUBLIC PAGES:
 
 app.get("/", async (req, res) => {
     try {
@@ -168,7 +160,6 @@ app.get("/recipes/recipe", async (req, res) => {
     try {
         let { id } = req.query;
         let recipe = await Recipe.find(id);
-        console.log(recipe)
         res.render("recipe", { recipe: recipe });
 
     } catch (error) {
@@ -897,6 +888,62 @@ app.put("/api/admin/recipes/approve", async (req, res) => {
         }
     } else {
         res.redirect("/login");
+    }
+});
+
+//cart
+
+app.get("/cart", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+
+            let successMsg = await req.consumeFlash('success');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("cart", { success: successMsg, error: errorMsg, customer: req.session.customer });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.post("/cart", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let { product_id } = req.body;
+            let product = await Product.find(product_id);
+            res.render("cart", { product: product });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+
+    } else {
+        res.redirect("/login");
+    }
+})
+
+
+
+
+
+
+
+
+
+app.get("/error", async (req, res) => {
+    try {
+        let errorMsg = await req.consumeFlash('error');
+        res.render("error", { error: errorMsg });
+
+    } catch (error) {
+        console.log(error);
     }
 });
 
