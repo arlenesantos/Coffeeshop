@@ -947,6 +947,26 @@ app.get("/cart/shipping", async (req, res) => {
     }
 });
 
+app.get("/cart/payment", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            let products = await cart.getProducts();
+            let customer = await Customer.find(req.session.customer.id);
+            let successMsg = await req.consumeFlash('success');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("payment", { success: successMsg, error: errorMsg, customer: customer, products: products });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
+
 
 
 
