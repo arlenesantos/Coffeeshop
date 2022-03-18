@@ -897,7 +897,7 @@ app.get("/cart", async (req, res) => {
             let products = await cart.getProducts();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("cart", { success: successMsg, error: errorMsg, customer: req.session.customer, products: products });
+            res.render("shopping", { success: successMsg, error: errorMsg, customer: req.session.customer, products: products });
 
         } catch (error) {
             console.log(error);
@@ -925,7 +925,27 @@ app.post("/cart", async (req, res) => {
     } else {
         res.redirect("/login");
     }
-})
+});
+
+app.get("/cart/shipping", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            let products = await cart.getProducts();
+            let customer = await Customer.find(req.session.customer.id);
+            let successMsg = await req.consumeFlash('success');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("shipping", { success: successMsg, error: errorMsg, customer: customer, products: products });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
 
 
 
