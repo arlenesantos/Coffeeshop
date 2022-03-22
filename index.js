@@ -97,6 +97,8 @@ app.use('/js', express.static(__dirname + "/node_modules/bootstrap/dist/js"));
 app.use('/icons', express.static(__dirname + "/node_modules/bootstrap-icons/font"));
 app.use('/ckeditor', express.static(__dirname + "/node_modules/@ckeditor/ckeditor5-build-classic/build"));
 
+var taxrate = 0.23;
+
 app.listen(3000, () => console.log("server on"));
 
 //PUBLIC PAGES:
@@ -895,9 +897,12 @@ app.get("/cart", async (req, res) => {
         try {
             let cart = await Cart.findOrCreate(req.session.customer.id);
             let products = await cart.getProducts();
+            let subtotal = await cart.getTotal();
+            let taxes = (subtotal * taxrate).toFixed(2);
+            let total = (Number(subtotal) + Number(taxes)).toFixed(2);
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("shopping", { success: successMsg, error: errorMsg, customer: req.session.customer, products: products });
+            res.render("cart", { success: successMsg, error: errorMsg, customer: req.session.customer, products: products, subtotal: subtotal, taxes: taxes, total: total });
 
         } catch (error) {
             console.log(error);
@@ -913,8 +918,9 @@ app.post("/cart", async (req, res) => {
     if (req.session.logged_in && req.session.customer) {
         try {
             let { product_id } = req.body;
-            let product = await Product.find(product_id);
-            res.render("cart", { product: product });
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            await cart.addProduct(product_id);
+            res.redirect("/cart");
 
         } catch (error) {
             console.log(error);
@@ -927,15 +933,67 @@ app.post("/cart", async (req, res) => {
     }
 });
 
-app.get("/cart/shipping", async (req, res) => {
+app.put("/cart", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let { product_id, quantity, increase } = req.body;
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+
+            if (increase) {
+                await cart.increaseQuantity(product_id);
+            } else {
+                if (quantity <= 1) {
+                    await cart.remove(product_id);
+                } else {
+                    await cart.decreaseQuantity(product_id);
+                }
+            }
+
+            res.redirect("/cart");
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.delete("/cart", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let { product_id } = req.body;
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            await cart.remove(product_id);
+            res.redirect("/cart");
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+
+    } else {
+        res.redirect("/login");
+    }
+});
+
+
+app.get("/cart/checkout", async (req, res) => {
     if (req.session.logged_in && req.session.customer) {
         try {
             let cart = await Cart.findOrCreate(req.session.customer.id);
             let products = await cart.getProducts();
+            let subtotal = await cart.getTotal();
+            let taxes = (subtotal * taxrate).toFixed(2);
+            let total = (Number(subtotal) + Number(taxes)).toFixed(2);
             let customer = await Customer.find(req.session.customer.id);
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("shipping", { success: successMsg, error: errorMsg, customer: customer, products: products });
+            res.render("checkout", { success: successMsg, error: errorMsg, customer: customer, products: products, subtotal: subtotal, taxes: taxes, total: total });
 
         } catch (error) {
             console.log(error);
@@ -947,25 +1005,7 @@ app.get("/cart/shipping", async (req, res) => {
     }
 });
 
-app.get("/cart/payment", async (req, res) => {
-    if (req.session.logged_in && req.session.customer) {
-        try {
-            let cart = await Cart.findOrCreate(req.session.customer.id);
-            let products = await cart.getProducts();
-            let customer = await Customer.find(req.session.customer.id);
-            let successMsg = await req.consumeFlash('success');
-            let errorMsg = await req.consumeFlash('error');
-            res.render("payment", { success: successMsg, error: errorMsg, customer: customer, products: products });
 
-        } catch (error) {
-            console.log(error);
-            await req.flash('error', 'Something went wrong.');
-            res.redirect("/error");
-        }
-    } else {
-        res.redirect("/login");
-    }
-});
 
 
 

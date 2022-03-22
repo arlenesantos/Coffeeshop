@@ -6,10 +6,7 @@
                 <a class="nav-link text-secondary" href="/cart">Shopping cart</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary" href="/cart/shipping">Shipping details</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-secondary" href="/cart/payment">Payment options</a>
+                <a class="nav-link text-secondary" href="/cart/checkout">Checkout</a>
             </li>
         </ul>
     </div>
@@ -37,9 +34,38 @@
                                         class="text-decoration-none link-dark"> {{this.name}}</a></p>
                                 <p class="card-title"> Product brand</p>
                                 <p class="card-text">{{this.price}}</p>
-                                <i class="bi bi-cart-dash btn btn-secondary px-3 fs-5"></i>
-                                <span class="px-3 fw-bold">1</span>
-                                <i class="bi bi-cart-plus btn btn-secondary px-3 fs-5"></i>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <form action="/cart?_method=PUT" method="POST">
+                                            <input type="hidden" name="decrease" value="decrease">
+                                            <input type="hidden" name="quantity" value="{{this.quantity}}">
+                                            <input type="hidden" name="product_id" value="{{this.id}}">
+                                            <button type="submit" class="btn btn-secondary px-4">
+                                                <i class="bi bi-cart-dash fs-5"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="col p-0">
+                                        <input type="text" class="form-control px-4 fw-bold  fs-5 text-center"
+                                            value="{{this.quantity}}" readonly="readonly">
+                                    </div>
+                                    <div class="col">
+                                        <form action="/cart?_method=PUT" method="POST">
+                                            <input type="hidden" name="increase" value="increase">
+                                            <input type="hidden" name="product_id" value="{{this.id}}">
+                                            <button type="submit" class="btn btn-secondary px-4">
+                                                <i class="bi bi-cart-plus fs-5"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <form action="/cart?_method=DELETE" method="POST">
+                                            <input type="hidden" name="product_id" value="{{this.id}}">
+                                            <button type="submit" id="remove" class="btn btn-outline-danger">
+                                                <i class="bi bi-trash fs-5"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -60,24 +86,15 @@
                         <span class="text-uppercase">Subtotal</span>
                     </div>
                     <div class="col-6 mb-3">
-                        <span>valor</span>
+                        <span>{{#if subtotal}} {{subtotal}} {{/if}}</span>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <span class="text-uppercase">Shipping</span>
-                    </div>
-                    <div class="col-6 mb-3">
-                        <span class="text-uppercase">Free</span>
-                    </div>
-
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <span class="text-uppercase">Taxes</span>
                     </div>
                     <div class="col-6 mb-3">
-                        <span>$13</span>
+                        <span>{{#if taxes}} {{taxes}} {{/if}}</span>
                     </div>
                 </div>
                 <hr>
@@ -86,7 +103,7 @@
                         <span class="text-uppercase">Total</span>
                     </div>
                     <div class="col-6">
-                        <span>$soma</span>
+                        <span>{{#if total}} {{total}} {{/if}}</span>
                     </div>
                 </div>
             </div>
@@ -94,7 +111,7 @@
 
         <!-- cart buttons -->
         <div class="mb-5">
-            <a href="/cart/shipping" class="btn btn-secondary px-5">Next</a>
+            <a href="/cart/checkout" class="btn btn-secondary px-5">Next</a>
             <a href="/" class="btn btn-outline-secondary px-4">Cancel</a>
         </div>
 

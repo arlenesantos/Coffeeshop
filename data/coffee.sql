@@ -286,16 +286,18 @@ CREATE TABLE purchases (
     id SERIAL PRIMARY KEY,
     date DATE DEFAULT CURRENT_DATE NOT NULL,    
     customer_id INT NOT NULL,
-    store_id INT NOT NULL,
-    checkout BOOLEAN,
-    FOREIGN KEY (customer_id) REFERENCES customers(id),
-    FOREIGN KEY (store_id) REFERENCES stores(id)
+    free_shipping BOOLEAN,   
+    checkout BOOLEAN,    
+    FOREIGN KEY (customer_id) REFERENCES customers(id)    
 );
 
-INSERT INTO purchases (customer_id, store_id, checkout) VALUES
-(2, 1, true),
-(2, 2, false),
-(3, 1, true);
+INSERT INTO purchases (customer_id, free_shipping, checkout ) VALUES
+(2, false, true),
+(2, true, true),
+(2, false, false),
+(2, true, false),
+(3, false, false),
+(3, false, true);
 
 --purchase-detail
 CREATE TABLE purchaseDetail (      
@@ -309,8 +311,14 @@ CREATE TABLE purchaseDetail (
 
 INSERT INTO purchaseDetail (product_id, purchase_id, quantity) VALUES
 (1, 1, 2),
-(2, 2, 3),
-(13, 1, 2);
+(18, 1, 3),
+(24, 1, 1),
+(2, 2, 1 ),
+(12, 3, 2 ),
+(21, 4, 2 ),
+(3, 5, 2 ),
+(6, 5, 1 ),
+(3, 6, 1 );
 
 --recipes
 CREATE TABLE recipes (

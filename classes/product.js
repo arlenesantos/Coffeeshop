@@ -10,6 +10,7 @@ class Product {
         let _price = price;
         let _category = category;
         let _brand = brand;
+        let _quantity = 0;
         let _pool = PoolSingleton.getInstance();
 
         this.getId = () => _id;
@@ -17,14 +18,16 @@ class Product {
         this.getPrice = () => _price;
         this.getCategory = () => _category;
         this.getBrand = () => _brand;
-        
-        
-        
+        this.getQuantity = () => _quantity;
+
+
+
         this.setName = (new_name) => _name = new_name;
         this.setPrice = (new_price) => _price = new_price;
         this.setCategory = (new_category) => _category = new_category;
-        this.setBrand = (new_brand) => _brand = new_brand;        
-        
+        this.setBrand = (new_brand) => _brand = new_brand;
+        this.setQuantity = (new_quantity) => _quantity = new_quantity;
+
         this.save = async () => {
             try {
                 let query = {
@@ -34,7 +37,7 @@ class Product {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();                
+                client.release();
 
             } catch (error) {
                 throw error;
@@ -82,25 +85,25 @@ class Product {
                     LEFT JOIN stocks ON products.id = stocks.product_id 
                     LEFT JOIN stores ON stocks.store_id = stores.id              
                     WHERE products.id = $1`,
-                    values:[_id]
-                };               
+                    values: [_id]
+                };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-                
+
                 return result.rows.map((p) => (
                     {
-                         id: p.id,
-                         name: p.name,
-                         stock: p.stock,
-                         min_stock: p.min_stock,
-                         stockIsZero: p.stock == 0,
-                         stockIsMin: p.stock <= p.min_stock,
-                     }
-                 ))
+                        id: p.id,
+                        name: p.name,
+                        stock: p.stock,
+                        min_stock: p.min_stock,
+                        stockIsZero: p.stock == 0,
+                        stockIsMin: p.stock <= p.min_stock,
+                    }
+                ))
 
 
-                
+
                 /* alternative code:
 
                 result.rows.forEach((p) => {                    
@@ -120,7 +123,7 @@ class Product {
                 */
 
             } catch (error) {
-                throw error;                
+                throw error;
             }
 
         }
@@ -132,15 +135,15 @@ class Product {
                     INNER JOIN products ON stocks.product_id = products.id
                     INNER JOIN stores ON stocks.store_id = stores.id
                     WHERE store_id = $1 AND product_id = $2;`,
-                    values:[store_id, _id]
+                    values: [store_id, _id]
                 };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
 
@@ -151,15 +154,15 @@ class Product {
                     INNER JOIN products ON stocks.product_id = products.id
                     INNER JOIN stores ON stocks.store_id = stores.id
                     WHERE store_id = $1 AND product_id = $2 ;`,
-                    values:[store_id, _id]
+                    values: [store_id, _id]
                 };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
 
@@ -171,15 +174,15 @@ class Product {
                     INNER JOIN products ON stocks.product_id = products.id
                     INNER JOIN stores ON stocks.store_id = stores.id
                     WHERE stocks.product_id = $1;`,
-                    values:[_id]
+                    values: [_id]
                 };
-                   
+
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 return result.rows;
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
         }
 
@@ -191,27 +194,27 @@ class Product {
                     LEFT JOIN stocks ON products.id = stocks.product_id 
                     LEFT JOIN stores ON stocks.store_id = stores.id              
                     WHERE products.id = $1`,
-                    values:[_id]
-                };               
+                    values: [_id]
+                };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 let stocks = result.rows;
-                
+
 
                 return stocks.map((p) => (
                     {
-                         id: p.id,
-                         name: p.name,
-                         stock: p.stock,
-                         min_stock: p.min_stock,
-                         stockIsZero: p.stock == 0,
-                         stockIsMin: p.stock <= p.min_stock,
-                     }
-                 ))
+                        id: p.id,
+                        name: p.name,
+                        stock: p.stock,
+                        min_stock: p.min_stock,
+                        stockIsZero: p.stock == 0,
+                        stockIsMin: p.stock <= p.min_stock,
+                    }
+                ))
 
-                
-                
+
+
                 /*
                 stock.forEach((p) => {                    
                     if (p.stock == 0){
@@ -229,9 +232,9 @@ class Product {
                 return stock;*/
 
 
-                
+
             } catch (error) {
-                throw error;                
+                throw error;
             }
 
         }
@@ -252,6 +255,10 @@ class Product {
     get brand() {
         return this.getBrand();
     }
+    get quantity() {
+        return this.getQuantity();
+    }
+
     get pool() {
         return this.getPool();
     }
@@ -262,22 +269,22 @@ class Product {
         try {
             let client = await pool.connect();
             let query = `SELECT id, name, price, category_id, brand_id FROM products ORDER BY id ASC;`
-            let result = await client.query(query);                        
+            let result = await client.query(query);
             client.release();
 
             let categories = await Category.all();
             let brands = await Brand.all();
-                         
+
             let array = [];
             result.rows.forEach((p) => {
                 let category = categories.find((c) => c.id == p.category_id);
-                let brand = brands.find((b) => b.id == p.brand_id); 
+                let brand = brands.find((b) => b.id == p.brand_id);
                 let product = new Product(p.id, p.name, p.price, category, brand);
-                array.push(product); 
-                                               
-            });         
-                      
-           return array;
+                array.push(product);
+
+            });
+
+            return array;
 
         } catch (error) {
             throw error;
@@ -314,13 +321,13 @@ class Product {
 
     async delete() {
         return this.delete();
-    }  
-    
-    async checkStock() { 
+    }
+
+    async checkStock() {
         return this.checkStock();
     }
 
-    async getStock(store_id) { 
+    async getStock(store_id) {
         return this.getStock(store_id);
     }
 
