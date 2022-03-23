@@ -1,3 +1,5 @@
+{{#if products}}
+
 <section class="container">
     <!-- cart menu -->
     <div class="p-3 mb-5">
@@ -169,8 +171,8 @@
                                 <div class="card-body">
                                     <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}"
                                             class="text-decoration-none link-dark"> {{this.name}}</a></p>
-                                    <p class="card-title"> Product brand</p>
-                                    <p class="card-text">price</p>
+                                    <p class="card-title">{{this.brand.name}}</p>
+                                    <p class="card-text"> $ {{this.price}} x <span>{{this.quantity}}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -219,7 +221,7 @@
 
             <!-- buttons -->
             <div class="mb-5">
-                <a href="/customer" class="btn btn-secondary px-5">Pay Now</a>
+                <button type="submit" class="btn btn-secondary px-5">Pay Now</button>
                 <a href="/" class="btn btn-outline-secondary px-4">Cancel</a>
             </div>
 
@@ -228,6 +230,22 @@
     </form>
 
 </section>
+
+{{else}}
+
+<div class="container">
+    <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">
+        <span>Please add products in your shopping cart to proceed. <a href="/products/category?id=1"
+                style="color: #664d03"> Click
+                here</a></span>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+{{/if}}
+
+
 
 <script>
 

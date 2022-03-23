@@ -32,7 +32,7 @@
                             <div class="card-body">
                                 <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}"
                                         class="text-decoration-none link-dark"> {{this.name}}</a></p>
-                                <p class="card-title"> Product brand</p>
+                                <p class="card-title"> {{this.brand.name}}</p>
                                 <p class="card-text">{{this.price}}</p>
 
                                 <div class="row">
@@ -111,8 +111,8 @@
 
         <!-- cart buttons -->
         <div class="mb-5">
-            <a href="/cart/checkout" class="btn btn-secondary px-5">Next</a>
-            <a href="/" class="btn btn-outline-secondary px-4">Cancel</a>
+            <a href="/cart/checkout" class="btn btn-secondary px-5">Checkout</a>
+            <a href="/products/category?id=1" class="btn btn-outline-secondary px-4">Keep shopping</a>
         </div>
 
     </div>

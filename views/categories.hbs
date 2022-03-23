@@ -33,7 +33,7 @@
                                     <div class="card-body">
                                         <p class="card-title fw-bold"> <a href="/products/product?id={{this.id}}"
                                                 class="text-decoration-none link-dark"> {{this.name}} </a></p>
-                                        <p class="card-title"> Product brand</p>
+                                        <p class="card-title">{{this.brand_name}}</p>
                                         <p class="card-text">{{this.price}}</p>
                                         <form action="/cart" method="POST">
                                             <input type="hidden" name="product_id" value="{{this.id}}">

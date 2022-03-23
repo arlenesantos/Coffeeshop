@@ -69,28 +69,18 @@ class Category {
         this.getProducts = async () => {
             try {
                 let query = {
-                    text: `SELECT id, name, price, category_id, brand_id FROM products WHERE category_id = $1`,
+                    text: `SELECT p.id, p.name, p.price, c.name AS category_name, b.name AS brand_name 
+                    FROM products AS p
+                    LEFT JOIN categories AS c ON p.category_id = c.id
+                    LEFT JOIN brands AS b ON p.brand_id = b.id                
+                    WHERE category_id = $1`,
                     values: [_id]
                 };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-                let products = result.rows;
 
-                /*
-
-                let brands = await Brand.all();
-
-                let array = [];
-                products.forEach((p) => {
-                    let brand = brands.find((b) => b.id == p.brand_id);                    
-                    let product = new Product(p.id, p.name, p.price, this, brand);
-                    array.push(product);
-                })
-
-                return array; */
-
-                return products;
+                return result.rows;
 
 
 

@@ -149,6 +149,17 @@ class Cart {
 
             }
         }
+        /*
+                this.checkout = async () => {
+                    try {
+                        //mudar checkout de purchase para true
+                        //mudar data para today
+                        
+                    } catch (error) {
+                        throw error;
+                        
+                    }
+                }*/
     }
 
     get id() {
@@ -175,8 +186,8 @@ class Cart {
 
             } else {
                 let create = {
-                    text: `INSERT INTO purchases (customer_id, free_shipping, checkout) VALUES ($1, $2, $3) RETURNING *;`,
-                    values: [customer_id, true, false]
+                    text: `INSERT INTO purchases (customer_id, checkout) VALUES ($1, $2, $3) RETURNING *;`,
+                    values: [customer_id, false]
                 };
                 let createResult = await client.query(create);
                 let cart = createResult.rows[0];
@@ -211,6 +222,10 @@ class Cart {
 
     async getTotal() {
         return this.getTotal();
+    }
+
+    async checkout() {
+        return this.checkout();
     }
 
 }

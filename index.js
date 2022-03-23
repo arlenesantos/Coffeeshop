@@ -33,6 +33,7 @@ const { Customer } = require("./classes/customer");
 const { Recipe } = require("./classes/recipe");
 const { Login } = require("./classes/login");
 const { Cart } = require("./classes/cart");
+const { Purchase } = require("./classes/purchase");
 
 
 
@@ -994,6 +995,31 @@ app.get("/cart/checkout", async (req, res) => {
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
             res.render("checkout", { success: successMsg, error: errorMsg, customer: customer, products: products, subtotal: subtotal, taxes: taxes, total: total });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.put("/cart/checkout", async (req, res) => {
+    if (req.session.logged_in && req.session.customer) {
+        try {
+            let cart = await Cart.findOrCreate(req.session.customer.id);
+            let purchase = await Purchase.find(cart.id);
+            console.log(new Date())
+            purchase.setDate(new Date())
+            //set date today
+            purchase.setCheckout(true);
+            await purchase.update();
+
+
+            await req.flash('success', 'Order processed successfully!');
+            res.redirect("/customer");
 
         } catch (error) {
             console.log(error);
