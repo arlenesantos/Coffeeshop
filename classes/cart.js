@@ -186,8 +186,8 @@ class Cart {
 
             } else {
                 let create = {
-                    text: `INSERT INTO purchases (customer_id, checkout) VALUES ($1, $2, $3) RETURNING *;`,
-                    values: [customer_id, false]
+                    text: `INSERT INTO purchases (customer_id, checkout, free_shipping) VALUES ($1, $2, $3) RETURNING *;`,
+                    values: [customer_id, false, true]
                 };
                 let createResult = await client.query(create);
                 let cart = createResult.rows[0];

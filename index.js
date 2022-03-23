@@ -270,6 +270,41 @@ app.get("/customer", async (req, res) => {
             await req.flash('error', 'Something went wrong.');
             res.redirect("/error");
         }
+    } else {
+        res.redirect("/login");
+    }
+});
+
+app.get("/customer/purchases", async (req, res) => {
+    if (req.session.logged_in) {
+        try {
+            let customer = await Customer.find(req.session.customer.id);
+            let order = await customer.getPurchases();
+
+            for (var i = 0; i < order.length; i++) {
+                let productList = await order[i].getProducts();
+                order[i].productList = productList;
+
+                let total = await order[i].getTotal();
+                order[i].subtotal = Number(total);
+                order[i].taxes = Number((total * taxrate)).toFixed(2);
+                order[i].shipping = Number(order[i].free_shipping ? 0 : 20).toFixed(2);
+                order[i].total =
+                    (Number(order[i].subtotal) + Number(order[i].taxes) + Number(order[i].shipping)).toFixed(2);
+            }
+
+
+            let successMsg = await req.consumeFlash('success');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("orders", { order: order, success: successMsg, error: errorMsg });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
     }
 });
 
@@ -1011,12 +1046,11 @@ app.put("/cart/checkout", async (req, res) => {
         try {
             let cart = await Cart.findOrCreate(req.session.customer.id);
             let purchase = await Purchase.find(cart.id);
-            console.log(new Date())
-            purchase.setDate(new Date())
-            //set date today
+            let { shipping } = req.body;
+            purchase.setDate(new Date());
             purchase.setCheckout(true);
+            purchase.setFreeShipping(shipping === "1");
             await purchase.update();
-
 
             await req.flash('success', 'Order processed successfully!');
             res.redirect("/customer");
@@ -1030,6 +1064,8 @@ app.put("/cart/checkout", async (req, res) => {
         res.redirect("/login");
     }
 });
+
+
 
 
 

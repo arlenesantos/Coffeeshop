@@ -1,5 +1,6 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
+const { Purchase } = require("./purchase");
 
 class Customer {
     constructor(id, name, address, city, state, zip_code, phone, email, password) {
@@ -104,14 +105,19 @@ class Customer {
         this.getPurchases = async () => {
             try {
                 let query = {
-                    text: `SELECT id, date, store_id, checkout FROM purchases
-                    WHERE customer_id = $1;`,
+                    text: `SELECT id, to_char(date, 'DD/MM/YYYY') as date, customer_id, checkout, free_shipping FROM purchases WHERE customer_id = $1 AND checkout = true ORDER BY date DESC;`,
                     values: [_id]
                 };
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
-                return result.rows[0];
+
+                let array = [];
+                result.rows.forEach((p) => {
+                    let purchase = new Purchase(p.id, p.date, p.customer_id, p.free_shipping, p.checkout);
+                    array.push(purchase);
+                })
+                return array;
 
             } catch (error) {
                 throw error;

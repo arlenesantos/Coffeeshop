@@ -286,7 +286,7 @@ CREATE TABLE purchases (
     id SERIAL PRIMARY KEY,
     date DATE DEFAULT CURRENT_DATE NOT NULL,    
     customer_id INT NOT NULL,
-    free_shipping BOOLEAN,   
+    free_shipping BOOLEAN,    
     checkout BOOLEAN,    
     FOREIGN KEY (customer_id) REFERENCES customers(id)    
 );
