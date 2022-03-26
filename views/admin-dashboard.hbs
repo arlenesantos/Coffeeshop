@@ -1,0 +1,140 @@
+<section class="container">
+    <!--Customers Data -->
+    <h1 class="h2 mb-3">Customers</h1>
+    <hr class="mb-5">
+    <section class="container mb-5">
+        {{#if customersData}}
+        <div class="card text-dark bg-light mb-5 p-3">
+            <div class="row text-center">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted">Registered</h5>
+                        <p class="fs-4 fw-bold card-text">{{customersData.registered}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted">With purchases</h5>
+                        <p class="fs-4 fw-bold card-text">{{customersData.with_purchases}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted">Without purchases</h5>
+                        <p class="fs-4 fw-bold card-text">{{customersData.without_purchases}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted" data-bs-container="body" data-bs-toggle="popover"
+                            data-bs-placement="top"
+                            data-bs-content="Customers who have done purchases in the latest 30 days">
+                            <sup>*</sup>Actives
+                        </h5>
+                        <p class="fs-4 fw-bold card-text">{{customersData.active}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h2 class="h4 text-center">Average of purchases per customer: <span class="fs-4 fw-bold">??</span></h2>
+        </div>
+        {{/if}}
+    </section>
+    <!--Sales Data -->
+    <!--Purchases -->
+    <h1 class="h2 mb-3">Sales</h1>
+    <hr class="mb-5">
+    <section class="container mb-5">
+        {{#if purchasesData}}
+        <div class="row mb-5">
+            <div class="col mb-3">
+                <div class="card h-100 text-dark bg-light p-3">
+                    <div class="row text-center">
+                        <h2 class="h4">Total</h2>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Quantity</h5>
+                                <p class="fs-4 fw-bold card-text">{{purchasesData.total_sales}} units</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Revenue</h5>
+                                <p class="fs-4 fw-bold card-text">$ {{purchasesData.total_revenue}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <div class="card h-100 text-dark bg-light p-3">
+                    <div class="row text-center">
+                        <h2 class="h4">Latest 30 days</h2>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Quantity</h5>
+                                <p class="fs-4 fw-bold card-text">{{purchasesData.sales_last_month}} units</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Revenue</h5>
+                                <p class="fs-4 fw-bold card-text">$ {{purchasesData.revenue_last_month}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h2 class="h4 text-center">Average of products per purchase: <span
+                    class="fs-4 fw-bold">{{purchasesData.average_products}}</span> units</h2>
+        </div>
+        {{/if}}
+    </section>
+    <!--Revenue -->
+    <section class="mb-5">
+        {{#if revenueData}}
+        <canvas></canvas>
+
+        {{/if}}
+
+
+        {{#if average_ticket}}
+        <div>
+            <h2 class="h4 text-center">Average ticket price: $ <span class="fs-4 fw-bold">{{average_ticket}}</span></h2>
+        </div>
+        {{/if}}
+
+    </section>
+    <!--Categories Data -->
+    <section>
+        <h1 class="h3 mb-3">Sales by Category</h1>
+        <hr class="mb-5">
+
+        {{#if totalSalesByCategory}}
+        <canvas></canvas>
+
+        {{/if}}
+
+        {{#if dailySalesByCategory}}
+        <canvas></canvas>
+
+        {{/if}}
+
+        {{#if productTopSelling}}
+        <div>
+
+        </div>
+        {{/if}}
+
+    </section>
+</section>
+
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    });
+</script>

@@ -140,6 +140,7 @@ class Customer {
                 throw error;
             }
         }
+
     }
 
 
@@ -214,6 +215,79 @@ class Customer {
         }
     }
 
+    static async registered() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `SELECT COUNT(id) AS registered FROM customers;`;
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].registered;
+
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
+    static async withPurchases() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `SELECT COUNT (DISTINCT customer_id) AS with_purchases FROM purchases WHERE checkout = true;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].with_purchases;
+
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
+    static async withoutPurchases() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT COUNT(customers.id) AS without_purchases
+            FROM customers
+            WHERE customers.id NOT IN (
+                SELECT DISTINCT customer_id
+                FROM purchases
+                WHERE checkout = true
+            );`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].without_purchases;
+
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
+    static async active() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT COUNT(DISTINCT customer_id) AS active
+            FROM purchases
+            WHERE checkout = true
+            AND date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].active;
+
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
+
+
     async save() {
         return this.save();
     }
@@ -237,6 +311,10 @@ class Customer {
     async getRecipes() {
         return this.getRecipes();
     }
+
+
+
+
 
 }
 

@@ -1,14 +1,14 @@
 -- usuarios registrados
-SELECT COUNT(id) AS customer_register 
+SELECT COUNT(id) AS customers_registered 
 FROM customers;
 
 --usuarios com compras
-SELECT COUNT (DISTINCT customer_id)
+SELECT COUNT (DISTINCT customer_id) AS customers_with_purchases
 FROM purchases
 WHERE checkout = true;
 
 --usuarios sem compras
-SELECT COUNT(customers.id) 
+SELECT COUNT(customers.id) AS customers_without_purchases
 FROM customers
 WHERE customers.id NOT IN (
     SELECT DISTINCT customer_id
@@ -17,13 +17,13 @@ WHERE customers.id NOT IN (
 );
 
 --usuarios com compras últimos 30 dias
-SELECT COUNT(DISTINCT customer_id)
+SELECT COUNT(DISTINCT customer_id) AS customers_active
 FROM purchases
 WHERE checkout = true
 AND date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;
 
 -- qtde vendas feitas
-SELECT COUNT(id)
+SELECT COUNT(id) AS sales
 FROM purchases
 WHERE checkout = true;
 
@@ -35,13 +35,13 @@ LEFT JOIN purchases ON pd.purchase_id = purchases.id
 WHERE purchases.checkout = true;
 
 -- qtde vendas últimos 30 dias
-SELECT COUNT(id)
+SELECT COUNT(id) AS sales_last_month
 FROM purchases
 WHERE checkout = true
 AND date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;
 
 -- faturamento últimos 30 dias
-SELECT SUM (pd.quantity * products.price)
+SELECT SUM (pd.quantity * products.price) AS revenue_last_month
 FROM purchaseDetail AS pd
 LEFT JOIN products ON pd.product_id = products.id
 LEFT JOIN purchases ON pd.purchase_id = purchases.id
@@ -49,15 +49,15 @@ WHERE checkout = true
 AND purchases.date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;
 
 -- qtde media itens por compra
-SELECT (SUM(quantity) / COUNT(DISTINCT purchase_id)::numeric(10,2))::numeric(10,2) AS average
+SELECT (SUM(quantity) / COUNT(DISTINCT purchase_id)::numeric(10,2))::numeric(10,2) AS average_products
 FROM purchaseDetail AS pd
 LEFT JOIN purchases ON pd.purchase_id = purchases.id
 WHERE purchases.checkout = true;
 
 -- qtde vendas e faturamento diario
 SELECT purchases.date, 
-COUNT (DISTINCT purchases.id),
-SUM (pd.quantity * products.price) AS gross_revenue
+COUNT (DISTINCT purchases.id) AS daily_sales,
+SUM (pd.quantity * products.price) AS daily_gross_revenue
 FROM purchaseDetail AS pd
 LEFT JOIN products ON pd.product_id = products.id
 LEFT JOIN purchases ON pd.purchase_id = purchases.id

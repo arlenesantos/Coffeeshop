@@ -139,6 +139,59 @@ class Category {
         }
     }
 
+    static async totalSalesPercentage() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT categories.name, 
+            (SUM (pd.quantity) * 100 / SUM(SUM (pd.quantity)) OVER ())::numeric(10,2) AS total_percentage
+            FROM purchaseDetail AS pd
+            LEFT JOIN products ON pd.product_id = products.id
+            LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            LEFT JOIN categories ON products.category_id = categories.id
+            WHERE purchases.checkout = true
+            GROUP BY categories.name;`
+
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async dailySalesPercentage() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT to_char(p.date, 'DD/MM/YYYY') AS date, categories.name,
+            (SUM(pd.quantity)::numeric(10,2) / dqt.day_quantity)::numeric(10,2) AS daily_percentage
+            FROM purchases as p
+            LEFT JOIN purchaseDetail as pd ON p.id = pd.purchase_id
+            LEFT JOIN products ON products.id = pd.product_id
+            LEFT JOIN categories ON products.category_id = categories.id
+            LEFT JOIN (
+                SELECT purchases.date, SUM(pd.quantity)::numeric(10,2) AS day_quantity FROM purchases
+                LEFT JOIN purchaseDetail as pd ON purchases.id = pd.purchase_id
+                WHERE purchases.checkout = true
+                GROUP BY purchases.date
+            ) AS dqt on dqt.date = p.date
+            WHERE checkout = true
+            GROUP BY p.date,categories.name, dqt.day_quantity
+            ORDER BY p.date,categories.name DESC;`
+
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async save() {
         return this.save();
     }

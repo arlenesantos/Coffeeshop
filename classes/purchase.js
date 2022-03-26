@@ -187,6 +187,142 @@ class Purchase {
         }
     }
 
+    static async totalSales() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT COUNT(id) AS sales
+            FROM purchases
+            WHERE checkout = true;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].sales;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async totalRevenue() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT SUM (pd.quantity * products.price) AS revenue
+            FROM purchaseDetail AS pd
+            LEFT JOIN products ON pd.product_id = products.id
+            LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            WHERE purchases.checkout = true;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].revenue;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async salesLastMonth() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT COUNT(id) AS sales_last_month
+            FROM purchases
+            WHERE checkout = true
+            AND date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].sales_last_month;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async revenueLastMonth() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT SUM (pd.quantity * products.price) AS revenue_last_month
+            FROM purchaseDetail AS pd
+            LEFT JOIN products ON pd.product_id = products.id
+            LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            WHERE checkout = true
+            AND purchases.date BETWEEN CURRENT_DATE - 30 AND CURRENT_DATE;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].revenue_last_month;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async averageProducts() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT (SUM(quantity) / COUNT(DISTINCT purchase_id)::numeric(10,2))::numeric(10,2) AS average_products
+            FROM purchaseDetail AS pd
+            LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            WHERE purchases.checkout = true;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].average_products;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async dailyReport() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT to_char(purchases.date, 'DD/MM/YYYY') AS date, 
+            COUNT (DISTINCT purchases.id) AS sales,
+            SUM (pd.quantity * products.price) AS gross_revenue
+            FROM purchaseDetail AS pd
+            LEFT JOIN products ON pd.product_id = products.id
+            LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            WHERE checkout = true
+            GROUP BY purchases.date;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async averageTicket() {
+        let pool = PoolSingleton.getInstance();
+        try {
+            let query = `
+            SELECT (total / purchase_count)::numeric(10,2) AS average_ticket
+            FROM (
+                SELECT COUNT(DISTINCT pd.purchase_id) AS purchase_count, SUM(products.price * pd.quantity)          AS total
+                FROM purchaseDetail AS pd
+                LEFT JOIN products ON pd.product_id = products.id
+                LEFT JOIN purchases ON pd.purchase_id = purchases.id
+                WHERE purchases.checkout = true
+            ) AS purchases_revenue;`
+            let client = await pool.connect();
+            let result = await client.query(query);
+            client.release();
+            return result.rows[0].average_ticket;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async save() {
         return this.save();
     }

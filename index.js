@@ -205,7 +205,7 @@ app.post("/login", async (req, res) => {
                 req.session.logged_in = true;
                 req.session.admin = admin;
                 req.session.save();
-                res.redirect("/admin/categories");
+                res.redirect("/admin/dashboard");
 
             } else if (customer) {
                 req.session.logged_in = true;
@@ -368,6 +368,49 @@ app.post("/customer/recipe", async (req, res) => {
 });
 
 //ADMIN:
+
+//Dashboard
+app.get("/admin/dashboard", async (req, res) => {
+    if (req.session.logged_in && req.session.admin) {
+        try {
+
+            let customersData = {
+                registered: await Customer.registered(),
+                with_purchases: await Customer.withPurchases(),
+                without_purchases: await Customer.withoutPurchases(),
+                active: await Customer.active()
+            };
+
+            let purchasesData = {
+                total_sales: await Purchase.totalSales(),
+                total_revenue: await Purchase.totalRevenue(),
+                sales_last_month: await Purchase.salesLastMonth(),
+                revenue_last_month: await Purchase.revenueLastMonth(),
+                average_products: await Purchase.averageProducts()
+            };
+
+            let revenueData = await Purchase.dailyReport();
+            let average_ticket = await Purchase.averageTicket();
+
+            let totalSalesByCategory = await Category.totalSalesPercentage();
+            let dailySalesByCategory = await Category.dailySalesPercentage();
+
+            let productTopSelling = await Product.topSelling();
+
+            let successMsg = await req.consumeFlash('success');
+            let warningMsg = await req.consumeFlash('warning');
+            let errorMsg = await req.consumeFlash('error');
+            res.render("admin-dashboard", { layout: "admin", customersData: customersData, purchasesData: purchasesData, revenueData: revenueData, average_ticket: average_ticket, totalSalesByCategory: totalSalesByCategory, dailySalesByCategory: dailySalesByCategory, productTopSelling: productTopSelling, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
+
+        } catch (error) {
+            console.log(error);
+            await req.flash('error', 'Something went wrong.');
+            res.redirect("/error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
 
 // Category 
 app.get("/admin/categories", async (req, res) => {
