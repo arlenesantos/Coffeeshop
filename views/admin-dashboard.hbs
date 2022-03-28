@@ -94,15 +94,16 @@
         {{/if}}
     </section>
     <!--Revenue -->
-    <section class="mb-5">
-        {{#if revenueData}}
-        <canvas></canvas>
+    <section class=" container my-5">
 
-        {{/if}}
+        <div id="dailyReport" class="mx-auto">
+            <span id="salesDataPoints" class="d-none">{{#if salesDataPoints}} {{salesDataPoints}} {{/if}}</span>
+            <span id="revenueDataPoints" class="d-none">{{#if revenueDataPoints}} {{revenueDataPoints}} {{/if}}</span>
+        </div>
 
 
         {{#if average_ticket}}
-        <div>
+        <div class="my-5">
             <h2 class="h4 text-center">Average ticket price: $ <span class="fs-4 fw-bold">{{average_ticket}}</span></h2>
         </div>
         {{/if}}
@@ -113,28 +114,203 @@
         <h1 class="h3 mb-3">Sales by Category</h1>
         <hr class="mb-5">
 
-        {{#if totalSalesByCategory}}
-        <canvas></canvas>
+        <div class="row">
+            <div class="col-12 col-sm-6 mb-5">
 
-        {{/if}}
+                <div id="salesByCategory" class="mx-auto">
+                    <span id="percentageByCategory" class="d-none">
+                        {{#if percentageByCategory}} {{percentageByCategory}} {{/if}}
+                    </span>
+                </div>
 
-        {{#if dailySalesByCategory}}
-        <canvas></canvas>
+            </div>
 
-        {{/if}}
+            <div class="col-12 col-sm-6 mb-5">
+
+                <!--ex -->
+                <div id="dailySalesByCategory" class="w-100"></div>
+                <!--fim ex -->
+
+            </div>
+        </div>
 
         {{#if productTopSelling}}
-        <div>
-
-        </div>
+        <div></div>
         {{/if}}
 
     </section>
+
 </section>
 
 <script>
+
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     });
+
+
+    window.onload = function () {
+
+        //#dailyReport
+        var salesChart = new CanvasJS.Chart("dailyReport", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Daily Sales",
+                margin: 50
+            },
+            axisY: {
+                prefix: "$"
+            },
+            axisY2: {
+                title: "Items"
+            },
+            toolTip: {
+                shared: true
+            },
+            data: [
+                {
+                    type: "column",
+                    name: "Quantity",
+                    showInLegend: true,
+                    axisYType: "secondary",
+                    dataPoints: eval(document.getElementById("salesDataPoints").innerHTML)
+                },
+                {
+                    type: "line",
+                    name: "Revenue",
+                    showInLegend: true,
+                    yValueFormatString: "$#,##0",
+                    dataPoints: eval(document.getElementById("revenueDataPoints").innerHTML)
+                }
+            ]
+        });
+        salesChart.render();
+
+        //#salesByCategory
+        var categoryChart = new CanvasJS.Chart("salesByCategory", {
+
+            animationEnabled: true,
+            title: {
+                text: "Total Sales"
+            },
+            legend: {
+                cursor: "pointer"
+            },
+            data: [{
+                type: "pie",
+                showInLegend: true,
+                toolTipContent: "{name}: <strong>{y}%</strong>",
+                indexLabel: "{name} - {y}%",
+                dataPoints: eval(document.getElementById("percentageByCategory").innerHTML)
+
+            }]
+        });
+        categoryChart.render();
+
+        //#dailySalesByCategory
+        var chart = new CanvasJS.Chart("dailySalesByCategory", {
+            animationEnabled: true,
+            title: {
+                text: "Composition of Internet Traffic in North America"
+            },
+            axisX: {
+                interval: 1,
+                intervalType: "year",
+                valueFormatString: "YYYY"
+            },
+            axisY: {
+                suffix: "%"
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                reversed: true,
+                verticalAlign: "center",
+                horizontalAlign: "right"
+            },
+            data: [{
+                type: "stackedColumn100",
+                name: "Real-Time",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 40 },
+                    { x: new Date(2011, 0), y: 50 },
+                    { x: new Date(2012, 0), y: 60 },
+                    { x: new Date(2013, 0), y: 61 },
+                    { x: new Date(2014, 0), y: 63 },
+                    { x: new Date(2015, 0), y: 65 },
+                    { x: new Date(2016, 0), y: 67 }
+                ]
+            },
+            {
+                type: "stackedColumn100",
+                name: "Web Browsing",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 28 },
+                    { x: new Date(2011, 0), y: 18 },
+                    { x: new Date(2012, 0), y: 12 },
+                    { x: new Date(2013, 0), y: 10 },
+                    { x: new Date(2014, 0), y: 10 },
+                    { x: new Date(2015, 0), y: 7 },
+                    { x: new Date(2016, 0), y: 5 }
+                ]
+            },
+            {
+                type: "stackedColumn100",
+                name: "File Sharing",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 15 },
+                    { x: new Date(2011, 0), y: 12 },
+                    { x: new Date(2012, 0), y: 10 },
+                    { x: new Date(2013, 0), y: 9 },
+                    { x: new Date(2014, 0), y: 7 },
+                    { x: new Date(2015, 0), y: 5 },
+                    { x: new Date(2016, 0), y: 1 }
+                ]
+            },
+            {
+                type: "stackedColumn100",
+                name: "Others",
+                showInLegend: true,
+                xValueFormatString: "YYYY",
+                yValueFormatString: "#,##0\"%\"",
+                dataPoints: [
+                    { x: new Date(2010, 0), y: 17 },
+                    { x: new Date(2011, 0), y: 20 },
+                    { x: new Date(2012, 0), y: 18 },
+                    { x: new Date(2013, 0), y: 20 },
+                    { x: new Date(2014, 0), y: 20 },
+                    { x: new Date(2015, 0), y: 23 },
+                    { x: new Date(2016, 0), y: 27 }
+                ]
+            }]
+        });
+        chart.render();
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>

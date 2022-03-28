@@ -98,6 +98,7 @@ app.use('/js', express.static(__dirname + "/node_modules/bootstrap/dist/js"));
 app.use('/icons', express.static(__dirname + "/node_modules/bootstrap-icons/font"));
 app.use('/ckeditor', express.static(__dirname + "/node_modules/@ckeditor/ckeditor5-build-classic/build"));
 
+
 var taxrate = 0.23;
 
 app.listen(3000, () => console.log("server on"));
@@ -390,9 +391,40 @@ app.get("/admin/dashboard", async (req, res) => {
             };
 
             let revenueData = await Purchase.dailyReport();
+            let salesDataPoints = [];
+            let revenueDataPoints = [];
+            revenueData.forEach((e) => {
+                salesData = {
+                    label: e.date,
+                    y: Number(e.sales)
+                }
+
+                revenueData = {
+                    label: e.date,
+                    y: Number(e.gross_revenue)
+                }
+
+                salesDataPoints.push(salesData);
+                revenueDataPoints.push(revenueData);
+            });
+
             let average_ticket = await Purchase.averageTicket();
 
+
             let totalSalesByCategory = await Category.totalSalesPercentage();
+            let percentageByCategory = [];
+            totalSalesByCategory.forEach((e) => {
+                salesData = {
+                    y: Number(e.total_percentage),
+                    name: e.name
+                }
+
+                percentageByCategory.push(salesData);
+            });
+
+            console.log(percentageByCategory)
+
+
             let dailySalesByCategory = await Category.dailySalesPercentage();
 
             let productTopSelling = await Product.topSelling();
@@ -400,7 +432,8 @@ app.get("/admin/dashboard", async (req, res) => {
             let successMsg = await req.consumeFlash('success');
             let warningMsg = await req.consumeFlash('warning');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-dashboard", { layout: "admin", customersData: customersData, purchasesData: purchasesData, revenueData: revenueData, average_ticket: average_ticket, totalSalesByCategory: totalSalesByCategory, dailySalesByCategory: dailySalesByCategory, productTopSelling: productTopSelling, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
+
+            res.render("admin-dashboard", { layout: "admin", customersData: customersData, purchasesData: purchasesData, salesDataPoints: JSON.stringify(salesDataPoints), revenueDataPoints: JSON.stringify(revenueDataPoints), average_ticket: average_ticket, percentageByCategory: JSON.stringify(percentageByCategory), dailySalesByCategory: dailySalesByCategory, productTopSelling: productTopSelling, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -411,6 +444,8 @@ app.get("/admin/dashboard", async (req, res) => {
         res.redirect("/login");
     }
 });
+
+
 
 // Category 
 app.get("/admin/categories", async (req, res) => {

@@ -198,6 +198,11 @@ footer{
     border: none;    
 }
 
+#dailyReport , #salesByCategory , #dailySalesByCategory {
+    height: 300px;
+    width: 85%;
+}
+
 
 
 
