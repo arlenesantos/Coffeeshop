@@ -1,7 +1,7 @@
 <section class="container">
 
     <!--Customers Data -->
-    <h1 class="h2 mb-3">Customers</h1>
+    <h1 class="h2 mb-3 title-color"><span><i class="bi bi-people-fill"></i></span> Customers</h1>
     <hr class="mb-5">
     <div class="container mb-5">
         {{#if customersData}}
@@ -37,23 +37,22 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <h2 class="h4 text-center">Average of purchases per customer: <span class="fs-4 fw-bold">??</span></h2>
-        </div>
         {{/if}}
     </div>
 
 
-    <!--Total Sales Data -->
-    <h1 class="h2 mb-3">Total Sales</h1>
+    <!--Sales Data -->
+    <h1 class="h2 mb-3 title-color"> <span><i class="bi bi-bag-check-fill"></i></span> Sales</h1>
     <hr class="mb-5">
+
+    <!--Total Sales -->
     <div class="container mb-5">
         {{#if purchasesData}}
         <div class="row mb-5">
             <div class="col mb-3">
                 <div class="card h-100 text-dark bg-light p-3">
                     <div class="row text-center">
-                        <h2 class="h4">Total</h2>
+                        <h2 class="h4">Total Sales</h2>
                         <div class="col">
                             <div class="card-body">
                                 <h5 class="card-title text-muted">Quantity</h5>
@@ -96,6 +95,7 @@
         </div>
         {{/if}}
     </div>
+    <hr class="mb-5">
 
     <!--Daily sales Chart -->
     <div class=" container my-5">
@@ -113,7 +113,7 @@
 
     <!-- Sales by Categories -->
     <div>
-        <h1 class="h3 mb-3">Sales by Category</h1>
+        <h1 class="h4 mb-3 text-secondary">Sales by Category</h1>
         <hr class="mb-5">
         <div class="mx-auto pb-3">
             <!--Distribution of total sales Chart -->
@@ -139,8 +139,28 @@
         </div>
     </div>
 
+
     {{#if productTopSelling}}
-    <div></div>
+    <!-- Top Selling -->
+    <h1 class="h2 mb-3 pt-5 title-color"> <span><i class="bi bi-gem"></i></span> Top Selling</h1>
+    <hr class="mb-5">
+    <div class="mb-3">
+        <div class="row g-0 d-flex justify-content-center">
+            <div class="col-4 col-md-3 col-lg-2">
+                <img src="/images/product.jpg" class="img-fluid" alt="coffee image">
+            </div>
+            <div class="col-8 col-md-5 col=lg-4 d-flex align-items-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{productTopSelling.name}}</h5>
+                    <span class="card-text text-muted">Brand: {{productTopSelling.brand}}</span><br>
+                    <span class="card-text text-muted">Category: {{productTopSelling.category}}</span>
+                    <hr>
+                    <span class="card-text text-muted">Total sales (#): {{productTopSelling.sales}}</span><br>
+                    <span class="card-text text-muted">Total revenue ($): {{productTopSelling.total}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
     {{/if}}
 
 
@@ -168,11 +188,12 @@
             animationEnabled: true,
             colorSet: "coffeeShades",
             title: {
+                horizontalAlign: "left",
                 text: "Daily Sales",
                 fontFamily: "Open Sans",
                 fontWeight: "normal",
                 fontSize: 30,
-                margin: 50
+                padding: 30
             },
             axisY: {
                 prefix: "$"

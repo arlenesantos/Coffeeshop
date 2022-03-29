@@ -315,18 +315,19 @@ class Product {
         let pool = PoolSingleton.getInstance();
         try {
             let query = `
-            SELECT DISTINCT products.id, products.name, brands.name AS brand, products.price, SUM(pd.quantity) AS sales, SUM (pd.quantity * products.price) AS total
+            SELECT DISTINCT products.id, products.name, categories.name AS category, brands.name AS brand, products.price, SUM(pd.quantity) AS sales, SUM (pd.quantity * products.price) AS total
             FROM purchaseDetail AS pd
             LEFT JOIN products ON pd.product_id = products.id
             LEFT JOIN purchases ON pd.purchase_id = purchases.id
+            LEFT JOIN categories ON products.category_id = categories.id
             LEFT JOIN brands ON products.brand_id = brands.id
             WHERE purchases.checkout = true
-            GROUP BY products.id, products.name, brand, products.price
+            GROUP BY products.id, products.name, category, brand, products.price
             ORDER BY sales DESC, total DESC LIMIT 1;`
             let client = await pool.connect();
             let result = await client.query(query);
             client.release();
-            return result.rows;
+            return result.rows[0];
 
         } catch (error) {
             throw error;

@@ -410,7 +410,6 @@ app.get("/admin/dashboard", async (req, res) => {
 
             let average_ticket = await Purchase.averageTicket();
 
-
             let totalSalesByCategory = await Category.totalSalesPercentage();
             let percentageByCategory = [];
             totalSalesByCategory.forEach((e) => {
@@ -451,10 +450,8 @@ app.get("/admin/dashboard", async (req, res) => {
                 return data
             });
 
-
-
-
             let productTopSelling = await Product.topSelling();
+            console.log(productTopSelling);
 
             let successMsg = await req.consumeFlash('success');
             let warningMsg = await req.consumeFlash('warning');
