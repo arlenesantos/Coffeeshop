@@ -1,8 +1,9 @@
 <section class="container">
+
     <!--Customers Data -->
     <h1 class="h2 mb-3">Customers</h1>
     <hr class="mb-5">
-    <section class="container mb-5">
+    <div class="container mb-5">
         {{#if customersData}}
         <div class="card text-dark bg-light mb-5 p-3">
             <div class="row text-center">
@@ -40,12 +41,13 @@
             <h2 class="h4 text-center">Average of purchases per customer: <span class="fs-4 fw-bold">??</span></h2>
         </div>
         {{/if}}
-    </section>
-    <!--Sales Data -->
-    <!--Purchases -->
-    <h1 class="h2 mb-3">Sales</h1>
+    </div>
+
+
+    <!--Total Sales Data -->
+    <h1 class="h2 mb-3">Total Sales</h1>
     <hr class="mb-5">
-    <section class="container mb-5">
+    <div class="container mb-5">
         {{#if purchasesData}}
         <div class="row mb-5">
             <div class="col mb-3">
@@ -70,7 +72,7 @@
             <div class="col mb-3">
                 <div class="card h-100 text-dark bg-light p-3">
                     <div class="row text-center">
-                        <h2 class="h4">Latest 30 days</h2>
+                        <h2 class="h4">Past 30 days</h2>
                         <div class="col">
                             <div class="card-body">
                                 <h5 class="card-title text-muted">Quantity</h5>
@@ -88,76 +90,88 @@
             </div>
         </div>
         <div class="row">
-            <h2 class="h4 text-center">Average of products per purchase: <span
-                    class="fs-4 fw-bold">{{purchasesData.average_products}}</span> units</h2>
+            <h2 class="h4 text-center">Average of products per purchase:
+                <span class="fs-4 fw-bold">{{purchasesData.average_products}}</span> units
+            </h2>
         </div>
         {{/if}}
-    </section>
-    <!--Revenue -->
-    <section class=" container my-5">
+    </div>
 
+    <!--Daily sales Chart -->
+    <div class=" container my-5">
         <div id="dailyReport" class="mx-auto">
             <span id="salesDataPoints" class="d-none">{{#if salesDataPoints}} {{salesDataPoints}} {{/if}}</span>
             <span id="revenueDataPoints" class="d-none">{{#if revenueDataPoints}} {{revenueDataPoints}} {{/if}}</span>
         </div>
-
 
         {{#if average_ticket}}
         <div class="my-5">
             <h2 class="h4 text-center">Average ticket price: $ <span class="fs-4 fw-bold">{{average_ticket}}</span></h2>
         </div>
         {{/if}}
+    </div>
 
-    </section>
-    <!--Categories Data -->
-    <section>
+    <!-- Sales by Categories -->
+    <div>
         <h1 class="h3 mb-3">Sales by Category</h1>
         <hr class="mb-5">
-
-        <div class="row">
-            <div class="col-12 col-sm-6 mb-5">
-
-                <div id="salesByCategory" class="mx-auto">
-                    <span id="percentageByCategory" class="d-none">
-                        {{#if percentageByCategory}} {{percentageByCategory}} {{/if}}
-                    </span>
-                </div>
-
-            </div>
-
-            <div class="col-12 col-sm-6 mb-5">
-
-                <!--ex -->
-                <div id="dailySalesByCategory" class="w-100"></div>
-                <!--fim ex -->
-
+        <div class="mx-auto pb-3">
+            <!--Distribution of total sales Chart -->
+            <div id="salesByCategory">
+                <span id="percentageByCategory" class="d-none">
+                    {{#if percentageByCategory}} {{percentageByCategory}} {{/if}}
+                </span>
             </div>
         </div>
+        <div class="mx-auto my-5">
+            <!--Distribution of daily sales Chart -->
+            <div id="dailySalesByCategory">
+                <span id="dailyGroundCoffee" class="d-none">
+                    {{#if dailyGroundCoffee}} {{dailyGroundCoffee}} {{/if}}
+                </span>
+                <span id="dailyWholeBean" class="d-none">
+                    {{#if dailyWholeBean}} {{dailyWholeBean}} {{/if}}
+                </span>
+                <span id="dailyCapsules" class="d-none">
+                    {{#if dailyCapsules}} {{dailyCapsules}} {{/if}}
+                </span>
+            </div>
+        </div>
+    </div>
 
-        {{#if productTopSelling}}
-        <div></div>
-        {{/if}}
+    {{#if productTopSelling}}
+    <div></div>
+    {{/if}}
 
-    </section>
 
 </section>
 
 <script>
 
+    //POPOVER
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     });
 
-
+    //CANVASJS
     window.onload = function () {
+        CanvasJS.addColorSet("coffeeShades",
+            [//colorSet Array
+                "#bc8a5f",
+                "#582f0e",
+                "#260701"
+            ]);
 
-        //#dailyReport
+        //Daily sales Chart
         var salesChart = new CanvasJS.Chart("dailyReport", {
             animationEnabled: true,
-            theme: "light2",
+            colorSet: "coffeeShades",
             title: {
                 text: "Daily Sales",
+                fontFamily: "Open Sans",
+                fontWeight: "normal",
+                fontSize: 30,
                 margin: 50
             },
             axisY: {
@@ -188,15 +202,17 @@
         });
         salesChart.render();
 
-        //#salesByCategory
-        var categoryChart = new CanvasJS.Chart("salesByCategory", {
+        //Distribution of total sales Chart
+        var totalByCategoryChart = new CanvasJS.Chart("salesByCategory", {
 
             animationEnabled: true,
+            colorSet: "coffeeShades",
             title: {
-                text: "Total Sales"
-            },
-            legend: {
-                cursor: "pointer"
+                horizontalAlign: "left",
+                text: "Distribution of total sales",
+                fontFamily: "Open Sans",
+                fontSize: 24,
+                padding: 40
             },
             data: [{
                 type: "pie",
@@ -207,18 +223,19 @@
 
             }]
         });
-        categoryChart.render();
+        totalByCategoryChart.render();
 
-        //#dailySalesByCategory
-        var chart = new CanvasJS.Chart("dailySalesByCategory", {
+        //Distribution of daily sales Chart
+        var dailyByCategoryChart = new CanvasJS.Chart("dailySalesByCategory", {
+
             animationEnabled: true,
+            colorSet: "coffeeShades",
             title: {
-                text: "Composition of Internet Traffic in North America"
-            },
-            axisX: {
-                interval: 1,
-                intervalType: "year",
-                valueFormatString: "YYYY"
+                horizontalAlign: "left",
+                text: "Distribution of daily sales",
+                fontFamily: "Open Sans",
+                fontSize: 24,
+                padding: 40
             },
             axisY: {
                 suffix: "%"
@@ -227,90 +244,31 @@
                 shared: true
             },
             legend: {
-                reversed: true,
-                verticalAlign: "center",
-                horizontalAlign: "right"
+                horizontalAlign: "center"
             },
-            data: [{
-                type: "stackedColumn100",
-                name: "Real-Time",
-                showInLegend: true,
-                xValueFormatString: "YYYY",
-                yValueFormatString: "#,##0\"%\"",
-                dataPoints: [
-                    { x: new Date(2010, 0), y: 40 },
-                    { x: new Date(2011, 0), y: 50 },
-                    { x: new Date(2012, 0), y: 60 },
-                    { x: new Date(2013, 0), y: 61 },
-                    { x: new Date(2014, 0), y: 63 },
-                    { x: new Date(2015, 0), y: 65 },
-                    { x: new Date(2016, 0), y: 67 }
-                ]
-            },
-            {
-                type: "stackedColumn100",
-                name: "Web Browsing",
-                showInLegend: true,
-                xValueFormatString: "YYYY",
-                yValueFormatString: "#,##0\"%\"",
-                dataPoints: [
-                    { x: new Date(2010, 0), y: 28 },
-                    { x: new Date(2011, 0), y: 18 },
-                    { x: new Date(2012, 0), y: 12 },
-                    { x: new Date(2013, 0), y: 10 },
-                    { x: new Date(2014, 0), y: 10 },
-                    { x: new Date(2015, 0), y: 7 },
-                    { x: new Date(2016, 0), y: 5 }
-                ]
-            },
-            {
-                type: "stackedColumn100",
-                name: "File Sharing",
-                showInLegend: true,
-                xValueFormatString: "YYYY",
-                yValueFormatString: "#,##0\"%\"",
-                dataPoints: [
-                    { x: new Date(2010, 0), y: 15 },
-                    { x: new Date(2011, 0), y: 12 },
-                    { x: new Date(2012, 0), y: 10 },
-                    { x: new Date(2013, 0), y: 9 },
-                    { x: new Date(2014, 0), y: 7 },
-                    { x: new Date(2015, 0), y: 5 },
-                    { x: new Date(2016, 0), y: 1 }
-                ]
-            },
-            {
-                type: "stackedColumn100",
-                name: "Others",
-                showInLegend: true,
-                xValueFormatString: "YYYY",
-                yValueFormatString: "#,##0\"%\"",
-                dataPoints: [
-                    { x: new Date(2010, 0), y: 17 },
-                    { x: new Date(2011, 0), y: 20 },
-                    { x: new Date(2012, 0), y: 18 },
-                    { x: new Date(2013, 0), y: 20 },
-                    { x: new Date(2014, 0), y: 20 },
-                    { x: new Date(2015, 0), y: 23 },
-                    { x: new Date(2016, 0), y: 27 }
-                ]
-            }]
-        });
-        chart.render();
+            data: [
+                {
+                    type: "stackedColumn100",
+                    name: eval(document.getElementById("dailyCapsules").innerHTML)[0].name,
+                    showInLegend: true,
+                    dataPoints: eval(document.getElementById("dailyCapsules").innerHTML)
+                },
+                {
+                    type: "stackedColumn100",
+                    name: eval(document.getElementById("dailyGroundCoffee").innerHTML)[0].name,
+                    showInLegend: true,
+                    dataPoints: eval(document.getElementById("dailyGroundCoffee").innerHTML)
+                },
+                {
+                    type: "stackedColumn100",
+                    name: eval(document.getElementById("dailyWholeBean").innerHTML)[0].name,
+                    showInLegend: true,
+                    dataPoints: eval(document.getElementById("dailyWholeBean").innerHTML)
+                }]
 
+        });
+        dailyByCategoryChart.render();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 </script>

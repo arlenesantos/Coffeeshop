@@ -394,12 +394,12 @@ app.get("/admin/dashboard", async (req, res) => {
             let salesDataPoints = [];
             let revenueDataPoints = [];
             revenueData.forEach((e) => {
-                salesData = {
+                let salesData = {
                     label: e.date,
                     y: Number(e.sales)
                 }
 
-                revenueData = {
+                let revenueData = {
                     label: e.date,
                     y: Number(e.gross_revenue)
                 }
@@ -414,7 +414,7 @@ app.get("/admin/dashboard", async (req, res) => {
             let totalSalesByCategory = await Category.totalSalesPercentage();
             let percentageByCategory = [];
             totalSalesByCategory.forEach((e) => {
-                salesData = {
+                let salesData = {
                     y: Number(e.total_percentage),
                     name: e.name
                 }
@@ -422,10 +422,37 @@ app.get("/admin/dashboard", async (req, res) => {
                 percentageByCategory.push(salesData);
             });
 
-            console.log(percentageByCategory)
-
-
             let dailySalesByCategory = await Category.dailySalesPercentage();
+
+            let dailyWholeBean = dailySalesByCategory.filter((e) => e.name == "Whole Bean").map((e) => {
+                let data = {
+                    label: e.date,
+                    y: Number(e.daily_percentage),
+                    name: e.name
+                }
+                return data
+            });
+
+            let dailyCapsules = dailySalesByCategory.filter((e) => e.name == "Capsules").map((e) => {
+                let data = {
+                    label: e.date,
+                    y: Number(e.daily_percentage),
+                    name: e.name
+                }
+                return data
+            });
+
+            let dailyGroundCoffee = dailySalesByCategory.filter((e) => e.name == "Ground Coffee").map((e) => {
+                let data = {
+                    label: e.date,
+                    y: Number(e.daily_percentage),
+                    name: e.name
+                }
+                return data
+            });
+
+
+
 
             let productTopSelling = await Product.topSelling();
 
@@ -433,7 +460,7 @@ app.get("/admin/dashboard", async (req, res) => {
             let warningMsg = await req.consumeFlash('warning');
             let errorMsg = await req.consumeFlash('error');
 
-            res.render("admin-dashboard", { layout: "admin", customersData: customersData, purchasesData: purchasesData, salesDataPoints: JSON.stringify(salesDataPoints), revenueDataPoints: JSON.stringify(revenueDataPoints), average_ticket: average_ticket, percentageByCategory: JSON.stringify(percentageByCategory), dailySalesByCategory: dailySalesByCategory, productTopSelling: productTopSelling, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
+            res.render("admin-dashboard", { layout: "admin", customersData: customersData, purchasesData: purchasesData, salesDataPoints: JSON.stringify(salesDataPoints), revenueDataPoints: JSON.stringify(revenueDataPoints), average_ticket: average_ticket, percentageByCategory: JSON.stringify(percentageByCategory), dailyWholeBean: JSON.stringify(dailyWholeBean), dailyCapsules: JSON.stringify(dailyCapsules), dailyGroundCoffee: JSON.stringify(dailyGroundCoffee), productTopSelling: productTopSelling, success: successMsg, warning: warningMsg, error: errorMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);

@@ -167,7 +167,7 @@ class Category {
         try {
             let query = `
             SELECT to_char(p.date, 'DD/MM/YYYY') AS date, categories.name,
-            (SUM(pd.quantity)::numeric(10,2) / dqt.day_quantity)::numeric(10,2) AS daily_percentage
+            (SUM(pd.quantity)::numeric(10,2) * 100 / dqt.day_quantity)::numeric(10,2) AS daily_percentage
             FROM purchases as p
             LEFT JOIN purchaseDetail as pd ON p.id = pd.purchase_id
             LEFT JOIN products ON products.id = pd.product_id
