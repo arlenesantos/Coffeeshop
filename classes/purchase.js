@@ -45,13 +45,14 @@ class Purchase {
         this.update = async () => {
             try {
                 let query = {
-                    text: `UPDATE purchases SET date = $2, customer_id = $3, checkout = $4  free_shipping = $5 WHERE id = $1 RETURNING *;`,
+                    text: `UPDATE purchases SET date = $2, customer_id = $3, checkout = $4,  free_shipping = $5 WHERE id = $1 RETURNING *;`,
                     values: [_id, _date, _customer_id, _checkout, _free_shipping]
                 };
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
+                console.log(result.rows[0])
                 return result.rows[0];
 
             } catch (error) {

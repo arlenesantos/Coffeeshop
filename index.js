@@ -1152,7 +1152,6 @@ app.put("/cart/checkout", async (req, res) => {
             purchase.setCheckout(true);
             purchase.setFreeShipping(shipping === "1");
             await purchase.update();
-
             await req.flash('success', 'Order processed successfully!');
             res.redirect("/customer");
 
