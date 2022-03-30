@@ -79,23 +79,6 @@ class Customer {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this;
-
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        this.getCart = async () => {
-            try {
-                let query = {
-                    text: `SELECT id, date, store_id, checkout FROM purchases WHERE customer_id = $1 AND checkout = false;`,
-                    values: [_id]
-                };
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                client.release();
-                return result.rows[0]; //obj
 
             } catch (error) {
                 throw error;
@@ -124,22 +107,6 @@ class Customer {
             }
         }
 
-        this.getRecipes = async () => {
-            try {
-                let query = {
-                    text: `SELECT id, title, content, photo, approved FROM recipes
-                    WHERE customer_id = $1;`,
-                    values: [_id]
-                };
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                client.release();
-                return result.rows[0];
-
-            } catch (error) {
-                throw error;
-            }
-        }
 
     }
 
@@ -170,9 +137,6 @@ class Customer {
     }
     get password() {
         return this.getPassword();
-    }
-    get pool() {
-        return this.getPool();
     }
 
 
@@ -215,7 +179,7 @@ class Customer {
         }
     }
 
-    static async registered() {
+    static async isRegistered() {
         let pool = PoolSingleton.getInstance();
         try {
             let query = `SELECT COUNT(id) - 1 AS registered FROM customers;`;
@@ -267,7 +231,7 @@ class Customer {
 
     }
 
-    static async active() {
+    static async isActive() {
         let pool = PoolSingleton.getInstance();
         try {
             let query = `
@@ -286,8 +250,6 @@ class Customer {
 
     }
 
-
-
     async save() {
         return this.save();
     }
@@ -300,21 +262,9 @@ class Customer {
         return this.delete();
     }
 
-    async getCart() {
-        return this.getCart();
-    }
-
     async getPurchases() {
         return this.getPurchases();
     }
-
-    async getRecipes() {
-        return this.getRecipes();
-    }
-
-
-
-
 
 }
 

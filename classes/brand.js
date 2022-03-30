@@ -9,7 +9,7 @@ class Brand {
 
         this.getId = () => _id;
         this.getName = () => _name;
-        
+
         this.setName = (new_name) => _name = new_name;
 
         this.save = async () => {
@@ -22,7 +22,7 @@ class Brand {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                
+
             } catch (error) {
                 throw error;
             }
@@ -56,29 +56,12 @@ class Brand {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                // return the instance that already exists 
-                return this;
 
             } catch (error) {
                 throw error;
             }
         }
 
-        this.getProducts = async () => {
-            try {
-                let query = {
-                    text: `SELECT id, name, price, category_id, brand_id FROM products WHERE brand_id = $1`,
-                    values:[_id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
     }
 
     get id() {
@@ -86,9 +69,6 @@ class Brand {
     }
     get name() {
         return this.getName();
-    }
-    get pool() {
-        return this.getPool();
     }
 
 
@@ -103,8 +83,8 @@ class Brand {
             let array = [];
             result.rows.forEach((b) => {
                 let brand = new Brand(b.id, b.name);
-                array.push(brand);                
-            });            
+                array.push(brand);
+            });
             return array;
 
         } catch (error) {
@@ -122,7 +102,7 @@ class Brand {
             };
             let result = await client.query(query);
             let brand = result.rows[0];
-            client.release();            
+            client.release();
             return new Brand(brand.id, brand.name);
 
         } catch (error) {
@@ -142,9 +122,6 @@ class Brand {
         return this.delete();
     }
 
-    async getProducts() {
-        return this.getProducts();
-    }
 }
 
 module.exports = { Brand };

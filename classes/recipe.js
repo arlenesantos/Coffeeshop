@@ -21,7 +21,6 @@ class Recipe {
         this.setTitle = (new_title) => _title = new_title;
         this.setContent = (new_content) => _content = new_content;
         this.setApproved = (new_value) => _approved = new_value;
-        this.setCustomer = (new_customer) => _customer = new_customer;
 
         this.save = async () => {
             try {
@@ -32,8 +31,9 @@ class Recipe {
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-                _id = result.rows[0].id;
                 client.release();
+                _id = result.rows[0].id;
+
 
             } catch (error) {
                 throw error;
@@ -66,7 +66,6 @@ class Recipe {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this;
 
             } catch (error) {
                 throw error;
@@ -91,9 +90,7 @@ class Recipe {
     get customer() {
         return this.getCustomer();
     }
-    get pool() {
-        return this.getPool();
-    }
+
 
 
     static async all() {
@@ -153,7 +150,6 @@ class Recipe {
     async delete() {
         return this.delete();
     }
-
 
 }
 

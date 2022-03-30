@@ -17,20 +17,20 @@ class Store {
         this.getName = () => _name;
         this.getAddress = () => _address;
         this.getCity = () => _city;
-        this.getState = () => _state;    
-        this.getZipCode = () => _zip_code;    
-        this.getPhone = () => _phone;    
-        this.getEmail = () => _email; 
-        
+        this.getState = () => _state;
+        this.getZipCode = () => _zip_code;
+        this.getPhone = () => _phone;
+        this.getEmail = () => _email;
+
         this.setName = (new_name) => _name = new_name;
         this.setAddress = (new_address) => _address = new_address;
         this.setCity = (new_city) => _city = new_city;
-        this.setState = (new_state) => _state = new_state;    
-        this.setZipCode = (new_zip_code) => _zip_code = new_zip_code;    
-        this.setPhone = (new_phone) => _phone = new_phone;    
-        this.setEmail = (new_email) => _email = new_email; 
-             
-        
+        this.setState = (new_state) => _state = new_state;
+        this.setZipCode = (new_zip_code) => _zip_code = new_zip_code;
+        this.setPhone = (new_phone) => _phone = new_phone;
+        this.setEmail = (new_email) => _email = new_email;
+
+
         this.save = async () => {
             try {
                 let query = {
@@ -40,7 +40,7 @@ class Store {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();                
+                client.release();
 
             } catch (error) {
                 throw error;
@@ -56,7 +56,7 @@ class Store {
 
                 let client = await _pool.connect();
                 await client.query(query);
-                client.release();  
+                client.release();
                 return this;
 
             } catch (error) {
@@ -73,129 +73,15 @@ class Store {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this
 
             } catch (error) {
                 throw error;
             }
         }
 
-        this.addProduct = async (product_id, stock, min_stock) => {
-            try {
-                let query = {
-                    text: `INSERT INTO stocks (store_id, product_id, stock, min_stock) VALUES ($1, $2, $3, $4)`,
-                    values:[_id, product_id, stock, min_stock]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-
-        }
-
-        this.getStock = async (product_id) => {
-            try {
-                let query = {
-                    text: `SELECT stores.name, stocks.product_id, products.name, stocks.stock FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    WHERE stocks.product_id = $1 AND stores.id = $2;`,
-                    values:[product_id, _id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
-
-        this.getMinStock = async (product_id) => {
-            try {
-                let query = {
-                    text: `SELECT stores.name, stocks.product_id, products.name, stocks.min_stock FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    WHERE stocks.product_id = $1 AND stores.id = $2;`,
-                    values:[product_id, _id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
-
-        this.getProducts = async () => {
-            try {
-                let query = {
-                    text: `SELECT stores.name, stocks.product_id, products.name  
-                    FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    WHERE stores.id = $1;`,
-                    values:[_id]
-                };
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
-
-        this.getBrands = async () => {
-            try {
-                let query = {
-                    text: `SELECT DISTINCT stores.name, products.brand_id, brands.name 
-                    FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    INNER JOIN brands ON products.brand_id = brands.id
-                    WHERE stores.id = $1;`,
-                    values:[_id]
-                };
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
-
-        this.getCategories = async () => {
-            try {
-                let query = {
-                    text: `SELECT DISTINCT stores.name, products.category_id, categories.name 
-                    FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    INNER JOIN categories ON products.category_id = categories.id
-                    WHERE stores.id = $1;`,
-                    values:[ _id]
-                };
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-                
-            } catch (error) {
-                throw error;                
-            }
-        }
     }
 
-    
+
     get id() {
         return this.getId();
     }
@@ -232,11 +118,11 @@ class Store {
             let query = `SELECT id, name, address, city, state, zip_code, phone, email FROM stores;`
             let result = await client.query(query);
             client.release();
-            
+
             let array = [];
-            result.rows.forEach( async (s) => {
+            result.rows.forEach(async (s) => {
                 let store = await new Store(s.id, s.name, s.address, s.city, s.state, s.zip_code, s.phone, s.email);
-                array.push(store);                
+                array.push(store);
             });
             return array;
 
@@ -273,23 +159,8 @@ class Store {
 
     async delete() {
         return this.delete();
-    }  
-    
-    async addProduct(product_id, stock, min_stock) {
-        return this.addProduct(product_id, stock, min_stock);
     }
 
-    async getStock(store_id) { 
-        return this.getStock(store_id);
-    }
-
-    async getMinStock(store_id) {
-        return this.getMinStock(store_id);
-    }
-
-    async getStores() {
-        return this.getStores();
-    }
 }
 
 module.exports = { Store };

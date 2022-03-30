@@ -1,9 +1,6 @@
 //postgresql
-const { Pool } = require("pg/lib");
 const PoolSingleton = require("../data/pooldb");
 const { Product } = require("./product");
-//const { Category } = require("./category");
-//const { Brand } = require("./brand");
 
 class Cart {
     constructor(id, customer) {
@@ -26,7 +23,6 @@ class Cart {
                 client.release();
 
                 let array = [];
-
                 for (let p of result.rows) {
                     let product = await Product.find(p.product_id);
                     product.setQuantity(p.quantity);
@@ -34,26 +30,8 @@ class Cart {
                 }
                 return array;
 
-                /*
-                let categories = await Category.all();
-                let brands = await Brand.all();
-
-                let array = [];
-                result.rows.forEach((p) => {
-                    let category = categories.find((c) => c.id == p.category_id);
-                    let brand = brands.find((b) => b.id == p.brand_id);
-                    let product = new Product(p.id, p.name, p.price, category, brand);
-                    array.push(product);
-
-                });
-
-                return array;
-                */
-
-
             } catch (error) {
                 throw error;
-
             }
         }
 
@@ -149,17 +127,7 @@ class Cart {
 
             }
         }
-        /*
-                this.checkout = async () => {
-                    try {
-                        //mudar checkout de purchase para true
-                        //mudar data para today
-                        
-                    } catch (error) {
-                        throw error;
-                        
-                    }
-                }*/
+
     }
 
     get id() {
@@ -204,8 +172,8 @@ class Cart {
         return this.getProducts();
     }
 
-    async addProduct() {
-        return this.addProduct();
+    async addProduct(product_id) {
+        return this.addProduct(product_id);
     }
 
     async increaseQuantity(product_id) {
@@ -222,10 +190,6 @@ class Cart {
 
     async getTotal() {
         return this.getTotal();
-    }
-
-    async checkout() {
-        return this.checkout();
     }
 
 }

@@ -273,7 +273,7 @@ CREATE TABLE customers (
     zip_code VARCHAR(10) NOT NULL,
     phone TEXT NOT NULL,
     email VARCHAR(100) NOT NULL,
-    password VARCHAR(32) NOT NULL
+    password VARCHAR(12) NOT NULL
 );
 
 INSERT INTO customers (name, address, city, state, zip_code, phone, email, password) VALUES 

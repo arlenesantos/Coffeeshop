@@ -34,8 +34,6 @@ const { Login } = require("./classes/login");
 const { Cart } = require("./classes/cart");
 const { Purchase } = require("./classes/purchase");
 
-
-
 //integrations:
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -373,10 +371,10 @@ app.get("/admin/dashboard", async (req, res) => {
         try {
 
             let customersData = {
-                registered: await Customer.registered(),
+                registered: await Customer.isRegistered(),
                 with_purchases: await Customer.withPurchases(),
                 without_purchases: await Customer.withoutPurchases(),
-                active: await Customer.active()
+                active: await Customer.isActive()
             };
 
             let purchasesData = {

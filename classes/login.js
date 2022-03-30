@@ -1,8 +1,6 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
 
-const { Customer } = require("./customer");
-
 class Login {
     constructor(name, email, password) {
         let _name = name;
@@ -12,8 +10,6 @@ class Login {
         this.getName = () => _name;
         this.getEmail = () => _email;
         this.getPassword = () => _password;
-
-
     }
 
     get name() {
@@ -58,23 +54,10 @@ class Login {
             client.release();
             return result.rows[0];
 
-            /*
-            console.log(result.rows[0])
-            let id = result.rows[0].id;
-
-            let customer = await Customer.find(id);
-            console.log(`clogin: ${JSON.stringify(customer)}`)
-
-            return customer;
-
-            */
-
-
         } catch (error) {
             return false;
         }
     }
-
 
 }
 

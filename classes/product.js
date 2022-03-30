@@ -70,7 +70,6 @@ class Product {
                 let client = await _pool.connect();
                 await client.query(query);
                 client.release();
-                return this;
 
             } catch (error) {
                 throw error;
@@ -147,97 +146,6 @@ class Product {
             }
         }
 
-        this.getMinStock = async (store_id) => {
-            try {
-                let query = {
-                    text: `SELECT stores.name, stocks.product_id, products.name, stocks.min_stock FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    WHERE store_id = $1 AND product_id = $2 ;`,
-                    values: [store_id, _id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        this.getStores = async () => {
-            try {
-                let query = {
-                    text: `SELECT stocks.product_id, products.name, stocks.store_id, stores.name 
-                    FROM stocks
-                    INNER JOIN products ON stocks.product_id = products.id
-                    INNER JOIN stores ON stocks.store_id = stores.id
-                    WHERE stocks.product_id = $1;`,
-                    values: [_id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                return result.rows;
-
-            } catch (error) {
-                throw error;
-            }
-        }
-
-        this.checkAvailability = async () => {
-            try {
-                let query = {
-                    text: `SELECT products.id, stores.name, stocks.stock, stocks.min_stock
-                    FROM products
-                    LEFT JOIN stocks ON products.id = stocks.product_id 
-                    LEFT JOIN stores ON stocks.store_id = stores.id              
-                    WHERE products.id = $1`,
-                    values: [_id]
-                };
-
-                let client = await _pool.connect();
-                let result = await client.query(query);
-                let stocks = result.rows;
-
-
-                return stocks.map((p) => (
-                    {
-                        id: p.id,
-                        name: p.name,
-                        stock: p.stock,
-                        min_stock: p.min_stock,
-                        stockIsZero: p.stock == 0,
-                        stockIsMin: p.stock <= p.min_stock,
-                    }
-                ))
-
-
-
-                /*
-                stock.forEach((p) => {                    
-                    if (p.stock == 0){
-                        p.stockIsZero = true;
-                        p.stockIsMin = false;
-                    } else if (p.stock <= p.min_stock){
-                        p.stockIsMin = true;
-                        p.stockIsZero = false;
-                    } else {
-                        p.stockIsZero = false;
-                        p.stockIsMin = false;                        
-                    }                    
-                    
-                })
-                return stock;*/
-
-
-
-            } catch (error) {
-                throw error;
-            }
-
-        }
     }
 
     get id() {
@@ -257,10 +165,6 @@ class Product {
     }
     get quantity() {
         return this.getQuantity();
-    }
-
-    get pool() {
-        return this.getPool();
     }
 
 
@@ -350,17 +254,6 @@ class Product {
         return this.checkStock();
     }
 
-    async getStock(store_id) {
-        return this.getStock(store_id);
-    }
-
-    async getMinStock(store_id) {
-        return this.getMinStock(store_id);
-    }
-
-    async getStores() {
-        return this.getStores();
-    }
 }
 
 module.exports = { Product };

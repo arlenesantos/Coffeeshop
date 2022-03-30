@@ -9,7 +9,6 @@ class Purchase {
         let _free_shipping = free_shipping;
         let _checkout = checkout;
 
-
         let _pool = PoolSingleton.getInstance();
 
         this.getId = () => _id;
@@ -33,9 +32,8 @@ class Purchase {
                 };
 
                 let client = await _pool.connect();
-                let result = await client.query(query);
+                await client.query(query);
                 client.release();
-                return result.rows[0];
 
             } catch (error) {
                 throw error;
@@ -45,15 +43,14 @@ class Purchase {
         this.update = async () => {
             try {
                 let query = {
-                    text: `UPDATE purchases SET date = $2, customer_id = $3, checkout = $4,  free_shipping = $5 WHERE id = $1 RETURNING *;`,
+                    text: `UPDATE purchases SET date = $2, customer_id = $3, checkout = $4, free_shipping = $5 WHERE id = $1 RETURNING *;`,
                     values: [_id, _date, _customer_id, _checkout, _free_shipping]
                 };
 
                 let client = await _pool.connect();
-                let result = await client.query(query);
+                await client.query(query);
                 client.release();
-                console.log(result.rows[0])
-                return result.rows[0];
+                return this
 
             } catch (error) {
                 throw error;
@@ -67,16 +64,15 @@ class Purchase {
                     values: [_id]
                 };
                 let client = await _pool.connect();
-                let result = await client.query(query);
+                await client.query(query);
                 client.release();
-                return result.rows[0];
 
             } catch (error) {
                 throw error;
             }
         }
 
-        this.getProducts = async () => { // concluir
+        this.getProducts = async () => {
             try {
                 let query = {
                     text: `SELECT products.name, brands.name AS brand, products.price, pd.quantity,
@@ -90,7 +86,7 @@ class Purchase {
                 let client = await _pool.connect();
                 let result = await client.query(query);
                 client.release();
-                return result.rows; // obj??
+                return result.rows;
 
             } catch (error) {
                 throw error;
@@ -117,9 +113,7 @@ class Purchase {
                 throw error;
 
             }
-
         }
-
 
     }
 
@@ -133,18 +127,12 @@ class Purchase {
     get customerId() {
         return this.getCustomerId();
     }
-
     get free_shipping() {
         return this.getFreeShipping();
     }
-
     get checkout() {
         return this.getCheckout();
     }
-    get pool() {
-        return this.getPool();
-    }
-
 
     static async all() {
         let pool = PoolSingleton.getInstance();
@@ -155,13 +143,11 @@ class Purchase {
             client.release();
 
             let array = [];
-
             result.rows.forEach((p) => {
                 let purchase = new Purchase(p.id, p.date, p.customer_id, p.checkout, p.free_shipping);
                 array.push(purchase);
 
             });
-
             return array;
 
 
@@ -181,6 +167,7 @@ class Purchase {
             let result = await client.query(query);
             let purchase = result.rows[0];
             client.release();
+
             return new Purchase(purchase.id, purchase.date, purchase.customer_id, purchase.checkout, purchase.free_shipping);
 
         } catch (error) {

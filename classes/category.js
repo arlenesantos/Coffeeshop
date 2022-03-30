@@ -1,7 +1,5 @@
 //postgresql
 const PoolSingleton = require("../data/pooldb");
-//const { Brand } = require("./brand");
-//const { Product } = require("./product");
 
 class Category {
     constructor(id, name) {
@@ -79,10 +77,8 @@ class Category {
 
                 let client = await _pool.connect();
                 let result = await client.query(query);
-
+                client.release();
                 return result.rows;
-
-
 
             } catch (error) {
                 throw error;
@@ -96,10 +92,6 @@ class Category {
     get name() {
         return this.getName();
     }
-    get pool() {
-        return this.getPool();
-    }
-
 
     static async all() {
         let pool = PoolSingleton.getInstance();
