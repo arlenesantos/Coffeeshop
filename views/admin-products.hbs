@@ -9,20 +9,21 @@
                     <div class="col-sm">
                         <input type="hidden" name="id" id="product_id">
                         <label for="product_name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" id="product_name">
+                        <input type="text" class="form-control" name="name" id="product_name" required>
                     </div>
                     <div class="col-sm">
                         <label for="product_price" class="form-label">Price</label>
-                        <input type="number" min="0" step="any" class="form-control" name="price" id="product_price">
+                        <input type="number" min="0" step="any" class="form-control" name="price" id="product_price"
+                            required>
                     </div>
                     <div class="col-sm">
-                        <label for="product_category" class="form-label">Category</label>    
-                        <select class="form-select" id="product_category" name="category_id" >
+                        <label for="product_category" class="form-label">Category</label>
+                        <select class="form-select" id="product_category" name="category_id" required>
                             <option selected>Choose...</option>
                             {{#each categories}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                     <div class="col-sm">
                         <label for="product_brand" class="form-label">Brand</label>
@@ -31,17 +32,17 @@
                             {{#each brands}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary mt-3">Create</button>
                 </div>
-            </form>  
+            </form>
             <div>
                 <button class="btn btn-secondary text-light" onclick="toggleForm()">Cancel</button>
-            </div>    
-        
+            </div>
+
         </div>
 
         <!-- edit product - form-->
@@ -55,16 +56,17 @@
                     </div>
                     <div class="col-sm">
                         <label for="product_price" class="form-label">Price</label>
-                        <input type="number" min="0" step="any" class="form-control" name="price" id="product_edit_price">
+                        <input type="number" min="0" step="any" class="form-control" name="price"
+                            id="product_edit_price">
                     </div>
                     <div class="col-sm">
-                        <label for="product_category" class="form-label">Category</label>    
-                        <select class="form-select" id="product_edit_category" name="category_id" >
+                        <label for="product_category" class="form-label">Category</label>
+                        <select class="form-select" id="product_edit_category" name="category_id">
                             <option selected>Choose...</option>
                             {{#each categories}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                     <div class="col-sm">
                         <label for="product_brand" class="form-label">Brand</label>
@@ -73,19 +75,19 @@
                             {{#each brands}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-warning text-light mt-3">Edit</button>
                 </div>
-            </form>  
+            </form>
             <div>
                 <button class="btn btn-secondary text-light" onclick="toggleCancel()">Cancel</button>
-            </div>    
-        
+            </div>
+
         </div>
-       
+
         <!-- search product - form-->
         <div id="form-search-product" class="container mt-5 p-0">
             <form action="/api/admin/products?_method=PUT" method="POST">
@@ -100,13 +102,13 @@
                         <input type="number" min="0" step="any" class="form-control" name="price" id="search_price">
                     </div>
                     <div class="col-sm">
-                        <label for="product_category" class="form-label">Category</label>    
-                        <select class="form-select" id="search_category" name="category_id" >
+                        <label for="product_category" class="form-label">Category</label>
+                        <select class="form-select" id="search_category" name="category_id">
                             <option selected>Choose...</option>
                             {{#each categories}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                     <div class="col-sm">
                         <label for="product_brand" class="form-label">Brand</label>
@@ -115,14 +117,14 @@
                             {{#each brands}}
                             <option value="{{this.id}}">{{this.name}}</option>
                             {{/each}}
-                        </select>                        
+                        </select>
                     </div>
                     <div class="col-sm">
-                        <br>                                               
-                        <button type="submit" class="btn btn-primary text-light mt-2">Search</button>                      
+                        <br>
+                        <button type="submit" class="btn btn-primary text-light mt-2">Search</button>
                     </div>
-                </div>                
-            </form> 
+                </div>
+            </form>
         </div>
 
         <!-- read all products - table and delete button/form -->
@@ -146,20 +148,23 @@
                         <td>{{this.category.name}}</td>
                         <td>{{this.brand.name}}</td>
                         <td>
-                            <button class="btn btn-warning text-light" onclick="toggleEdit('{{this.id}}', '{{this.name}}', '{{this.price}}', '{{this.category.id}}', '{{this.brand.id}}')"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-warning text-light"
+                                onclick="toggleEdit('{{this.id}}', '{{this.name}}', '{{this.price}}', '{{this.category.id}}', '{{this.brand.id}}')"><i
+                                    class="bi bi-pencil"></i></button>
                         </td>
                         <td>
-                            <form action="/api/admin/products?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete?')">
-                            <input type="hidden" name="id" value="{{this.id}}">
-                            <button class="btn btn-danger text-light"><i class="bi bi-trash"></i></button>
-                            
+                            <form action="/api/admin/products?_method=DELETE" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete?')">
+                                <input type="hidden" name="id" value="{{this.id}}">
+                                <button class="btn btn-danger text-light"><i class="bi bi-trash"></i></button>
+
                             </form>
                         </td>
                     </tr>
-                    {{/each}}                    
+                    {{/each}}
                 </tbody>
             </table>
-        </div>         
+        </div>
     </div>
 </section>
 

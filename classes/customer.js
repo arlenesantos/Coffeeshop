@@ -105,7 +105,7 @@ class Customer {
         this.getPurchases = async () => {
             try {
                 let query = {
-                    text: `SELECT id, to_char(date, 'DD/MM/YYYY') as date, customer_id, checkout, free_shipping FROM purchases WHERE customer_id = $1 AND checkout = true ORDER BY date DESC;`,
+                    text: `SELECT id, to_char(date, 'DD/MM/YYYY') as date, customer_id, checkout, free_shipping FROM purchases WHERE customer_id = $1 AND checkout = true ORDER BY id DESC;`,
                     values: [_id]
                 };
                 let client = await _pool.connect();
@@ -218,7 +218,7 @@ class Customer {
     static async registered() {
         let pool = PoolSingleton.getInstance();
         try {
-            let query = `SELECT COUNT(id) AS registered FROM customers;`;
+            let query = `SELECT COUNT(id) - 1 AS registered FROM customers;`;
             let client = await pool.connect();
             let result = await client.query(query);
             client.release();
@@ -249,7 +249,7 @@ class Customer {
         let pool = PoolSingleton.getInstance();
         try {
             let query = `
-            SELECT COUNT(customers.id) AS without_purchases
+            SELECT COUNT(customers.id) -1 AS without_purchases
             FROM customers
             WHERE customers.id NOT IN (
                 SELECT DISTINCT customer_id

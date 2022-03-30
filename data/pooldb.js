@@ -5,14 +5,14 @@ const config = {
     password: "senhapostgre",
     host: "localhost",
     port: 5432,
-    database: "coffee",
+    database: "coffeeshop",
     max: 20,
     min: 5,
     idleTimeoutMillis: 15000,
-    connectionTimeoutMillis:10000 //2000
+    connectionTimeoutMillis: 10000 //2000
 };
 
-const Singleton = (() =>{
+const Singleton = (() => {
     var instance;
 
     const createInstance = () => {
@@ -22,9 +22,9 @@ const Singleton = (() =>{
 
     return {
         getInstance: () => {
-            if(!instance) {
-                instance = createInstance();                
-            } 
+            if (!instance) {
+                instance = createInstance();
+            }
             return instance;
         }
     }

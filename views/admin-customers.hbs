@@ -11,7 +11,8 @@
                 </div>
                 <div class="col-12">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address" required>
+                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" name="address"
+                        required>
                 </div>
                 <div class="col-md-6">
                     <label for="city" class="form-label">City</label>
@@ -37,6 +38,10 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
+                <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="newConfirmPassword" name="confirmPassword" required>
+                </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
@@ -56,7 +61,8 @@
                 </div>
                 <div class="col-12">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="customer-address" placeholder="1234 Main St" name="address" required>
+                    <input type="text" class="form-control" id="customer-address" placeholder="1234 Main St"
+                        name="address" required>
                 </div>
                 <div class="col-md-6">
                     <label for="city" class="form-label">City</label>
@@ -96,7 +102,7 @@
             <h1>Customers</h1>
             <table class="table table-responsive">
                 <thead>
-                    <tr>                        
+                    <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Phone</th>
@@ -104,7 +110,7 @@
                         <th scope="col">Address</th>
                         <th scope="col">City</th>
                         <th scope="col">State</th>
-                        <th scope="col">Zip Code</th>                        
+                        <th scope="col">Zip Code</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -120,16 +126,18 @@
                         <td>{{this.city}}</td>
                         <td>{{this.state}}</td>
                         <td>{{this.zip_code}}</td>
-                                                
+
                         <td><button class="btn btn-warning text-light"
                                 onclick="toggleEdit('{{this.id}}', '{{this.name}}', '{{this.address}}', '{{this.city}}', '{{this.state}}', '{{this.zip_code}}', '{{this.phone}}', '{{this.email}}', '{{this.password}}')"><i
                                     class="bi bi-pencil"></i></button></td>
                         <td>
-                            <form action="/api/admin/customers?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete?');">
+                            <form action="/api/admin/customers?_method=DELETE" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete?');">
                                 <input type="hidden" name="id" value="{{this.id}}">
-                                <button id="delete" type="submit" class="btn btn-danger text-light"><i class="bi bi-trash"></i>
+                                <button id="delete" type="submit" class="btn btn-danger text-light"><i
+                                        class="bi bi-trash"></i>
                                 </button>
-                                
+
                             </form>
                         </td>
                     </tr>
@@ -154,7 +162,7 @@
     const toggleEdit = (id, name, address, city, state, zip_code, phone, email, password) => {
         let form = document.getElementById("form-edit-customer");
         document.getElementById("customer-id").value = id;
-        document.getElementById("customer-name").value = name;        
+        document.getElementById("customer-name").value = name;
         document.getElementById("customer-address").value = address;
         document.getElementById("customer-city").value = city;
         document.getElementById("customer-state").value = state;
@@ -163,11 +171,11 @@
         document.getElementById("customer-email").value = email;
         document.getElementById("customer-password").value = password;
         form.classList.remove("d-none");
-        form.classList.add("d-block");        
+        form.classList.add("d-block");
     };
 
     const toggleCancel = () => {
-        let edit = document.getElementById("form-edit-customer");        
+        let edit = document.getElementById("form-edit-customer");
         edit.classList.add("d-none");
     }
 

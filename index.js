@@ -1,6 +1,3 @@
-//file system
-const fs = require("fs");
-
 //express
 const express = require("express");
 const app = express();
@@ -23,6 +20,8 @@ const { flash } = require('express-flash-message');
 //express-fileupload
 const expressFileUpload = require("express-fileupload");
 
+//file system
+const fs = require("fs");
 
 //classes
 const { Category } = require("./classes/category");
@@ -100,8 +99,6 @@ app.use('/ckeditor', express.static(__dirname + "/node_modules/@ckeditor/ckedito
 
 
 var taxrate = 0.23;
-
-app.listen(3000, () => console.log("server on"));
 
 //PUBLIC PAGES:
 
@@ -804,7 +801,8 @@ app.get("/admin/customers", async (req, res) => {
             let customers = await Customer.all();
             let successMsg = await req.consumeFlash('success');
             let errorMsg = await req.consumeFlash('error');
-            res.render("admin-customers", { layout: "admin", customers: customers, success: successMsg, error: errorMsg, admin: req.session.admin });
+            let warningMsg = await req.consumeFlash('warning');
+            res.render("admin-customers", { layout: "admin", customers: customers, success: successMsg, error: errorMsg, warning: warningMsg, admin: req.session.admin });
 
         } catch (error) {
             console.log(error);
@@ -819,10 +817,15 @@ app.get("/admin/customers", async (req, res) => {
 app.post("/api/admin/customers", async (req, res) => {
     if (req.session.logged_in && req.session.admin) {
         try {
-            let { name, address, city, state, zip_code, phone, email, password } = req.body;
-            let customer = new Customer(null, name, address, city, state, zip_code, phone, email, password);
-            await customer.save();
-            await req.flash('success', 'Customer registered successfully!');
+            let { name, address, city, state, zip_code, phone, email, password, confirmPassword } = req.body;
+            if (password === confirmPassword) {
+                let customer = new Customer(null, name, address, city, state, zip_code, phone, email, password);
+                await customer.save();
+                await req.flash('success', 'Customer registered successfully!');
+            } else {
+                await req.flash('warning', 'Password does not match. Try again.');
+            }
+
             res.redirect("/admin/customers");
 
         } catch (error) {
@@ -1166,17 +1169,6 @@ app.put("/cart/checkout", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
 app.get("/error", async (req, res) => {
     try {
         let errorMsg = await req.consumeFlash('error');
@@ -1186,6 +1178,8 @@ app.get("/error", async (req, res) => {
         console.log(error);
     }
 });
+
+app.listen(3000, () => console.log("server on"));
 
 
 
