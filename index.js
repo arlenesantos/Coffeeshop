@@ -875,7 +875,7 @@ app.delete("/api/admin/customers", async (req, res) => {
 
         } catch (error) {
             console.log(error);
-            await req.flash('error', 'Something went wrong');
+            await req.flash('warning', 'Customer cannot be deleted.');
             res.redirect("/admin/customers");
         }
     } else {
