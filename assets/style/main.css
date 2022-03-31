@@ -137,17 +137,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* footer */
 footer{
     /*background-color:#3d2c1c ;*/
@@ -210,6 +199,28 @@ footer{
 .title-color {
     color: rgb(68, 33, 13); 
 }
+
+/*customer
+.customer-card{
+    min-width: 143px;
+}
+*/
+.customer-card {
+    border: 1.5px solid rgb(108,117,125);
+    min-width: 143px;    
+    transition: color 0.25s, border-color 0.25s, box-shadow 0.25s,transform 0.25s;
+  }
+
+.customer-card:hover {
+    border: 2px solid #bc8a5f;    
+    box-shadow: 0 0.5em 0.5em -0.4em #bc8a5f;
+    transform: translateY(-0.25em);
+    cursor: pointer;
+}
+
+.customer-card:hover a {
+    color:#bc8a5f;
+} 
 
 
 

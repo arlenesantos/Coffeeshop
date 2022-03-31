@@ -1,20 +1,37 @@
 <section>
     <!-- customer menu -->
-    <div class="border-top border-bottom p-3">
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link text-secondary" href="/cart">Your cart</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-secondary" href="/customer/purchases">Your purchases</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-secondary" href="/customer/recipe">Send a recipe</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-secondary" href="/logout">Logout</a>
-            </li>
-        </ul>
+
+    <div class="container my-5">
+
+        <div class="row flex-row justify-content-center">
+            <div class="col-3 card customer-card m-2 py-3 text-center">
+                <a href="/cart" class="link-secondary text-decoration-none">
+                    <i class="bi bi-cart fs-1"></i>
+                    <br>Your cart
+                </a>
+            </div>
+            <div class="col-3 card customer-card m-2 py-3 text-center">
+                <a href="/customer/purchases" class="link-secondary text-decoration-none">
+                    <i class="bi bi-bag-check fs-1"></i>
+                    <br>Your purchases
+                </a>
+            </div>
+        </div>
+        <div class="row flex-row justify-content-center">
+            <div class="col-3 card customer-card m-2 py-3 text-center">
+                <a href="/customer/recipe" class="link-secondary text-decoration-none">
+                    <i class="bi bi-journal-richtext fs-1"></i>
+                    <br>Send a recipe
+                </a>
+            </div>
+            <div class="col-3 card customer-card m-2 py-3 text-center">
+                <a href="/logout" class="link-secondary text-decoration-none">
+                    <i class="bi bi-box-arrow-right fs-1"></i>
+                    <br>Sign out
+                </a>
+            </div>
+        </div>
     </div>
+
 
 </section>
