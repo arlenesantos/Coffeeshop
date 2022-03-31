@@ -33,169 +33,181 @@
     <title>Coffee Shop</title>
 </head>
 
-<body class="row justify-content-between">
-    <header id="header" class="col-2">
-        <nav>
-
-            <!-- menu lg -->
-            <div class=" vh-100 d-none d-lg-flex flex-column flex-shrink-0 p-3 bg-light" id="navbarSupportedContent">
-                <span class="text-center">
-                    <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
-                </span>
-                <hr>
-                <ul class="list-unstyled ps-0 mb-auto">
-                    <li class="mb-1">
-                        <a href="/admin/dashboard" class="nav-link link-secondary">
-                            <i class="bi bi-bar-chart-fill"> Dashboard</i>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded dropdown-toggle text-secondary"
-                            data-bs-toggle="collapse" data-bs-target="#coffee-collapse" aria-expanded="false"><i
-                                class="bi bi-cup-fill">
-                                Products</i>
-                        </button>
-                        <div class="collapse" id="coffee-collapse">
-                            <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="/admin/categories"
-                                        class="link-dark rounded text-decoration-none">Categories</a></li>
-                                <li><a href="/admin/brands" class="link-dark rounded text-decoration-none">Brands</a>
-                                </li>
-                                <li><a href="/admin/products"
-                                        class="link-dark rounded text-decoration-none">Products</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="mb-1">
-                        <a href="/admin/stores" class="nav-link link-secondary">
-                            <i class="bi bi-shop"> Stores</i>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="/admin/customers" class="nav-link link-secondary">
-                            <i class="bi bi-person-circle"> Customers</i>
-                        </a>
-                    </li>
-                    <li class="mb-1">
-                        <a href="/admin/recipes" class="nav-link link-secondary">
-                            <i class="bi bi-journal-richtext"> Recipes</i>
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
-                        id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                            alt="avatar user" width="32" height="32" class="rounded-circle me-2"> {{#if admin}}
-                        <strong>{{admin.name}}</strong> {{/if}}
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser" style="">
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
+<body>
+    <div class="row justify-content-between">
+        <header id="header" class="col-2 bg-light d-flex justify-content-evenly p-0">
+            <nav>
+                <!-- menu lg -->
+                <div class=" vh-100 d-none d-lg-flex flex-column flex-shrink-0 p-3" id="navbarSupportedContent">
+                    <span class="text-center">
+                        <img src="/images/logo.svg" alt="logo coffee shop" class="d-inline-block align-text-top px-3">
+                    </span>
+                    <hr>
+                    <ul class="list-unstyled ps-0 mb-auto">
+                        <li class="mb-1">
+                            <a href="/admin/dashboard" class="nav-link link-secondary">
+                                <i class="bi bi-bar-chart-fill"> Dashboard</i>
+                            </a>
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li class="mb-1">
+                            <button class="btn btn-toggle align-items-center rounded dropdown-toggle text-secondary"
+                                data-bs-toggle="collapse" data-bs-target="#coffee-collapse" aria-expanded="false"><i
+                                    class="bi bi-cup-fill">
+                                    Products</i>
+                            </button>
+                            <div class="collapse" id="coffee-collapse">
+                                <ul class="li-div btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a href="/admin/categories"
+                                            class="link-dark rounded text-decoration-none">Categories</a></li>
+                                    <li><a href="/admin/brands"
+                                            class="link-dark rounded text-decoration-none">Brands</a>
+                                    </li>
+                                    <li><a href="/admin/products"
+                                            class="link-dark rounded text-decoration-none">Products</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="mb-1">
+                            <a href="/admin/stores" class="nav-link link-secondary">
+                                <i class="bi bi-shop"> Stores</i>
+                            </a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="/admin/customers" class="nav-link link-secondary">
+                                <i class="bi bi-person-circle"> Customers</i>
+                            </a>
+                        </li>
+                        <li class="mb-1">
+                            <a href="/admin/recipes" class="nav-link link-secondary">
+                                <i class="bi bi-journal-richtext"> Recipes</i>
+                            </a>
+                        </li>
+                        <hr>
+                        <li class="mb-1">
+                            <span class="ps-2">
+                                <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                                    alt="avatar user" width="32" height="32" class="rounded-circle me-2"> {{#if admin}}
+                                <strong>{{admin.name}} | </strong> {{/if}}
+                                <a href="/logout"><i class="bi bi-box-arrow-right text-secondary fs-5"></i></a>
+                            </span>
+                        </li>
                     </ul>
                 </div>
-            </div>
 
-            <!-- menu sm  -->
-            <div class=" vh-100 d-flex d-lg-none flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
-                <a href="/" target="blank" class="d-block p-3 link-dark text-decoration-none">
-                    <img src="/images/logo-icon.png" alt="logo">
-                </a>
-                <ul class="nav flex-column mb-auto text-center">
-                    <li class="nav-item">
-                        <a href="/admin/dashboard" class="nav-link active py-3 border-bottom" aria-current="page"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Dashboard"><i
-                                class="bi bi-bar-chart-fill text-secondary" aria-label="Dashboard"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/products" class="nav-link active py-3 border-bottom" aria-current="page"
-                            title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            data-bs-original-title="Products"><i class="bi bi-cup-fill text-secondary"
-                                aria-label="Products"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/stores" class="nav-link active py-3 border-bottom" aria-current="page" title=""
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Stores"><i
-                                class="bi bi-shop text-secondary" aria-label="Stores"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/customers" class="nav-link active py-3 border-bottom" aria-current="page"
-                            title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            data-bs-original-title="Customers"><i class="bi bi-person-circle text-secondary"
-                                aria-label="Customers"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/recipes" class="nav-link active py-3 border-bottom" aria-current="page" title=""
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Recipes"><i
-                                class="bi bi-journal-richtext text-secondary" aria-label="Recipes"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="dropdown border-top">
-                    <a href="#"
-                        class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle"
-                        id="dropdownUserSmall" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                            alt="avatar user" width="24" height="24" class="rounded-circle">
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUserSmall">
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
+                <!-- menu sm  -->
+                <div class=" vh-100 d-lg-none " style="width: 4.5rem;">
+                    <ul class="nav flex-column mb-auto text-center">
+                        <li class="nav-item">
+                            <a href="/" target="blank" class=" nav-link d-block p-3 link-dark text-decoration-none">
+                                <img src="/images/logo-icon.png" alt="logo"></a>
                         </li>
-                        <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+                        <li class="nav-item">
+                            <a href="/admin/dashboard" class="nav-link active py-3 border-bottom" aria-current="page"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-original-title="Dashboard"><i class="bi bi-bar-chart-fill text-secondary"
+                                    aria-label="Dashboard"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/products" class="nav-link active py-3 border-bottom" aria-current="page"
+                                title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-original-title="Products"><i class="bi bi-cup-fill text-secondary"
+                                    aria-label="Products"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/stores" class="nav-link active py-3 border-bottom" aria-current="page"
+                                title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-original-title="Stores"><i class="bi bi-shop text-secondary"
+                                    aria-label="Stores"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/customers" class="nav-link active py-3 border-bottom" aria-current="page"
+                                title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-original-title="Customers"><i class="bi bi-person-circle text-secondary"
+                                    aria-label="Customers"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/recipes" class="nav-link active py-3 border-bottom" aria-current="page"
+                                title="" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-original-title="Recipes"><i class="bi bi-journal-richtext text-secondary"
+                                    aria-label="Recipes"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/logout" class="nav-link active py-3 border-bottom" aria-current="page" title=""
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Sign out"><i
+                                    class="bi bi-box-arrow-right text-secondary" aria-label="Sign out"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
+
+
+            </nav>
+            <!-- back to top button -->
+            <div class="arrow-up-admin">
+                <a class="btn btn-outline-secondary btn-sm" href="#header"><i class="bi bi-arrow-up"></i></a>
             </div>
-        </nav>
-    </header>
 
-    <main class="container col-10 py-5">
 
-        <!-- flash message -->
-        <div>
-            {{#each success}}
-            <div class="container">
-                <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </header>
+
+
+
+        <main class="container col-10 py-5">
+
+            <!-- flash message -->
+            <div>
+                {{#each success}}
+                <div class="container">
+                    <div class="alert alert-success d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
-            </div>
-            {{/each}}
+                {{/each}}
 
-            {{#each warning}}
-            <div class="container">
-                <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{#each warning}}
+                <div class="container">
+                    <div class="alert alert-warning d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
-            </div>
-            {{/each}}
+                {{/each}}
 
-            {{#each error}}
-            <div class="container">
-                <div class="alert alert-danger d-flex align-items-center alert-dismissible " role="alert">{{this}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{#each error}}
+                <div class="container">
+                    <div class="alert alert-danger d-flex align-items-center alert-dismissible " role="alert">{{this}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
+                {{/each}}
+
             </div>
-            {{/each}}
-
-        </div>
 
 
-        {{{ body }}}
+            {{{ body }}}
 
-    </main>
+        </main>
+
+    </div>
+
 
 
 </body>
 
 </html>
+
+<script>
+    //initialize all tooltips on a page:
+    /* global bootstrap: false */
+    (function () {
+        'use strict'
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })();
+</script>

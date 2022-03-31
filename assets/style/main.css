@@ -47,8 +47,12 @@ body {
     z-index: 1;
 }
 
-.arrow-up a{
-    color:rgb(108,117,125);
+.arrow-up-admin {
+    position: fixed;
+    bottom: 10px;
+    left: 20px;
+    z-index: 1; 
+   
 }
 
 /* coffee section */
