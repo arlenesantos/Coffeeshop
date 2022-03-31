@@ -1,15 +1,15 @@
 const { Pool } = require("pg");
 
 const config = {
-    user: "postgres",
-    password: "senhapostgre",
+    user: "", // insert your user
+    password: "", //insert your password
     host: "localhost",
     port: 5432,
-    database: "coffeeshop",
+    database: "coffeeshop", // suggested name
     max: 20,
     min: 5,
     idleTimeoutMillis: 15000,
-    connectionTimeoutMillis: 10000 //2000
+    connectionTimeoutMillis: 2000
 };
 
 const Singleton = (() => {
