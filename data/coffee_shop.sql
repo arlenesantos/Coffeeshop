@@ -1,5 +1,7 @@
 CREATE DATABASE coffeeshop;
 
+\c coffeeshop
+
 -- admin
 CREATE TABLE admin(
     name VARCHAR(100) NOT NULL,
@@ -351,8 +353,7 @@ CREATE TABLE recipes (
 
 -- recipe with pending approval by admin
 INSERT INTO recipes (title, content, customer_id, approved) VALUES
-('Iced latte', 'Ingredients: 2 espresso shots (60ml); 2 tsp sugar, honey or maple syrup (to taste); ice; 100ml whole milk; Method: STEP 1 Mix the hot espresso with the sugar until it dissolves. STEP 2 Fill a glass with ice and stir in the sweetened coffee.
-STEP 3 Pour over the milk and stir until combined.', 1, false);
+('Iced latte', '<p><strong>Ingredients:</strong>&nbsp;</p><ul><li>2 espresso shots (60ml);&nbsp;</li><li>2 tsp sugar, honey or maple syrup (to taste);&nbsp;</li><li>ice;&nbsp;</li><li>100ml whole milk;&nbsp;</li></ul><p><strong>Method:</strong>&nbsp;</p><p>STEP 1&nbsp;</p><p>Mix the hot espresso with the sugar until it dissolves.&nbsp;</p><p>STEP 2&nbsp;</p><p>Fill a glass with ice and stir in the sweetened coffee.&nbsp;</p><p>STEP 3&nbsp;</p><p>Pour over the milk and stir until combined.</p>', 1, true);
 
 
 

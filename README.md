@@ -20,10 +20,10 @@ npm install
 Open a terminal and run the following code to load the database with the preset data:
 
 ```
-psql -U postgres -f coffee_shop.sql
+psql -U <your-user> -f data/coffee_shop.sql
 ```
 
-Open the `pooldb.js` file and change the dummy credentials accordingly.
+Open the `data/pooldb.js` file and change the dummy credentials accordingly.
 
 # 5. Run the application
 
